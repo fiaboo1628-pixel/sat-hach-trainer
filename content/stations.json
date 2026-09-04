@@ -1,0 +1,13 @@
+[
+  { "id": "xuat-phat", "name": "Xuất phát", "audio": "xuat-phat.mp3" },
+  { "id": "nhuong-nguoi-di-bo", "name": "Dừng xe nhường đường người đi bộ", "audio": "nhuong-nguoi-di-bo.mp3" },
+  { "id": "de-pa-len-doc", "name": "Dừng xe, đề-pa lên dốc", "audio": "de-pa-len-doc.mp3" },
+  { "id": "hang-dinh-vuong-goc", "name": "Qua hàng đinh vuông góc (chữ Z)", "audio": "hang-dinh-vuong-goc.mp3" },
+  { "id": "nga-tu-den-tin-hieu", "name": "Qua ngã tư có tín hiệu đèn giao thông", "audio": "nga-tu-den-tin-hieu.mp3" },
+  { "id": "duong-vong-quanh-co", "name": "Qua đường vòng quanh co (chữ S)", "audio": "duong-vong-quanh-co.mp3" },
+  { "id": "ghep-xe-doc", "name": "Ghép xe dọc", "audio": "ghep-xe-doc.mp3" },
+  { "id": "giao-duong-sat", "name": "Dừng xe nơi giao nhau đường sắt", "audio": "giao-duong-sat.mp3" },
+  { "id": "tang-toc-tang-so", "name": "Tăng tốc, tăng số", "audio": "tang-toc-tang-so.mp3" },
+  { "id": "ghep-xe-ngang", "name": "Ghép xe ngang (đỗ song song)", "audio": "ghep-xe-ngang.mp3" },
+  { "id": "ket-thuc", "name": "Kết thúc", "audio": "ket-thuc.mp3" }
+]
