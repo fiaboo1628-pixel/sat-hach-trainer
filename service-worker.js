@@ -8,6 +8,8 @@ const APP_SHELL = [
   './manifest.webmanifest',
   './content/stations.json',
   './content/standard-set.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
 ];
 
 self.addEventListener('install', (event) => {
