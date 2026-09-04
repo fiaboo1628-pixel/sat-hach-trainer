@@ -16,6 +16,7 @@ const els = {
 let stations = [];
 let standardSet = [];
 let selected = loadSelected();
+let currentPlayback = null;
 
 async function loadContent() {
   const [stationsRes, standardRes] = await Promise.all([
@@ -106,6 +107,19 @@ function removeSelected(index) {
   renderList(els.listSelected, selected, { removable: true });
 }
 
+// Stops whatever is currently playing (if anything) and invalidates its
+// callbacks, so a stale playNext()/onended/onerror from a previous playlist
+// can never advance playback again. Shared by the Stop button and by
+// starting a new playlist (double-tapping Play).
+function stopPlayback(message) {
+  if (currentPlayback) currentPlayback.cancelled = true;
+  currentPlayback = null;
+  els.player.onended = null;
+  els.player.onerror = null;
+  els.player.pause();
+  if (message) setStatus(message);
+}
+
 function playPlaylist(ids) {
   if (ids.length === 0) {
     setStatus('Chưa chọn bài nào để phát.');
@@ -120,26 +134,41 @@ function playPlaylist(ids) {
     return;
   }
 
+  stopPlayback();
+  const playback = { cancelled: false };
+  currentPlayback = playback;
+
   let i = 0;
   let current = null;
+  let handled = true; // guards against onended/onerror/play().catch() double-firing for the same track
 
   function playNext() {
+    if (playback.cancelled) return;
     if (i >= playlist.length) {
       setStatus('Đã phát xong.');
       return;
     }
     current = playlist[i];
     i += 1;
+    handled = false;
     setStatus(`Đang phát: ${current.name} (${i}/${playlist.length})`);
     els.player.src = `content/audio/${current.audio}`;
     els.player.play().catch(() => {
+      if (playback.cancelled || handled) return;
+      handled = true;
       setStatus(`Lỗi phát "${current.name}", bỏ qua, tiếp tục bài kế.`);
       playNext();
     });
   }
 
-  els.player.onended = playNext;
+  els.player.onended = () => {
+    if (playback.cancelled || handled) return;
+    handled = true;
+    playNext();
+  };
   els.player.onerror = () => {
+    if (playback.cancelled || handled) return;
+    handled = true;
     setStatus(`Lỗi audio "${current ? current.name : ''}", bỏ qua, tiếp tục bài kế.`);
     playNext();
   };
@@ -162,14 +191,23 @@ async function main() {
 
   document.getElementById('btn-bo-chuan').addEventListener('click', () => showView('bo-chuan'));
   document.getElementById('btn-bo-tu-ghep').addEventListener('click', () => showView('bo-tu-ghep'));
-  document.querySelectorAll('.btn-back').forEach((b) => b.addEventListener('click', () => showView('menu')));
+  document.querySelectorAll('.btn-back').forEach((b) =>
+    b.addEventListener('click', () => {
+      stopPlayback();
+      showView('menu');
+    }),
+  );
 
   document.getElementById('play-bo-chuan').addEventListener('click', () => playPlaylist(standardSet));
+  document.getElementById('stop-bo-chuan').addEventListener('click', () => stopPlayback('Đã dừng.'));
   document.getElementById('save-bo-tu-ghep').addEventListener('click', saveSelected);
   document.getElementById('play-bo-tu-ghep').addEventListener('click', () => playPlaylist(selected));
+  document.getElementById('stop-bo-tu-ghep').addEventListener('click', () => stopPlayback('Đã dừng.'));
 
   showView('menu');
   registerServiceWorker();
 }
 
-main();
+main().catch(() => {
+  setStatus('Không tải được dữ liệu bài (content/*.json). Kiểm tra mạng rồi tải lại trang.');
+});

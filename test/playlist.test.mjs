@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildPlaylist, validateStations, validateStandardSet } from '../js/playlist.js';
@@ -33,4 +33,11 @@ test('buildPlaylist giữ đúng thứ tự và độ dài, kể cả id lặp l
 
 test('buildPlaylist báo lỗi rõ ràng khi id không tồn tại', () => {
   assert.throws(() => buildPlaylist(['khong-ton-tai'], stations), /Không tìm thấy station id/);
+});
+
+test('mỗi station trong stations.json có file audio tồn tại trên đĩa', () => {
+  const missing = stations
+    .map((s) => s.audio)
+    .filter((audio) => !existsSync(join(__dirname, '../content/audio', audio)));
+  assert.deepEqual(missing, []);
 });
