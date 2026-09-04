@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sát Hạch Trainer</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Sát Hạch Trainer</h1>
+  </header>
+
+  <main>
+    <section id="menu">
+      <button id="btn-bo-chuan" type="button">Bộ chuẩn</button>
+      <button id="btn-bo-tu-ghep" type="button">Bộ tự ghép</button>
+    </section>
+
+    <section id="view-bo-chuan" hidden>
+      <h2>Bộ chuẩn (13 bài)</h2>
+      <ol id="list-bo-chuan"></ol>
+      <button id="play-bo-chuan" type="button">▶ Phát</button>
+      <button class="btn-back" type="button">← Quay lại</button>
+    </section>
+
+    <section id="view-bo-tu-ghep" hidden>
+      <h2>Bộ tự ghép</h2>
+      <div class="ghep-columns">
+        <div>
+          <h3>Bấm để thêm bài</h3>
+          <ul id="list-stations"></ul>
+        </div>
+        <div>
+          <h3>Thứ tự đã chọn</h3>
+          <ol id="list-selected"></ol>
+        </div>
+      </div>
+      <button id="save-bo-tu-ghep" type="button">💾 Lưu</button>
+      <button id="play-bo-tu-ghep" type="button">▶ Phát</button>
+      <button class="btn-back" type="button">← Quay lại</button>
+    </section>
+
+    <p id="status" role="status"></p>
+  </main>
+
+  <audio id="player"></audio>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

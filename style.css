@@ -1,0 +1,43 @@
+:root {
+  color-scheme: light dark;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 1rem;
+  max-width: 480px;
+  margin-inline: auto;
+}
+
+button {
+  font-size: 1.1rem;
+  padding: 0.6rem 1rem;
+  margin: 0.25rem;
+  min-height: 44px;
+}
+
+#menu {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ghep-columns {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ghep-columns > div {
+  flex: 1 1 140px;
+  min-width: 0;
+}
+
+ol, ul {
+  padding-left: 1.2rem;
+}
+
+#status {
+  min-height: 1.5em;
+  font-weight: bold;
+}
