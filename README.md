@@ -38,17 +38,21 @@ nguồn cào, cào 600 câu, QA ảnh) trước khi thay. Khi đã có data th�
 
 1. Đè `content/theory/questions.json` bằng 600 câu thật, giữ đúng `id` theo số câu
    chính thức (`q001`–`q600`) và đúng shape hiện có (`text`, `choices`, `answer`,
-   `is_liet`, `chapter`, `image`).
+   `is_liet`, `chapter`, `image`). `chapter` phải là 1 trong 7 slug mà `generateExam`
+   dùng thật (`quy-tac`, `tinh-huong-atgt`, `van-hoa`, `ky-thuat`, `cau-tao`,
+   `bao-hieu`, `xu-ly-tinh-huong` — xem bảng quota trong spec) — thiếu câu ở nhóm nào
+   sẽ làm sinh đề báo lỗi ngay khi rơi trúng hạng cần nhóm đó. `is_liet: true` phải
+   luôn đi cùng `chapter: "tinh-huong-atgt"` và ngược lại.
 2. Đặt ảnh biển báo/sa hình vào `content/theory/images/` (thư mục này chưa tồn tại
    trong repo — git không track thư mục rỗng — nên cần tạo khi thêm ảnh thật đầu
    tiên), tên file khớp field `image` của từng câu.
 3. Tăng số version `CACHE_NAME` trong `service-worker.js` (vd `v2` → `v3`) để trình
    duyệt tải nội dung mới thay vì dùng bản cache cũ.
-4. Chạy `node --test test/` để bắt id trùng / `answer` sai chỉ số (script kiểm tra
-   này đã có sẵn), rồi cập nhật lại các assertion số lượng trong
-   `test/theory.test.mjs` (hiện đang kiểm tra "đủ tối thiểu" cho data mẫu — vd
-   `liet >= 1`, `normal >= HANG_CONFIG.C1.count - 1`) thành đúng số thật của bộ 600
-   câu (600 câu, 60 câu điểm liệt) một khi data thật đã vào.
+4. Chạy `node --test test/` để bắt id trùng / `answer` sai chỉ số / `is_liet`-`chapter`
+   lệch nhau / thiếu câu ở 1 nhóm nào đó cho hạng B hoặc C1 (script kiểm tra này đã có
+   sẵn, tự đối chiếu với quota trong `HANG_CONFIG`, không cần sửa số tay). Riêng test
+   "đủ câu điểm liệt" (`liet >= 1`) có thể siết lại thành đúng 60 khi biết chắc data
+   thật có đúng 600 câu.
 
 ## Deploy lên M710q (nginx, tự host)
 

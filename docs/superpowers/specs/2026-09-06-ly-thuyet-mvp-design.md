@@ -27,7 +27,6 @@ Trong phạm vi:
 Ngoài phạm vi (để sau, không làm ở bản này):
 - Thanh toán/paywall, tài khoản, đăng nhập.
 - Luyện theo chương/chủ đề, ôn lại câu sai, lưu lịch sử làm bài.
-- Ép tỉ lệ câu hỏi theo nhóm chủ đề khi sinh đề (xem "Việc cân nhắc đã bỏ" bên dưới).
 
 ## Nguồn dữ liệu & cơ cấu đề thi
 
@@ -43,34 +42,47 @@ chưa hiệu lực):
 - Mỗi câu: trắc nghiệm 1 đáp án đúng trong các lựa chọn (định dạng chuẩn của bộ đề
   này, không phải multi-select).
 
-### Thuật toán sinh đề — phải phân tầng, không random đều
+### Thuật toán sinh đề — phân tầng theo đúng 7 nhóm chủ đề của Cục CSGT
 
-Ban đầu định random đều N câu trong 600 câu — **sai**: random đều không đảm bảo đúng 1
-câu điểm liệt/đề (có lượt ra 0 câu, có lượt ra vài câu), trong khi luật chấm điểm dựa
-đúng vào việc đề có đúng 1 câu điểm liệt. Thuật toán đúng:
+**Cập nhật 2026-09-06 (nâng cấp so với bản đầu):** ban đầu định random đều N câu trong
+600 câu — sai, vì không đảm bảo đúng 1 câu điểm liệt/đề. Bản kế tiếp chỉ phân tầng 2
+nhóm (1 điểm liệt + N-1 thường) vì lúc đó số liệu tỉ lệ theo nhóm chủ đề tìm trên web
+mâu thuẫn nhau (cộng không ra đúng tổng). Nay đã có **nguồn chính thức đáng tin**: Cục
+CSGT — Bộ Công an, đăng trên cổng chính sách Chính phủ, "Hướng dẫn sử dụng bộ 600 câu
+hỏi dùng để sát hạch lái xe cơ giới đường bộ"
+(xaydungchinhsach.chinhphu.vn/huong-dan-su-dung-bo-600-cau-hoi-dung-de-sat-hach-lai-xe-co-gioi-duong-bo-119250513110514585.htm),
+áp dụng từ 01/6/2025 — số liệu cộng khớp đúng tổng cho cả 2 hạng. Thuật toán chốt: ép
+đúng quota từng nhóm, không chỉ 2 nhóm nữa.
+
+7 nhóm chủ đề và quota mỗi hạng (nhóm "tình huống mất ATGT nghiêm trọng" chính là nhóm
+điểm liệt — 60 câu trong bộ 600, luôn đúng 1 câu/đề, xử lý như field `is_liet` sẵn có):
+
+| Nhóm | slug `chapter` | Hạng B | Hạng C1 |
+|---|---|---|---|
+| Quy tắc giao thông | `quy-tac` | 8 | 10 |
+| Tình huống mất ATGT nghiêm trọng (= điểm liệt) | `tinh-huong-atgt` | 1 | 1 |
+| Văn hóa giao thông / đạo đức / PCCC-cứu hộ | `van-hoa` | 1 | 1 |
+| Kỹ thuật lái xe | `ky-thuat` | 1 | 2 |
+| Cấu tạo, sửa chữa | `cau-tao` | 1 | 1 |
+| Báo hiệu đường bộ | `bao-hieu` | 9 | 10 |
+| Xử lý tình huống (giải thế sa hình) | `xu-ly-tinh-huong` | 9 | 10 |
+| **Tổng** | | **30** | **35** |
 
 ```
-đề = 1 câu random từ nhóm 60 câu điểm liệt
-   + (N-1) câu random (không trùng) từ nhóm 540 câu thường
+đề = 1 câu random từ nhóm điểm liệt (is_liet = true, chapter = "tinh-huong-atgt")
+   + quota câu random (không trùng) từ mỗi nhóm còn lại trong 6 nhóm trên
    rồi trộn thứ tự hiển thị
-   (N = 30 cho hạng B, 35 cho hạng C1)
 ```
+
+Vì nhóm điểm liệt trùng khớp hoàn toàn với field `is_liet` đã có (60 câu điểm liệt =
+đúng số câu thuộc nhóm này trong bộ 600), giữ nguyên cách xử lý cũ cho nhóm này (rút từ
+`is_liet = true`) thay vì lọc riêng theo `chapter`, để 2 field độc lập cross-check lẫn
+nhau — câu nào `is_liet` mà `chapter` không phải `tinh-huong-atgt` (hoặc ngược lại) là
+dấu hiệu gắn nhãn sai lúc cào, cần validate.
 
 Về nhóm "20 đề hạng B / 18 đề hạng C1" hay gặp trên các trang luyện thi: đó là cách
 người ta **chia bộ 600 câu thành từng phần để học** (600÷30=20, tương tự cho C1),
-không phải cơ chế thi thật. Phần mềm sát hạch chính thức bốc ngẫu nhiên (có phân tầng
-điểm liệt) từ toàn bộ 600 câu mỗi lượt — đây là mô hình app phải theo, không phải chi
-tiết đơn giản hoá.
-
-### Việc cân nhắc đã bỏ: ép tỉ lệ theo nhóm chủ đề
-
-Đề thật có phân bố theo nhóm chủ đề (quy tắc, biển báo, sa hình...), nhưng số liệu chi
-tiết tỉ lệ mỗi nhóm tìm được trên web **mâu thuẫn nhau** (vd cộng không ra đúng tổng số
-câu của đề hạng B). Quyết định: **không ép tỉ lệ nhóm chủ đề ở MVP này** — chỉ đảm bảo
-đúng cái chắc chắn (số câu, thời gian, ngưỡng đậu, điểm liệt). Vẫn lưu sẵn field nhóm
-chủ đề trong data (gần như miễn phí lúc cào, vì nguồn thường liệt kê kèm chương) để
-nếu sau này có số liệu tỉ lệ đáng tin, chỉ cần đổi thuật toán sinh đề, không cần cào
-lại dữ liệu.
+không phải cơ chế thi thật — không liên quan tới 7 nhóm chủ đề ở trên.
 
 ## Kiến trúc
 
@@ -134,17 +146,23 @@ là thay file `questions.json` + bump `CACHE_NAME`, không đổi code sinh đ�
   này.
 - `is_liet`: cờ dữ liệu thuần, không phải logic code — sửa sai (nếu có) chỉ là sửa 1
   dòng JSON.
-- `chapter`: lưu sẵn, MVP chưa dùng (xem "Việc cân nhắc đã bỏ").
+- `chapter`: 1 trong 7 slug ở bảng "Thuật toán sinh đề" — dùng thật bởi `generateExam`
+  (không còn là field dự phòng chưa dùng như bản đầu).
 - `image`: tên file trong `content/theory/images/`, `null` nếu câu không cần ảnh.
 
 `js/theory-config.js` (hằng số, không phải data cào):
 
 ```js
 const HANG_CONFIG = {
-  B:  { count: 30, minutes: 20, pass: 27 },
-  C1: { count: 35, minutes: 22, pass: 32 },
+  B:  { count: 30, minutes: 20, passScore: 27,
+        groups: { "quy-tac": 8, "van-hoa": 1, "ky-thuat": 1, "cau-tao": 1, "bao-hieu": 9, "xu-ly-tinh-huong": 9 } },
+  C1: { count: 35, minutes: 22, passScore: 32,
+        groups: { "quy-tac": 10, "van-hoa": 1, "ky-thuat": 2, "cau-tao": 1, "bao-hieu": 10, "xu-ly-tinh-huong": 10 } },
 };
 ```
+
+(Nhóm điểm liệt/`tinh-huong-atgt` không nằm trong `groups` — quota của nó luôn là 1 và
+xử lý riêng qua field `is_liet` như mô tả ở "Thuật toán sinh đề".)
 
 Không dùng localStorage cho module này ở MVP (không lưu lịch sử, không lưu hạng đã
 chọn lần trước — làm lại từ đầu mỗi lần vào, đúng phạm vi đã chốt).
@@ -186,7 +204,10 @@ Self-check bằng `node --test`, giống pattern module sa hình:
 - Data mẫu (và sau này data thật): đúng số lượng câu quy định, `id` không trùng,
   không rỗng `choices`/`answer` hợp lệ (index trong khoảng `choices`).
 - Hàm sinh đề (`generateExam`): chạy nhiều lần với data mẫu, mỗi lần luôn đúng N câu,
-  luôn đúng 1 câu `is_liet`, không câu nào lặp trong 1 đề.
+  luôn đúng 1 câu `is_liet`, đúng quota từng nhóm `chapter`, không câu nào lặp trong 1
+  đề, báo lỗi rõ ràng khi 1 nhóm không đủ câu.
+- Data: `is_liet = true` phải khớp `chapter = "tinh-huong-atgt"` và ngược lại (cross-
+  check 2 field độc lập, bắt lỗi gắn nhãn khi cào data thật).
 - Hàm chấm điểm (`gradeExam`): case đủ điểm nhưng sai câu điểm liệt → Rớt; case đủ
   điểm và đúng hết điểm liệt → Đậu; case thiếu điểm dù đúng hết điểm liệt → Rớt.
 
@@ -197,7 +218,10 @@ Kiểm tra bằng tay (không tự động hoá): làm thử 1 lượt Hạng B 
 
 1. **Chọn trang nguồn cụ thể để cào** — chưa chốt. Cần nguồn có đủ text + đáp án đúng +
    cờ điểm liệt rõ ràng + ảnh, và đánh số câu theo đúng "Câu N" chính thức (1–600) để
-   khớp với `id` trong data model.
+   khớp với `id` trong data model. **Giờ còn cần thêm**: nguồn phải gắn được đúng 1
+   trong 7 nhóm chủ đề (bảng ở "Thuật toán sinh đề") cho từng câu — nếu nguồn không có
+   sẵn nhãn nhóm, phải tự phân loại thủ công/bán tự động 600 câu vào 7 nhóm trước khi
+   nạp vào app, nếu không `generateExam` sẽ báo lỗi thiếu câu ở nhóm nào đó.
 2. **Viết + chạy script cào**, sinh `questions.json` + tải ảnh về `content/theory/images/`.
 3. **QA ảnh thủ công** theo mục "QA nội dung" ở trên — user duyệt trước khi coi là bản
    chính thức thay cho data mẫu.

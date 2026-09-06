@@ -20,16 +20,20 @@ function shuffle(arr) {
 
 export function generateExam(questions, config) {
   const lietPool = questions.filter((q) => q.is_liet);
-  const normalPool = questions.filter((q) => !q.is_liet);
   if (lietPool.length < 1) {
     throw new Error('Không có câu điểm liệt nào trong ngân hàng câu hỏi.');
   }
-  if (normalPool.length < config.count - 1) {
-    throw new Error(`Không đủ câu thường (cần ${config.count - 1}, có ${normalPool.length}).`);
+  const picked = pickRandom(lietPool, 1);
+
+  for (const [chapter, quota] of Object.entries(config.groups)) {
+    const pool = questions.filter((q) => !q.is_liet && q.chapter === chapter);
+    if (pool.length < quota) {
+      throw new Error(`Không đủ câu nhóm "${chapter}" (cần ${quota}, có ${pool.length}).`);
+    }
+    picked.push(...pickRandom(pool, quota));
   }
-  const liet = pickRandom(lietPool, 1);
-  const normal = pickRandom(normalPool, config.count - 1);
-  return shuffle([...liet, ...normal]);
+
+  return shuffle(picked);
 }
 
 export function gradeExam(examQuestions, answers, config) {
@@ -52,5 +56,11 @@ export function validateQuestionIds(questions) {
 export function validateAnswerIndices(questions) {
   return questions
     .filter((q) => !Number.isInteger(q.answer) || q.answer < 0 || q.answer >= q.choices.length)
+    .map((q) => q.id);
+}
+
+export function validateLietChapterConsistency(questions) {
+  return questions
+    .filter((q) => q.is_liet !== (q.chapter === 'tinh-huong-atgt'))
     .map((q) => q.id);
 }
