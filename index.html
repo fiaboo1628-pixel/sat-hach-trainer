@@ -16,6 +16,7 @@
     <section id="menu">
       <button id="btn-bo-chuan" type="button">Bộ chuẩn</button>
       <button id="btn-bo-tu-ghep" type="button">Bộ tự ghép</button>
+      <button id="btn-ly-thuyet" type="button">Lý thuyết</button>
     </section>
 
     <section id="view-bo-chuan" hidden>
@@ -41,6 +42,28 @@
       <button id="save-bo-tu-ghep" type="button">💾 Lưu</button>
       <button id="play-bo-tu-ghep" type="button">▶ Phát</button>
       <button id="stop-bo-tu-ghep" type="button">⏹ Dừng</button>
+      <button class="btn-back" type="button">← Quay lại</button>
+    </section>
+
+    <section id="view-theory-menu" hidden>
+      <h2>Thi thử lý thuyết</h2>
+      <button id="btn-hang-b" type="button">Hạng B (30 câu / 20 phút)</button>
+      <button id="btn-hang-c1" type="button">Hạng C1 (35 câu / 22 phút)</button>
+      <button class="btn-back" type="button">← Quay lại</button>
+    </section>
+
+    <section id="view-theory-exam" hidden>
+      <h2>Đang làm bài</h2>
+      <p id="theory-timer" role="status"></p>
+      <ol id="theory-questions"></ol>
+      <button id="theory-submit" type="button">Nộp bài</button>
+      <button class="btn-back" type="button">← Quay lại</button>
+    </section>
+
+    <section id="view-theory-result" hidden>
+      <h2>Kết quả</h2>
+      <p id="theory-result-summary"></p>
+      <button id="theory-retry" type="button">Thi lại</button>
       <button class="btn-back" type="button">← Quay lại</button>
     </section>
 

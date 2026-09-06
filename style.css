@@ -41,3 +41,16 @@ ol, ul {
   min-height: 1.5em;
   font-weight: bold;
 }
+
+#theory-questions > li {
+  margin-bottom: 1rem;
+}
+
+#theory-questions label {
+  display: block;
+  margin: 0.25rem 0;
+}
+
+#theory-timer {
+  font-weight: bold;
+}

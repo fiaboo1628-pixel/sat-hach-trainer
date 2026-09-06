@@ -1,11 +1,9 @@
 import { buildPlaylist } from './playlist.js';
+import { initTheory } from './theory-ui.js';
 
 const STORAGE_KEY = 'bo-tu-ghep';
 
 const els = {
-  menu: document.getElementById('menu'),
-  viewBoChuan: document.getElementById('view-bo-chuan'),
-  viewBoTuGhep: document.getElementById('view-bo-tu-ghep'),
   listBoChuan: document.getElementById('list-bo-chuan'),
   listStations: document.getElementById('list-stations'),
   listSelected: document.getElementById('list-selected'),
@@ -15,16 +13,20 @@ const els = {
 
 let stations = [];
 let standardSet = [];
+let theoryQuestions = [];
+let theoryHandle = { cancelTimer: () => {} };
 let selected = loadSelected();
 let currentPlayback = null;
 
 async function loadContent() {
-  const [stationsRes, standardRes] = await Promise.all([
+  const [stationsRes, standardRes, theoryRes] = await Promise.all([
     fetch('content/stations.json'),
     fetch('content/standard-set.json'),
+    fetch('content/theory/questions.json'),
   ]);
   stations = await stationsRes.json();
   standardSet = await standardRes.json();
+  theoryQuestions = await theoryRes.json();
 }
 
 function loadSelected() {
@@ -49,10 +51,13 @@ function setStatus(text) {
   els.status.textContent = text;
 }
 
+const VIEWS = ['menu', 'bo-chuan', 'bo-tu-ghep', 'theory-menu', 'theory-exam', 'theory-result'];
+
 function showView(view) {
-  els.menu.hidden = view !== 'menu';
-  els.viewBoChuan.hidden = view !== 'bo-chuan';
-  els.viewBoTuGhep.hidden = view !== 'bo-tu-ghep';
+  VIEWS.forEach((v) => {
+    const elId = v === 'menu' ? 'menu' : `view-${v}`;
+    document.getElementById(elId).hidden = v !== view;
+  });
 }
 
 function button(label, onClick) {
@@ -188,12 +193,15 @@ async function main() {
   renderList(els.listBoChuan, standardSet);
   renderStationsPicker();
   renderList(els.listSelected, selected, { removable: true });
+  theoryHandle = initTheory(theoryQuestions, { showView, setStatus });
 
   document.getElementById('btn-bo-chuan').addEventListener('click', () => showView('bo-chuan'));
   document.getElementById('btn-bo-tu-ghep').addEventListener('click', () => showView('bo-tu-ghep'));
+  document.getElementById('btn-ly-thuyet').addEventListener('click', () => showView('theory-menu'));
   document.querySelectorAll('.btn-back').forEach((b) =>
     b.addEventListener('click', () => {
       stopPlayback();
+      theoryHandle.cancelTimer();
       showView('menu');
     }),
   );
