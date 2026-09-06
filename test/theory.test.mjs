@@ -69,6 +69,14 @@ test('gradeExam: câu chưa trả lời tính là sai', () => {
   assert.equal(result.pass, false);
 });
 
+test('gradeExam: câu điểm liệt chưa trả lời cũng tính là sai điểm liệt', () => {
+  const exam = [sampleQuestions[0], sampleQuestions[3]];
+  const answers = { q1: 0 }; // q4 (điểm liệt) chưa trả lời
+  const result = gradeExam(exam, answers, { count: 2, minutes: 1, passScore: 2 });
+  assert.equal(result.lietWrong, true);
+  assert.equal(result.pass, false);
+});
+
 test('validateQuestionIds phát hiện id trùng', () => {
   const dup = [...sampleQuestions, { ...sampleQuestions[0] }];
   assert.deepEqual(validateQuestionIds(dup), ['q1']);

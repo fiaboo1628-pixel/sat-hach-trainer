@@ -1,7 +1,7 @@
 import { generateExam, gradeExam } from './theory.js';
 import { HANG_CONFIG } from './theory-config.js';
 
-const state = { hangKey: null, exam: [], answers: {}, secondsLeft: 0, timerId: null };
+const state = { hangKey: null, exam: [], answers: {}, deadline: 0, timerId: null };
 
 export function initTheory(questions, { showView, setStatus }) {
   const els = {
@@ -20,7 +20,8 @@ export function initTheory(questions, { showView, setStatus }) {
       if (q.image) {
         const img = document.createElement('img');
         img.src = `content/theory/images/${q.image}`;
-        img.alt = q.text;
+        img.alt = '';
+        img.onerror = () => img.remove();
         li.appendChild(img);
       }
       q.choices.forEach((choice, choiceIndex) => {
@@ -41,10 +42,11 @@ export function initTheory(questions, { showView, setStatus }) {
   }
 
   function updateTimerDisplay() {
-    const secs = Math.max(state.secondsLeft, 0);
+    const secs = Math.max(Math.ceil((state.deadline - Date.now()) / 1000), 0);
     const m = Math.floor(secs / 60);
     const s = secs % 60;
     els.timer.textContent = `Thời gian còn lại: ${m}:${String(s).padStart(2, '0')}`;
+    return secs;
   }
 
   function cancelTimer() {
@@ -56,9 +58,8 @@ export function initTheory(questions, { showView, setStatus }) {
     cancelTimer();
     updateTimerDisplay();
     state.timerId = setInterval(() => {
-      state.secondsLeft -= 1;
-      updateTimerDisplay();
-      if (state.secondsLeft <= 0) {
+      const secs = updateTimerDisplay();
+      if (secs <= 0) {
         submitExam();
       }
     }, 1000);
@@ -76,7 +77,7 @@ export function initTheory(questions, { showView, setStatus }) {
     state.hangKey = hangKey;
     state.exam = exam;
     state.answers = {};
-    state.secondsLeft = config.minutes * 60;
+    state.deadline = Date.now() + config.minutes * 60000;
     renderExam(exam);
     startTimer();
     showView('theory-exam');

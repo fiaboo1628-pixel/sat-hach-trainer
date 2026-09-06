@@ -53,4 +53,16 @@ ol, ul {
 
 #theory-timer {
   font-weight: bold;
+  position: sticky;
+  top: 0;
+  background: Canvas;
+  padding: 0.5rem 0;
+  z-index: 1;
+}
+
+#theory-questions img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0.5rem 0;
 }

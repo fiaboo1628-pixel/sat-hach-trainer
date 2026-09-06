@@ -39,10 +39,16 @@ nguồn cào, cào 600 câu, QA ảnh) trước khi thay. Khi đã có data th�
 1. Đè `content/theory/questions.json` bằng 600 câu thật, giữ đúng `id` theo số câu
    chính thức (`q001`–`q600`) và đúng shape hiện có (`text`, `choices`, `answer`,
    `is_liet`, `chapter`, `image`).
-2. Đặt ảnh biển báo/sa hình vào `content/theory/images/`, tên file khớp field `image`
-   của từng câu.
+2. Đặt ảnh biển báo/sa hình vào `content/theory/images/` (thư mục này chưa tồn tại
+   trong repo — git không track thư mục rỗng — nên cần tạo khi thêm ảnh thật đầu
+   tiên), tên file khớp field `image` của từng câu.
 3. Tăng số version `CACHE_NAME` trong `service-worker.js` (vd `v2` → `v3`) để trình
    duyệt tải nội dung mới thay vì dùng bản cache cũ.
+4. Chạy `node --test test/` để bắt id trùng / `answer` sai chỉ số (script kiểm tra
+   này đã có sẵn), rồi cập nhật lại các assertion số lượng trong
+   `test/theory.test.mjs` (hiện đang kiểm tra "đủ tối thiểu" cho data mẫu — vd
+   `liet >= 1`, `normal >= HANG_CONFIG.C1.count - 1`) thành đúng số thật của bộ 600
+   câu (600 câu, 60 câu điểm liệt) một khi data thật đã vào.
 
 ## Deploy lên M710q (nginx, tự host)
 
