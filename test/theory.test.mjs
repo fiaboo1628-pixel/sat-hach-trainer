@@ -1,6 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { generateExam, gradeExam, validateQuestionIds, validateAnswerIndices } from '../js/theory.js';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+import { HANG_CONFIG } from '../js/theory-config.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const questions = JSON.parse(readFileSync(join(__dirname, '../content/theory/questions.json'), 'utf8'));
 
 const sampleQuestions = [
   { id: 'q1', text: 'Q1', choices: ['a', 'b'], answer: 0, is_liet: false, chapter: 'x', image: null },
@@ -70,4 +77,26 @@ test('validateQuestionIds phát hiện id trùng', () => {
 test('validateAnswerIndices phát hiện answer ngoài phạm vi choices', () => {
   const bad = [{ id: 'qx', text: '', choices: ['a', 'b'], answer: 5, is_liet: false, chapter: '', image: null }];
   assert.deepEqual(validateAnswerIndices(bad), ['qx']);
+});
+
+test('content/theory/questions.json không có id trùng', () => {
+  assert.deepEqual(validateQuestionIds(questions), []);
+});
+
+test('content/theory/questions.json mọi câu có answer hợp lệ trong choices', () => {
+  assert.deepEqual(validateAnswerIndices(questions), []);
+});
+
+test('content/theory/questions.json đủ câu điểm liệt/câu thường cho cả 2 hạng', () => {
+  const liet = questions.filter((q) => q.is_liet).length;
+  const normal = questions.length - liet;
+  assert.ok(liet >= 1, 'cần ít nhất 1 câu điểm liệt');
+  assert.ok(normal >= HANG_CONFIG.C1.count - 1, `cần ít nhất ${HANG_CONFIG.C1.count - 1} câu thường cho hạng C1`);
+});
+
+test('generateExam sinh được đề hợp lệ cho cả 2 hạng từ data thật', () => {
+  for (const key of Object.keys(HANG_CONFIG)) {
+    const exam = generateExam(questions, HANG_CONFIG[key]);
+    assert.equal(exam.length, HANG_CONFIG[key].count);
+  }
 });
