@@ -3,8 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#1B4D8C" />
   <title>Sát Hạch Trainer</title>
   <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&display=swap" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -14,16 +17,18 @@
 
   <main>
     <section id="menu">
-      <button id="btn-bo-chuan" type="button">Bộ chuẩn</button>
-      <button id="btn-bo-tu-ghep" type="button">Bộ tự ghép</button>
-      <button id="btn-ly-thuyet" type="button">Lý thuyết</button>
+      <button id="btn-bo-chuan" class="tile tile-blue" type="button">🔊 Bộ chuẩn</button>
+      <button id="btn-bo-tu-ghep" class="tile tile-yellow" type="button">🧩 Bộ tự ghép</button>
+      <button id="btn-ly-thuyet" class="tile tile-red" type="button">📘 Lý thuyết</button>
     </section>
 
     <section id="view-bo-chuan" hidden>
       <h2>Bộ chuẩn (13 bài)</h2>
       <ol id="list-bo-chuan"></ol>
-      <button id="play-bo-chuan" type="button">▶ Phát</button>
-      <button id="stop-bo-chuan" type="button">⏹ Dừng</button>
+      <div class="action-row">
+        <button id="play-bo-chuan" class="btn-primary" type="button">▶ Phát</button>
+        <button id="stop-bo-chuan" class="btn-secondary" type="button">⏹ Dừng</button>
+      </div>
       <button class="btn-back" type="button">← Quay lại</button>
     </section>
 
@@ -39,16 +44,18 @@
           <ol id="list-selected"></ol>
         </div>
       </div>
-      <button id="save-bo-tu-ghep" type="button">💾 Lưu</button>
-      <button id="play-bo-tu-ghep" type="button">▶ Phát</button>
-      <button id="stop-bo-tu-ghep" type="button">⏹ Dừng</button>
+      <div class="action-row">
+        <button id="save-bo-tu-ghep" class="btn-secondary" type="button">💾 Lưu</button>
+        <button id="play-bo-tu-ghep" class="btn-primary" type="button">▶ Phát</button>
+        <button id="stop-bo-tu-ghep" class="btn-secondary" type="button">⏹ Dừng</button>
+      </div>
       <button class="btn-back" type="button">← Quay lại</button>
     </section>
 
     <section id="view-theory-menu" hidden>
       <h2>Thi thử lý thuyết</h2>
-      <button id="btn-hang-b" type="button">Hạng B (30 câu / 20 phút)</button>
-      <button id="btn-hang-c1" type="button">Hạng C1 (35 câu / 22 phút)</button>
+      <button id="btn-hang-b" class="tile tile-blue" type="button">Hạng B (30 câu / 20 phút)</button>
+      <button id="btn-hang-c1" class="tile tile-blue" type="button">Hạng C1 (35 câu / 22 phút)</button>
       <button class="btn-back" type="button">← Quay lại</button>
     </section>
 
@@ -56,14 +63,14 @@
       <h2>Đang làm bài</h2>
       <p id="theory-timer"></p>
       <ol id="theory-questions"></ol>
-      <button id="theory-submit" type="button">Nộp bài</button>
+      <button id="theory-submit" class="btn-primary" type="button">Nộp bài</button>
       <button class="btn-back" type="button">← Quay lại</button>
     </section>
 
     <section id="view-theory-result" hidden>
       <h2>Kết quả</h2>
       <p id="theory-result-summary"></p>
-      <button id="theory-retry" type="button">Thi lại</button>
+      <button id="theory-retry" class="btn-primary" type="button">Thi lại</button>
       <button class="btn-back" type="button">← Quay lại</button>
     </section>
 

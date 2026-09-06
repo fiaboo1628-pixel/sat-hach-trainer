@@ -1,25 +1,116 @@
 :root {
   color-scheme: light dark;
-  font-family: system-ui, sans-serif;
+  font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+
+  --blue: #1B4D8C;
+  --yellow: #F2B705;
+  --red: #C81E1E;
+  --green: #1E7A34;
+  --bg: #F5F5F0;
+  --ink: #10151F;
+  --muted: #5b6472;
+  --card-bg: #fff;
+  --border: #d8dde5;
 }
 
 body {
   margin: 0;
-  padding: 1rem;
+  background: #E3E1D6;
+  color: var(--ink);
+}
+
+header {
+  background: var(--blue);
+  padding: 1rem 1.2rem;
+}
+
+header h1 {
   max-width: 480px;
   margin-inline: auto;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+main {
+  display: block;
+  max-width: 480px;
+  margin-inline: auto;
+  padding: 1.2rem;
+  background: var(--bg);
+  min-height: calc(100vh - 60px);
+  box-shadow: 0 0 0 1px rgba(16, 21, 31, 0.05);
+}
+
+h2 {
+  font-weight: 800;
 }
 
 button {
+  font: inherit;
   font-size: 1.1rem;
   padding: 0.6rem 1rem;
   margin: 0.25rem;
   min-height: 44px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--ink);
 }
 
-#menu {
+.btn-back {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.action-row {
   display: flex;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-secondary {
+  background: var(--card-bg);
+  border-color: var(--blue);
+  color: var(--blue);
+  font-weight: 600;
+}
+
+/* Tile buttons: menu, hạng B/C1 — colored left border marks the mode */
+#menu:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.tile {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-weight: 600;
+  font-size: 1.15rem;
+  padding: 1.1rem 1.2rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  border-left-width: 6px;
+  background: var(--card-bg);
+  box-shadow: 0 1px 2px rgba(16, 21, 31, 0.06);
+}
+
+.tile-blue { border-left-color: var(--blue); }
+.tile-yellow { border-left-color: var(--yellow); }
+.tile-red { border-left-color: var(--red); }
+
+#view-theory-menu .tile {
+  margin: 0.25rem 0;
 }
 
 .ghep-columns {
@@ -33,17 +124,44 @@ button {
   min-width: 0;
 }
 
+/* Station lists: numbered sequence, quiet left rule instead of a bare bullet */
 ol, ul {
-  padding-left: 1.2rem;
+  list-style: none;
+  padding-left: 0;
+  counter-reset: item;
+}
+
+#list-bo-chuan li,
+#list-selected li {
+  counter-increment: item;
+  padding: 0.5rem 0.6rem;
+  margin-bottom: 0.3rem;
+  border-left: 3px solid var(--blue);
+  background: var(--card-bg);
+  border-radius: 2px;
+}
+
+#list-bo-chuan li::before,
+#list-selected li::before {
+  content: counter(item) '. ';
+  font-weight: 600;
+  color: var(--blue);
+}
+
+#list-stations li {
+  padding: 0.25rem 0;
 }
 
 #status {
   min-height: 1.5em;
-  font-weight: bold;
+  font-weight: 600;
+  color: var(--muted);
 }
 
 #theory-questions > li {
   margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
 }
 
 #theory-questions label {
@@ -51,18 +169,40 @@ ol, ul {
   margin: 0.25rem 0;
 }
 
+/* Sticky countdown — colour shifts like a traffic light as time runs out */
 #theory-timer {
-  font-weight: bold;
+  font-weight: 800;
+  font-size: 1.1rem;
   position: sticky;
   top: 0;
-  background: Canvas;
+  background: var(--bg);
   padding: 0.5rem 0;
   z-index: 1;
+  color: var(--blue);
 }
+
+#theory-timer.time-warn { color: #a86e00; }
+#theory-timer.time-danger { color: var(--red); }
 
 #theory-questions img {
   max-width: 100%;
   height: auto;
   display: block;
   margin: 0.5rem 0;
+}
+
+/* Result badges */
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 3px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.badge-pass { background: var(--green); }
+.badge-fail { background: var(--red); }
+
+#theory-result-summary {
+  font-size: 1.1rem;
 }

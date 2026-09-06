@@ -46,6 +46,8 @@ export function initTheory(questions, { showView, setStatus }) {
     const m = Math.floor(secs / 60);
     const s = secs % 60;
     els.timer.textContent = `Thời gian còn lại: ${m}:${String(s).padStart(2, '0')}`;
+    els.timer.classList.toggle('time-danger', secs <= 60);
+    els.timer.classList.toggle('time-warn', secs > 60 && secs <= 300);
     return secs;
   }
 
@@ -87,10 +89,13 @@ export function initTheory(questions, { showView, setStatus }) {
     cancelTimer();
     const config = HANG_CONFIG[state.hangKey];
     const result = gradeExam(state.exam, state.answers, config);
-    els.resultSummary.textContent =
+    const badge = result.pass
+      ? '<span class="badge badge-pass">ĐẬU</span>'
+      : '<span class="badge badge-fail">RỚT</span>';
+    els.resultSummary.innerHTML =
       `Đúng ${result.correct}/${result.total}` +
       (result.lietWrong ? ' — sai câu điểm liệt' : '') +
-      ` — ${result.pass ? 'ĐẬU' : 'RỚT'}`;
+      ` — ${badge}`;
     showView('theory-result');
   }
 
