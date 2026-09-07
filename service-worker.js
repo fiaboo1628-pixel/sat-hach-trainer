@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sat-hach-trainer-v6';
+const CACHE_NAME = 'sat-hach-trainer-v7';
 const APP_SHELL = [
   './',
   './index.html',
