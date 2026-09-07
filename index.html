@@ -55,10 +55,11 @@
     </section>
 
     <section id="view-theory-menu" hidden>
-      <h2>Thi thử lý thuyết</h2>
-      <button id="btn-hang-b" class="tile tile-blue" type="button">Hạng B (30 câu / 20 phút)</button>
-      <button id="btn-hang-c1" class="tile tile-blue" type="button">Hạng C1 (35 câu / 22 phút)</button>
-      <button class="btn-back" type="button">← Quay lại</button>
+      <h2>Lý thuyết</h2>
+      <button id="btn-hang-b" class="tile tile-blue" type="button">Thi thử Hạng B (30 câu / 20 phút)</button>
+      <button id="btn-hang-c1" class="tile tile-blue" type="button">Thi thử Hạng C1 (35 câu / 22 phút)</button>
+      <button id="btn-theory-practice" class="tile tile-yellow" type="button">📖 Ôn tập theo chủ đề</button>
+      <button class="btn-back" data-back="menu" type="button">← Quay lại</button>
     </section>
 
     <section id="view-theory-exam" hidden>
@@ -66,14 +67,35 @@
       <p id="theory-timer"></p>
       <ol id="theory-questions"></ol>
       <button id="theory-submit" class="btn-primary" type="button">Nộp bài</button>
-      <button class="btn-back" type="button">← Quay lại</button>
+      <button class="btn-back" data-back="theory-menu" type="button">← Quay lại</button>
     </section>
 
     <section id="view-theory-result" hidden>
       <h2>Kết quả</h2>
       <p id="theory-result-summary"></p>
-      <button id="theory-retry" class="btn-primary" type="button">Thi lại</button>
-      <button class="btn-back" type="button">← Quay lại</button>
+      <div class="action-row">
+        <button id="theory-retry" class="btn-primary" type="button">Thi lại</button>
+        <button id="theory-review-btn" class="btn-secondary" type="button">🔍 Xem lại bài làm</button>
+      </div>
+      <button class="btn-back" data-back="menu" type="button">← Quay lại</button>
+    </section>
+
+    <section id="view-theory-review" hidden>
+      <h2>Xem lại bài làm</h2>
+      <ol id="review-questions"></ol>
+      <button class="btn-back" data-back="theory-result" type="button">← Quay lại kết quả</button>
+    </section>
+
+    <section id="view-theory-practice-menu" hidden>
+      <h2>Ôn tập theo chủ đề</h2>
+      <div id="practice-topics"></div>
+      <button class="btn-back" data-back="theory-menu" type="button">← Quay lại</button>
+    </section>
+
+    <section id="view-theory-practice" hidden>
+      <h2 id="practice-title"></h2>
+      <ol id="practice-questions"></ol>
+      <button id="btn-practice-back" class="btn-back-practice" type="button">← Quay lại</button>
     </section>
 
     <p id="status" role="status"></p>

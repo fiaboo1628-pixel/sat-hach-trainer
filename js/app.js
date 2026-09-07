@@ -51,7 +51,17 @@ function setStatus(text) {
   els.status.textContent = text;
 }
 
-const VIEWS = ['menu', 'bo-chuan', 'bo-tu-ghep', 'theory-menu', 'theory-exam', 'theory-result'];
+const VIEWS = [
+  'menu',
+  'bo-chuan',
+  'bo-tu-ghep',
+  'theory-menu',
+  'theory-exam',
+  'theory-result',
+  'theory-review',
+  'theory-practice-menu',
+  'theory-practice',
+];
 
 function showView(view) {
   VIEWS.forEach((v) => {
@@ -202,7 +212,7 @@ async function main() {
     b.addEventListener('click', () => {
       stopPlayback();
       theoryHandle.cancelTimer();
-      showView('menu');
+      showView(b.dataset.back || 'menu');
     }),
   );
 

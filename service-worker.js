@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sat-hach-trainer-v7';
+const CACHE_NAME = 'sat-hach-trainer-v9';
 const APP_SHELL = [
   './',
   './index.html',
@@ -8,6 +8,7 @@ const APP_SHELL = [
   './js/theory.js',
   './js/theory-config.js',
   './js/theory-ui.js',
+  './js/theory-progress.js',
   './manifest.webmanifest',
   './content/stations.json',
   './content/standard-set.json',
