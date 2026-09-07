@@ -123,7 +123,7 @@ test('content/theory/questions.json is_liet khớp chapter "tinh-huong-atgt" (2 
 
 test('content/theory/questions.json đủ câu điểm liệt và đủ quota từng nhóm cho cả 2 hạng', () => {
   const liet = questions.filter((q) => q.is_liet).length;
-  assert.ok(liet >= 1, 'cần ít nhất 1 câu điểm liệt');
+  assert.equal(liet, 60, 'phải đúng 60 câu điểm liệt theo Phụ lục 3, Công văn 2262/CSGT-P5');
   for (const hang of Object.values(HANG_CONFIG)) {
     for (const [chapter, quota] of Object.entries(hang.groups)) {
       const pool = questions.filter((q) => !q.is_liet && q.chapter === chapter).length;
