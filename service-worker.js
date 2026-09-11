@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sat-hach-trainer-v12';
+const CACHE_NAME = 'sat-hach-trainer-v13';
 const APP_SHELL = [
   './',
   './index.html',
@@ -15,6 +15,7 @@ const APP_SHELL = [
   './content/theory/questions.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
+  './icons/apple-touch-icon.png',
 ];
 
 self.addEventListener('install', (event) => {
