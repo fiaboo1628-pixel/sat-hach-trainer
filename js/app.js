@@ -173,6 +173,12 @@ function playPlaylist(ids) {
     };
     els.player.onended = () => advance();
     els.player.onerror = () => advance(`Lỗi audio "${label}", bỏ qua, tiếp tục bài kế.`);
+    // iOS Safari: đổi playbackRate ngay khi vừa gán src (trước khi có metadata)
+    // hay bị nuốt/giật đúng lúc bắt đầu phát — chốt lại rate khi loadedmetadata
+    // bắn ra, lúc pipeline audio đã sẵn sàng.
+    els.player.onloadedmetadata = () => {
+      els.player.playbackRate = rate;
+    };
     els.player.src = src;
     els.player.playbackRate = rate;
     els.player.play().catch(() => advance(`Lỗi phát "${label}", bỏ qua, tiếp tục bài kế.`));
