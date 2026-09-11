@@ -135,6 +135,9 @@ function stopPlayback(message) {
   if (message) setStatus(message);
 }
 
+const VOICE_PLAYBACK_RATE = 0.85; // giọng đọc chậm hơn cho dễ nghe/phản ứng kịp
+const STATION_GAP_MS = 1500; // nghỉ giữa lúc dứt bài này và ting-tong bài kế
+
 function playPlaylist(ids) {
   if (ids.length === 0) {
     setStatus('Chưa chọn bài nào để phát.');
@@ -159,7 +162,7 @@ function playPlaylist(ids) {
   // Plays one file, then calls onDone exactly once (ended, load error, or
   // play() rejection) — guards against those three firing more than once
   // for the same track.
-  function playTrack(src, label, onDone) {
+  function playTrack(src, label, onDone, rate = 1) {
     if (playback.cancelled) return;
     let handled = false;
     const advance = (errMessage) => {
@@ -171,6 +174,7 @@ function playPlaylist(ids) {
     els.player.onended = () => advance();
     els.player.onerror = () => advance(`Lỗi audio "${label}", bỏ qua, tiếp tục bài kế.`);
     els.player.src = src;
+    els.player.playbackRate = rate;
     els.player.play().catch(() => advance(`Lỗi phát "${label}", bỏ qua, tiếp tục bài kế.`));
   }
 
@@ -183,7 +187,12 @@ function playPlaylist(ids) {
     current = playlist[i];
     i += 1;
     setStatus(`Đang phát: ${current.name} (${i}/${playlist.length})`);
-    const playVoice = () => playTrack(`content/audio/${current.audio}`, current.name, playNext);
+    const goToNextAfterGap = () => {
+      if (playback.cancelled) return;
+      setTimeout(playNext, STATION_GAP_MS);
+    };
+    const playVoice = () =>
+      playTrack(`content/audio/${current.audio}`, current.name, goToNextAfterGap, VOICE_PLAYBACK_RATE);
     if (current.cue) {
       playTrack(`content/audio/${current.cue}`, `${current.name} (tín hiệu vào bài)`, playVoice);
     } else {
