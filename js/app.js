@@ -136,7 +136,8 @@ function stopPlayback(message) {
 }
 
 const VOICE_PLAYBACK_RATE = 0.85; // giọng đọc chậm hơn cho dễ nghe/phản ứng kịp
-const STATION_GAP_MS = 1500; // nghỉ giữa lúc dứt bài này và ting-tong bài kế
+const CUE_DELAY_MS = 2500; // nghỉ giữa lúc đọc xong tên bài và tiếng báo nhận bài
+const STATION_GAP_MS = 1500; // nghỉ giữa lúc dứt tiếng báo nhận bài và bài kế
 
 function playPlaylist(ids) {
   if (ids.length === 0) {
@@ -197,13 +198,20 @@ function playPlaylist(ids) {
       if (playback.cancelled) return;
       setTimeout(playNext, STATION_GAP_MS);
     };
-    const playVoice = () =>
-      playTrack(`content/audio/${current.audio}`, current.name, goToNextAfterGap, VOICE_PLAYBACK_RATE);
-    if (current.cue) {
-      playTrack(`content/audio/${current.cue}`, `${current.name} (tín hiệu vào bài)`, playVoice);
-    } else {
-      playVoice();
-    }
+    // Đọc tên bài trước, rồi mới kêu tín hiệu nhận bài sau một nhịp nghỉ —
+    // không phát tín hiệu trước tên bài như trước nữa.
+    const playCue = () => {
+      if (playback.cancelled) return;
+      if (!current.cue) {
+        goToNextAfterGap();
+        return;
+      }
+      setTimeout(() => {
+        if (playback.cancelled) return;
+        playTrack(`content/audio/${current.cue}`, `${current.name} (tín hiệu nhận bài)`, goToNextAfterGap);
+      }, CUE_DELAY_MS);
+    };
+    playTrack(`content/audio/${current.audio}`, current.name, playCue, VOICE_PLAYBACK_RATE);
   }
 
   playNext();
