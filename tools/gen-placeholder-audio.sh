@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
+# 11 station voice files are real audio now (committed 2026-09-11) — this
+# script no longer touches them. Only content/audio/ting-tong.mp3 (the
+# "vào bài" chime) is still a synthesized placeholder; regenerates it here.
+# Swap for a real recording per README.md when available.
 set -euo pipefail
 cd "$(dirname "$0")/../content/audio"
 
-names=(
-  xuat-phat nhuong-nguoi-di-bo de-pa-len-doc hang-dinh-vuong-goc
-  nga-tu-den-tin-hieu duong-vong-quanh-co ghep-xe-doc giao-duong-sat
-  tang-toc-tang-so ghep-xe-ngang ket-thuc
-)
+ffmpeg -y -f lavfi -i "sine=frequency=659.25:duration=0.22" -f lavfi -i "sine=frequency=523.25:duration=0.32" \
+  -filter_complex "[0:a]afade=t=out:st=0.17:d=0.05[a0];[1:a]afade=t=out:st=0.24:d=0.08[a1];[a0][a1]concat=n=2:v=0:a=1" \
+  -codec:a libmp3lame -q:a 4 ting-tong.mp3
 
-for n in "${names[@]}"; do
-  ffmpeg -y -f lavfi -i "sine=frequency=880:duration=1" -ac 1 -ar 44100 -q:a 4 "$n.mp3"
-done
-
-echo "Đã tạo ${#names[@]} file audio placeholder (beep 1s) tại $(pwd)."
-echo "Thay bằng audio TTS thật khi có nội dung — xem README.md."
+echo "Đã tạo ting-tong.mp3 placeholder (chime 2 nốt) tại $(pwd)."
+echo "Thay bằng audio thật khi có nội dung — xem README.md."

@@ -155,7 +155,24 @@ function playPlaylist(ids) {
 
   let i = 0;
   let current = null;
-  let handled = true; // guards against onended/onerror/play().catch() double-firing for the same track
+
+  // Plays one file, then calls onDone exactly once (ended, load error, or
+  // play() rejection) — guards against those three firing more than once
+  // for the same track.
+  function playTrack(src, label, onDone) {
+    if (playback.cancelled) return;
+    let handled = false;
+    const advance = (errMessage) => {
+      if (playback.cancelled || handled) return;
+      handled = true;
+      if (errMessage) setStatus(errMessage);
+      onDone();
+    };
+    els.player.onended = () => advance();
+    els.player.onerror = () => advance(`Lỗi audio "${label}", bỏ qua, tiếp tục bài kế.`);
+    els.player.src = src;
+    els.player.play().catch(() => advance(`Lỗi phát "${label}", bỏ qua, tiếp tục bài kế.`));
+  }
 
   function playNext() {
     if (playback.cancelled) return;
@@ -165,28 +182,15 @@ function playPlaylist(ids) {
     }
     current = playlist[i];
     i += 1;
-    handled = false;
     setStatus(`Đang phát: ${current.name} (${i}/${playlist.length})`);
-    els.player.src = `content/audio/${current.audio}`;
-    els.player.play().catch(() => {
-      if (playback.cancelled || handled) return;
-      handled = true;
-      setStatus(`Lỗi phát "${current.name}", bỏ qua, tiếp tục bài kế.`);
-      playNext();
-    });
+    const playVoice = () => playTrack(`content/audio/${current.audio}`, current.name, playNext);
+    if (current.cue) {
+      playTrack(`content/audio/${current.cue}`, `${current.name} (tín hiệu vào bài)`, playVoice);
+    } else {
+      playVoice();
+    }
   }
 
-  els.player.onended = () => {
-    if (playback.cancelled || handled) return;
-    handled = true;
-    playNext();
-  };
-  els.player.onerror = () => {
-    if (playback.cancelled || handled) return;
-    handled = true;
-    setStatus(`Lỗi audio "${current ? current.name : ''}", bỏ qua, tiếp tục bài kế.`);
-    playNext();
-  };
   playNext();
 }
 

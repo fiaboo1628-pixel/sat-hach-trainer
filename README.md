@@ -18,16 +18,18 @@ Mở địa chỉ server báo ra (vd `http://localhost:8080`).
 
     node --test test/
 
-## Thay audio placeholder bằng nội dung thật
+## Audio
 
-`content/audio/*.mp3` hiện là beep giả (sinh bởi `tools/gen-placeholder-audio.sh`) để
-app chạy được trước khi có nội dung thật. Khi có text hiệu lệnh + tín hiệu thật:
+`content/audio/*.mp3` gồm 2 loại:
 
-1. Sinh file mp3 thật (TTS cho giọng đọc, hoặc tín hiệu ting-tong/tút riêng), đặt đúng
-   tên như field `audio` trong `content/stations.json`, đè lên file placeholder trong
-   `content/audio/`.
-2. Tăng số version `CACHE_NAME` trong `service-worker.js` (vd `v1` → `v2`) để trình
-   duyệt tải audio mới thay vì dùng bản cache cũ.
+- **11 file giọng đọc theo `audio` trong `content/stations.json`** — audio thật (giọng
+  AI, thay xong 2026-09-11), không còn placeholder.
+- **`ting-tong.mp3`** (field `cue`, tự động phát trước giọng đọc mỗi khi vào bài) —
+  hiện vẫn là placeholder (chime 2 nốt tổng hợp bằng `tools/gen-placeholder-audio.sh`).
+  Thay bằng bản ghi thật: đè file `content/audio/ting-tong.mp3`, rồi tăng số version
+  `CACHE_NAME` trong `service-worker.js` để trình duyệt tải bản mới.
+- **"Tút" báo lỗi**: chưa làm — cần audio thật + quyết định UI (nút bấm tay) trước, xem
+  `docs/superpowers/specs/2026-09-02-audio-sa-hinh-mvp-design.md`.
 
 ## Bộ câu hỏi lý thuyết (600 câu thật, đã thay xong 2026-09-07)
 

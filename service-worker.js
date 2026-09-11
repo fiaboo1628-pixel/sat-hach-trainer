@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sat-hach-trainer-v10';
+const CACHE_NAME = 'sat-hach-trainer-v11';
 const APP_SHELL = [
   './',
   './index.html',
@@ -23,7 +23,7 @@ self.addEventListener('install', (event) => {
       const cache = await caches.open(CACHE_NAME);
       await cache.addAll(APP_SHELL);
       const stations = await (await fetch('./content/stations.json')).json();
-      const audioUrls = stations.map((s) => `./content/audio/${s.audio}`);
+      const audioUrls = stations.flatMap((s) => [s.audio, s.cue].filter(Boolean).map((f) => `./content/audio/${f}`));
       await cache.addAll(audioUrls);
       const questions = await (await fetch('./content/theory/questions.json')).json();
       const imageUrls = questions.filter((q) => q.image).map((q) => `./content/theory/images/${q.image}`);

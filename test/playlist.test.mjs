@@ -35,9 +35,8 @@ test('buildPlaylist báo lỗi rõ ràng khi id không tồn tại', () => {
   assert.throws(() => buildPlaylist(['khong-ton-tai'], stations), /Không tìm thấy station id/);
 });
 
-test('mỗi station trong stations.json có file audio tồn tại trên đĩa', () => {
-  const missing = stations
-    .map((s) => s.audio)
-    .filter((audio) => !existsSync(join(__dirname, '../content/audio', audio)));
+test('mỗi station trong stations.json có file audio (và cue nếu có) tồn tại trên đĩa', () => {
+  const files = stations.flatMap((s) => [s.audio, s.cue].filter(Boolean));
+  const missing = files.filter((f) => !existsSync(join(__dirname, '../content/audio', f)));
   assert.deepEqual(missing, []);
 });
