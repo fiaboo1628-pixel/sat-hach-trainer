@@ -55,24 +55,30 @@ Bot tự khởi động lại khi máy khởi động lại (miễn là Docker t
    `https://<tên-máy>.<tailnet>.ts.net:8443` (FreqUI). Tên chính xác xem bằng `tailscale status`
    hoặc trong app Tailscale. Chỉ thiết bị trong tailnet của bạn mở được, không lộ ra internet.
 
-## 6. (Tuỳ chọn) Vào lệnh trên tài khoản Binance Demo
-Dry-run chỉ giả lập lệnh bên trong freqtrade. Muốn **thấy lệnh, vị thế, SL ngay trong app Binance**, cho bot
-gửi lệnh lên tài khoản **Demo Trading** của Binance (tiền ảo của Binance, không phải tiền thật):
+## 6. Vào lệnh trên sàn bằng API (Demo → Thật)
+Dry-run chỉ giả lập lệnh bên trong freqtrade. Chế độ **API** cho bot đặt lệnh thật lên Binance, thấy lệnh,
+vị thế, SL ngay trong app Binance. **Demo và tiền thật dùng chung một cấu hình, chỉ khác bộ key**: chạy Demo
+cho quen, khi muốn lên tiền thật chỉ cần nhập lại key thật.
 
-1. Vào demo.binance.com (hoặc app Binance → Demo Trading), mục Futures USDⓈ-M:
-   đặt **One-way mode** (không dùng Hedge mode).
-2. Avatar → **API Management** của tài khoản demo → tạo API key. Không bao giờ dùng key tài khoản thật ở đây.
+1. Trong tài khoản (Demo Trading hoặc thật), Futures USDⓈ-M: đặt **One-way mode** (không dùng Hedge mode).
+2. Tạo API key trong **API Management** của đúng tài khoản đó.
+   Với key thật: chỉ bật **Futures**, **không bật rút tiền**, giới hạn IP của máy nhà.
 3. Trên máy nhà:
    ```bash
-   docker compose run --rm setup --demo      # hỏi API key + secret (gõ không hiện ra màn hình)
+   docker compose run --rm setup --api     # chọn [d] Demo hoặc [t] Thật, nhập key + secret (gõ không hiện)
    docker compose up -d
    ```
-   Bot khởi động lại, lấy số dư demo làm vốn, lịch sử lệnh ghi riêng vào `user_data/demo.sqlite`.
+   - Có thể đặt **vốn tối đa** bot được dùng (ví dụ 300 USDT); bỏ trống = toàn bộ số dư futures.
+   - Chọn Thật phải gõ chữ `REAL` để xác nhận.
+   - Mỗi loại tài khoản có lịch sử lệnh riêng: `user_data/demo.sqlite`, `user_data/real.sqlite`.
 4. Quay về dry-run: `docker compose run --rm setup --dryrun` rồi `docker compose up -d`.
 
+Trước khi đổi Demo → Thật, **đóng hết vị thế đang mở** của bot demo (FreqUI → Force exit) để không bị bỏ dở.
+
 Lưu ý: freqtrade **chưa hỗ trợ chính thức** Demo Trading cho Binance; bộ này bật nó bằng tuỳ chọn
-`_ft_has_params` trong `config.demo.json`. Nếu log báo lỗi lúc khởi động hoặc lúc đặt lệnh (đòn bẩy,
-margin), quay về dry-run và gửi log để sửa. Trang Chỉnh tham số "Áp dụng" lúc này sẽ đổi tham số của bot demo.
+`_ft_has_params` trong `config.exchange.json` (không ảnh hưởng khi dùng key thật). Nếu log báo lỗi lúc khởi
+động hoặc lúc đặt lệnh (đòn bẩy, margin), quay về dry-run và gửi log để sửa. Trang Chỉnh tham số "Áp dụng"
+sẽ đổi tham số của bot đang chạy (demo hoặc thật).
 
 ## Lệnh hay dùng
 ```bash
@@ -95,4 +101,4 @@ git pull && docker compose pull && docker compose up -d   # cập nhật code + 
 - Dữ liệu lệnh dry-run nằm ở `../user_data/dryrun.sqlite`; xoá file này để làm lại từ đầu với ví 1000 USDT.
 - Linux báo lỗi quyền ghi: `sudo chown -R 1000:1000 ../user_data .`
 - Mạng chặn Binance (lỗi 451/403 trong log): thử mạng khác hoặc VPN; không dùng máy chủ đặt ở Mỹ.
-- Chạy tiền thật: **chưa**. Khi nào dry-run ổn mới bàn tiếp (cần API key, `dry_run: false`, giới hạn vốn).
+- Nên chạy dry-run hoặc Demo ít nhất 1–2 tháng trước khi dùng key thật, và bắt đầu với vốn nhỏ.

@@ -14,7 +14,7 @@ services:
   live:
     <<: *ft
     container_name: donchian-live
-    ports: ["127.0.0.1:8080:8080"]          # FreqUI + API của bot (dry-run, hoặc Binance Demo nếu có .env)
+    ports: ["127.0.0.1:8080:8080"]          # FreqUI + API của bot (dry-run; có .env từ setup --api thì vào lệnh trên sàn)
     command: >
       trade
       --logfile /freqtrade/user_data/logs/live.log
