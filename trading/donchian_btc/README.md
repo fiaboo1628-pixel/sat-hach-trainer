@@ -28,6 +28,11 @@ Theo năm: 2021 +7.6% · 2022 +9.0% · 2023 +16.7% · 2024 −6.2% · 2025 +1.0%
 - Donchian được chọn sau khi xem kết quả 2025–2026 → chưa có dữ liệu kiểm tra sạch.
 - Lợi thế mỏng. **Hãy dry-run 1–2 tháng trước khi dùng tiền thật. Không phải lời khuyên đầu tư.**
 
+## Trang "Chỉnh tham số" (thư mục `tuner/`)
+Tất cả ngưỡng của chiến lược là tham số freqtrade (mặc định trong code, ghi đè bằng `DonchianRevert.json`).
+`tuner/` là trang web tiếng Việt cho điện thoại để chỉnh tham số, backtest ngay và áp dụng cho bot live.
+Xem `tuner/README.md`.
+
 ## Chạy lại backtest offline
 ```bash
 pip install freqtrade        # hoặc cài từ source
