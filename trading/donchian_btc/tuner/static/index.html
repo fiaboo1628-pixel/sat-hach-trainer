@@ -293,9 +293,14 @@ async function poll() {
       const r = await api("/api/backtest");
       prog.firstElementChild.style.width = `${Math.round((r.progress || 0) * 100)}%`;
       if (r.running) { msg($("#resultMsg"), `Đang chạy: ${r.step || "…"}`, "warn"); await new Promise((ok) => setTimeout(ok, 1500)); continue; }
-      if (r.status === "error") msg($("#resultMsg"), r.message || "Backtest lỗi");
-      else msg($("#resultMsg"), "");
-      if (r.last) { state.lastRun = r.last; renderResult(r.last); loadHistory(); }
+      if (r.status === "error") {
+        // không hiện kết quả của lần chạy trước như thể là kết quả mới
+        msg($("#resultMsg"), r.message || "Backtest lỗi");
+        state.lastRun = null; $("#result").innerHTML = "";
+      } else {
+        msg($("#resultMsg"), "");
+        if (r.last) { state.lastRun = r.last; renderResult(r.last); loadHistory(); }
+      }
       break;
     }
   } catch (e) { msg($("#resultMsg"), e.message); }
@@ -408,6 +413,7 @@ async function init() {
   await loadHistory();
   const r = await api("/api/backtest").catch(() => null);
   if (r && r.running) { $("#resultBox").classList.remove("hidden"); poll(); }
+  else if (r && r.status === "error") { $("#resultBox").classList.remove("hidden"); msg($("#resultMsg"), r.message || "Backtest lỗi"); }
   else if (r && r.last) { state.lastRun = r.last; $("#resultBox").classList.remove("hidden"); renderResult(r.last); }
 }
 init();

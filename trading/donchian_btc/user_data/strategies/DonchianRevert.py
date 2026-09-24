@@ -30,6 +30,7 @@ from freqtrade.strategy import (
     IntParameter,
     IStrategy,
     stoploss_from_absolute,
+    timeframe_to_prev_date,
 )
 
 
@@ -80,29 +81,31 @@ class DonchianRevert(IStrategy):
     def populate_exit_trend(self, df: DataFrame, metadata: dict) -> DataFrame:
         return df
 
-    def _last_atr(self, pair: str, before=None) -> float:
+    def _signal_atr(self, pair: str, at: datetime) -> float:
+        """ATR của nến tín hiệu: nến 15m đã đóng ngay trước nến chứa thời điểm `at`.
+        Cố định theo thời điểm vào lệnh, để khối lượng và 1R luôn dùng cùng một ATR
+        (live có thể khớp trễ sang nến sau; backtest thì hai cách tính trùng nhau)."""
         df, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
-        if before is not None:
-            df = df.loc[df["date"] < before]
+        df = df.loc[df["date"] < timeframe_to_prev_date(self.timeframe, at)]
         return float(df["atr"].iloc[-1])
 
     def _risk(self, pair: str, trade: Trade) -> float:
         r = trade.get_custom_data("risk")
         if r is None:
-            r = self._last_atr(pair, trade.open_date_utc) * self.r_atr.value
+            r = self._signal_atr(pair, trade.open_date_utc) * self.r_atr.value
             trade.set_custom_data("risk", r)
         return r
 
     def leverage(self, pair, current_time, current_rate, proposed_leverage, max_leverage,
                  entry_tag, side, **kwargs) -> float:
-        r_pct = self._last_atr(pair) * self.r_atr.value / current_rate
+        r_pct = self._signal_atr(pair, current_time) * self.r_atr.value / current_rate
         need = self.risk_pct.value / 100 / r_pct
         return float(min(max(need, 1.0), self.max_lev.value, max_leverage))
 
     def custom_stake_amount(self, pair, current_time, current_rate, proposed_stake, min_stake,
                             max_stake, leverage, entry_tag, side, **kwargs) -> float:
         equity = self.wallets.get_total_stake_amount()
-        r_pct = self._last_atr(pair) * self.r_atr.value / current_rate
+        r_pct = self._signal_atr(pair, current_time) * self.r_atr.value / current_rate
         return float(min(equity * self.risk_pct.value / 100 / r_pct / leverage, max_stake))
 
     def custom_stoploss(self, pair: str, trade: Trade, current_time: datetime, current_rate: float,

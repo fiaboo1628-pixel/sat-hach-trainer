@@ -208,7 +208,7 @@ def create_app(cfg: dict) -> FastAPI:
     live_dir: Path = cfg["live"]["strategy_dir"]
     schema = load_schema(lab_dir / f"{strat}.py", strat)
     lab, live = FtClient(cfg["lab"]), FtClient(cfg["live"])
-    state: dict[str, Any] = {"pending": None, "history": []}
+    state: dict[str, Any] = {"pending": None, "history": [], "failed": False}
     lock = asyncio.Lock()
 
     app = FastAPI(title="Tuner", docs_url=None, redoc_url=None, openapi_url=None)
@@ -249,6 +249,7 @@ def create_app(cfg: dict) -> FastAPI:
             })
             flat = {k: v for sp in grouped.values() for k, v in sp.items()}
             state["pending"] = {"params": flat, "timerange": body.timerange}
+            state["failed"] = False
         return {"ok": True}
 
     @app.get("/api/backtest", dependencies=[Depends(auth)])
@@ -263,7 +264,11 @@ def create_app(cfg: dict) -> FastAPI:
             state["history"].insert(0, entry)
             del state["history"][20:]
             state["pending"] = None
-        if state["history"]:
+        elif r["status"] == "error" and state["pending"]:
+            state["pending"] = None                  # lần chạy hỏng: bỏ, không ghi vào lịch sử
+            state["failed"] = True
+        # lần chạy gần nhất bị lỗi thì không trả kết quả cũ, tránh hiểu nhầm là kết quả mới
+        if state["history"] and not state["failed"]:
             out["last"] = state["history"][0]
         return out
 
