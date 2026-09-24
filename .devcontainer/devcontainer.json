@@ -1,0 +1,19 @@
+{
+  // Codespaces để chạy thử bot DonchianRevert (trading/donchian_btc/deploy). Xem README trong thư mục đó.
+  // Chọn region Southeast Asia khi tạo codespace: Binance chặn IP ở Mỹ.
+  "name": "donchian-bot",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "hostRequirements": { "cpus": 2, "memory": "4gb" },
+  "postCreateCommand": "cd trading/donchian_btc/deploy && docker compose pull -q",
+  "forwardPorts": [8080, 8090],
+  "portsAttributes": {
+    "8080": { "label": "FreqUI (bot)", "onAutoForward": "notify" },
+    "8090": { "label": "Chỉnh tham số", "onAutoForward": "notify" }
+  },
+  "customizations": {
+    "codespaces": { "openFiles": ["trading/donchian_btc/deploy/README.md"] }
+  }
+}
