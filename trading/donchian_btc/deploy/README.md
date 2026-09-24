@@ -88,19 +88,14 @@ Tài khoản miễn phí có khoảng 60 giờ/tháng với máy 2 nhân.
 1. **Chọn region châu Á trước** (Binance chặn IP Mỹ): github.com/settings/codespaces →
    *Region* → **Southeast Asia**. Cùng trang đó, *Default idle timeout* có thể tăng lên 240 phút.
 2. Mở repo trên GitHub → nút **Code** → tab **Codespaces** → **Create codespace on main**.
-   Đợi vài phút (tự cài Docker và tải image freqtrade).
-3. Trong cửa sổ Terminal của codespace:
-   ```bash
-   cd trading/donchian_btc/deploy
-   docker compose run --rm setup          # ghi lại 2 mật khẩu in ra
-   docker compose up -d
-   docker compose logs -f live            # xem bot chạy, Ctrl+C để thoát xem log
-   ```
-4. Tab **Ports**: mở cổng **8080** (FreqUI) hoặc **8090** (Chỉnh tham số) bằng biểu tượng quả địa cầu.
+   **Không cần gõ lệnh**: codespace tự cài Docker, tạo mật khẩu và bật bot dry-run (2–3 phút).
+3. Mở file **`trading/donchian_btc/deploy/BOT_LOGIN.md`** (tự mở sẵn; nếu thấy "đang cài" thì đợi rồi mở lại
+   từ cây thư mục bên trái). File ghi: kết nối Binance OK hay bị chặn, và 2 mật khẩu đăng nhập.
+4. Tab **Ports**: dòng **8080** (FreqUI) hoặc **8090** (Chỉnh tham số) → bấm biểu tượng quả địa cầu.
    Link chỉ tài khoản GitHub của bạn mở được (để Private, đừng đổi sang Public).
 5. Muốn thử lệnh trên Binance Demo: `docker compose run --rm setup --api` (chọn `d`) rồi `docker compose up -d`.
-6. Xong thì **Stop codespace** (menu ☰ → Codespaces) để không tốn giờ miễn phí. Mở lại thì chạy
-   `docker compose up -d` là tiếp tục; xoá codespace thì mất dữ liệu và mật khẩu, phải setup lại.
+6. Xong thì **Stop codespace** (menu ☰ → Codespaces) để không tốn giờ miễn phí. Mở lại thì bot tự bật lại
+   ; xoá codespace thì mất dữ liệu và mật khẩu (tạo lại sẽ tự cài lại).
 
 Không nhập key tài khoản thật trên Codespaces.
 
