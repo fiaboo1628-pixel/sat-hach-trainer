@@ -14,12 +14,13 @@ services:
   live:
     <<: *ft
     container_name: donchian-live
-    ports: ["127.0.0.1:8080:8080"]          # FreqUI + API của bot dry-run
+    ports: ["127.0.0.1:8080:8080"]          # FreqUI + API của bot (dry-run; có .env từ setup --api thì vào lệnh trên sàn)
     command: >
       trade
       --logfile /freqtrade/user_data/logs/live.log
-      --db-url sqlite:////freqtrade/user_data/dryrun.sqlite
+      --db-url sqlite:////freqtrade/user_data/${BOT_DB:-dryrun}.sqlite
       -c /deploy/config.base.json -c /deploy/config.live.json -c /deploy/secrets/live.json
+      ${BOT_EXTRA_CONFIG:-}
 
   lab:
     <<: *ft
