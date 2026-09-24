@@ -55,6 +55,25 @@ Bot tự khởi động lại khi máy khởi động lại (miễn là Docker t
    `https://<tên-máy>.<tailnet>.ts.net:8443` (FreqUI). Tên chính xác xem bằng `tailscale status`
    hoặc trong app Tailscale. Chỉ thiết bị trong tailnet của bạn mở được, không lộ ra internet.
 
+## 6. (Tuỳ chọn) Vào lệnh trên tài khoản Binance Demo
+Dry-run chỉ giả lập lệnh bên trong freqtrade. Muốn **thấy lệnh, vị thế, SL ngay trong app Binance**, cho bot
+gửi lệnh lên tài khoản **Demo Trading** của Binance (tiền ảo của Binance, không phải tiền thật):
+
+1. Vào demo.binance.com (hoặc app Binance → Demo Trading), mục Futures USDⓈ-M:
+   đặt **One-way mode** (không dùng Hedge mode).
+2. Avatar → **API Management** của tài khoản demo → tạo API key. Không bao giờ dùng key tài khoản thật ở đây.
+3. Trên máy nhà:
+   ```bash
+   docker compose run --rm setup --demo      # hỏi API key + secret (gõ không hiện ra màn hình)
+   docker compose up -d
+   ```
+   Bot khởi động lại, lấy số dư demo làm vốn, lịch sử lệnh ghi riêng vào `user_data/demo.sqlite`.
+4. Quay về dry-run: `docker compose run --rm setup --dryrun` rồi `docker compose up -d`.
+
+Lưu ý: freqtrade **chưa hỗ trợ chính thức** Demo Trading cho Binance; bộ này bật nó bằng tuỳ chọn
+`_ft_has_params` trong `config.demo.json`. Nếu log báo lỗi lúc khởi động hoặc lúc đặt lệnh (đòn bẩy,
+margin), quay về dry-run và gửi log để sửa. Trang Chỉnh tham số "Áp dụng" lúc này sẽ đổi tham số của bot demo.
+
 ## Lệnh hay dùng
 ```bash
 docker compose ps                    # trạng thái
@@ -72,7 +91,7 @@ git pull && docker compose pull && docker compose up -d   # cập nhật code + 
   backtest cùng khoảng thời gian (giá vào, SL, lúc kích hoạt trailing) hơn là chỉ nhìn lãi/lỗ.
 
 ## Ghi chú
-- `secrets/`, `tuner.json` chứa mật khẩu, đã có trong `.gitignore`. Không chia sẻ.
+- `secrets/`, `tuner.json`, `.env` chứa mật khẩu/key, đã có trong `.gitignore`. Không chia sẻ.
 - Dữ liệu lệnh dry-run nằm ở `../user_data/dryrun.sqlite`; xoá file này để làm lại từ đầu với ví 1000 USDT.
 - Linux báo lỗi quyền ghi: `sudo chown -R 1000:1000 ../user_data .`
 - Mạng chặn Binance (lỗi 451/403 trong log): thử mạng khác hoặc VPN; không dùng máy chủ đặt ở Mỹ.

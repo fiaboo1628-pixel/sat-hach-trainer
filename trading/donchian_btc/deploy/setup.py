@@ -10,9 +10,12 @@ Việc làm:
   - tuner.json: cấu hình trang "Chỉnh tham số" (mật khẩu đăng nhập in ra màn hình)
   - chép chiến lược sang user_data/strategies_lab/ cho LAB
   - tải nến 15m BTC/USDT:USDT futures từ 2021 (kèm funding) để LAB backtest được
+  - --demo: chuyển bot sang tài khoản Binance Demo Trading (hỏi API key demo, không hiện lên màn hình)
+  - --dryrun: quay về dry-run (lệnh giả trong freqtrade, không cần key)
 Chạy lại an toàn: file đã có thì giữ nguyên, trừ khi thêm --telegram.
 """
 import argparse
+import getpass
 import json
 import secrets
 import shutil
@@ -42,7 +45,12 @@ def main() -> None:
     ap.add_argument("--no-download", action="store_true", help="bỏ qua tải dữ liệu nến")
     ap.add_argument("--telegram", nargs=2, metavar=("TOKEN", "CHAT_ID"), help="bật thông báo Telegram")
     ap.add_argument("--timerange", default="20210101-", help="khoảng dữ liệu cho LAB")
+    mode = ap.add_mutually_exclusive_group()
+    mode.add_argument("--demo", action="store_true", help="dùng tài khoản Binance Demo Trading")
+    mode.add_argument("--dryrun", action="store_true", help="quay về dry-run")
     args = ap.parse_args()
+    if args.demo or args.dryrun:
+        args.no_download = True
 
     SECRETS.mkdir(exist_ok=True)
     creds = {}
@@ -58,6 +66,13 @@ def main() -> None:
         creds["live"]["telegram"] = {"enabled": True, "token": token, "chat_id": chat}
         write_json(SECRETS / "live.json", creds["live"])
         print("Bật Telegram cho bot dry-run")
+
+    if args.demo:
+        set_demo()
+    elif args.dryrun:
+        (DEPLOY / ".env").unlink(missing_ok=True)
+        print("Đã chuyển về dry-run. Chạy: docker compose up -d")
+        return
 
     tuner = DEPLOY / "tuner.json"
     if not tuner.exists():
@@ -92,6 +107,22 @@ def main() -> None:
             "--timerange", args.timerange, "--timeframes", "15m",
         ], check=True)
     print("\nXong. Tiếp theo: docker compose up -d")
+
+
+def set_demo() -> None:
+    """Lưu API key demo vào secrets/demo.json và bật overlay config.demo.json qua file .env của compose."""
+    print("API key lấy ở demo.binance.com → avatar → API Management")
+    print("(key của tài khoản DEMO, không bao giờ dùng key tài khoản thật).")
+    key = getpass.getpass("API Key demo: ").strip()
+    secret = getpass.getpass("Secret Key demo: ").strip()
+    if not key or not secret:
+        raise SystemExit("Thiếu key/secret, không đổi gì.")
+    write_json(SECRETS / "demo.json", {"exchange": {"key": key, "secret": secret}})
+    (DEPLOY / ".env").write_text(
+        "# Bật bởi setup.py --demo; xoá file này (hoặc setup.py --dryrun) để quay về dry-run\n"
+        "BOT_EXTRA_CONFIG=-c /deploy/config.demo.json -c /deploy/secrets/demo.json\n"
+        "BOT_DB=demo\n", encoding="utf-8")
+    print("Đã bật Binance Demo. Chạy: docker compose up -d   (bot khởi động lại với tài khoản demo)")
 
 
 def _login(c: dict) -> dict:

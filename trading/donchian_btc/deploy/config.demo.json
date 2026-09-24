@@ -1,0 +1,8 @@
+{
+  "bot_name": "DonchianRevert-demo",
+  "dry_run": false,
+  "exchange": {
+    "demo_trading": true,
+    "_ft_has_params": { "supports_demo_trading": true }
+  }
+}
