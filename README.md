@@ -24,10 +24,16 @@ Mở địa chỉ server báo ra (vd `http://localhost:8080`).
 
 - **11 file giọng đọc theo `audio` trong `content/stations.json`** — audio thật (giọng
   AI, thay xong 2026-09-11), không còn placeholder.
-- **`ting-tong.mp3`** (field `cue`, tự động phát trước giọng đọc mỗi khi vào bài) —
-  hiện vẫn là placeholder (chime 2 nốt tổng hợp bằng `tools/gen-placeholder-audio.sh`).
-  Thay bằng bản ghi thật: đè file `content/audio/ting-tong.mp3`, rồi tăng số version
-  `CACHE_NAME` trong `service-worker.js` để trình duyệt tải bản mới.
+- **`ting-tong.mp3`** (field `cue`, tín hiệu nhận bài phát sau tên bài) — bản ghi thật
+  tiếng chuông cửa "ding-dong" (thay xong 2026-10-02): [Doorbell #6, BigSoundBank](https://bigsoundbank.com/doorbell-6-s2365.html),
+  tác giả Dorian Clair, giấy phép **CC0** (không cần ghi nguồn). Đã xử lý từ file WAV gốc:
+
+      ffmpeg -i doorbell-6.wav -af "atrim=0:1.8,afade=t=in:d=0.005,afade=t=out:st=1.0:d=0.8,volume=-1.5dB" \
+        -ac 1 -ar 44100 -map_metadata -1 -codec:a libmp3lame -q:a 4 ting-tong.mp3
+
+  (cắt còn 1,8s, fade đuôi, âm lượng ~-20 LUFS cho khớp giọng đọc ~-19 LUFS). Muốn thay
+  bản khác: đè file `content/audio/ting-tong.mp3`, rồi tăng số version `CACHE_NAME` trong
+  `service-worker.js` để trình duyệt tải bản mới.
 - **"Tút" báo lỗi**: chưa làm — cần audio thật + quyết định UI (nút bấm tay) trước, xem
   `docs/superpowers/specs/2026-09-02-audio-sa-hinh-mvp-design.md`.
 
