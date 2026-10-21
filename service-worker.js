@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sat-hach-trainer-v16';
+const CACHE_NAME = 'sat-hach-trainer-v18';
 const APP_SHELL = [
   './',
   './index.html',
@@ -12,6 +12,7 @@ const APP_SHELL = [
   './manifest.webmanifest',
   './content/stations.json',
   './content/standard-set.json',
+  './content/soundboard.json',
   './content/theory/questions.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
@@ -24,8 +25,9 @@ self.addEventListener('install', (event) => {
       const cache = await caches.open(CACHE_NAME);
       await cache.addAll(APP_SHELL);
       const stations = await (await fetch('./content/stations.json')).json();
-      const audioUrls = stations.flatMap((s) => [s.audio, s.cue].filter(Boolean).map((f) => `./content/audio/${f}`));
-      await cache.addAll(audioUrls);
+      const soundboard = await (await fetch('./content/soundboard.json')).json();
+      const audioFiles = new Set([...stations.flatMap((s) => [s.audio, s.cue]), ...soundboard.map((k) => k.audio)]);
+      await cache.addAll([...audioFiles].filter(Boolean).map((f) => `./content/audio/${f}`));
       const questions = await (await fetch('./content/theory/questions.json')).json();
       const imageUrls = questions.filter((q) => q.image).map((q) => `./content/theory/images/${q.image}`);
       await cache.addAll(imageUrls);
