@@ -9,6 +9,7 @@ const els = {
   listStations: document.getElementById('list-stations'),
   listSelected: document.getElementById('list-selected'),
   soundboard: document.getElementById('soundboard'),
+  nowPlaying: document.getElementById('now-playing'),
   status: document.getElementById('status'),
   player: document.getElementById('player'),
 };
@@ -16,6 +17,7 @@ const els = {
 let stations = [];
 let standardSet = [];
 let soundboard = [];
+let wakeLock = null;
 let currentSet = [];
 let theoryQuestions = [];
 let theoryHandle = { cancelTimer: () => {} };
@@ -140,6 +142,8 @@ function stopPlayback(message) {
   els.player.onerror = null;
   els.player.onloadedmetadata = null;
   els.player.pause();
+  document.querySelector('.playing')?.classList.remove('playing');
+  els.nowPlaying.hidden = true;
   if (message) setStatus(message);
 }
 
@@ -147,7 +151,7 @@ const VOICE_PLAYBACK_RATE = 0.85; // giọng đọc chậm hơn cho dễ nghe/ph
 const CUE_DELAY_MS = 2500; // nghỉ giữa lúc đọc xong tên bài và tiếng báo nhận bài
 const STATION_GAP_MS = 1500; // nghỉ giữa lúc dứt tiếng báo nhận bài và bài kế
 
-function playPlaylist(ids) {
+function playPlaylist(ids, listEl) {
   if (ids.length === 0) {
     setStatus('Chưa chọn bài nào để phát.');
     return;
@@ -196,11 +200,17 @@ function playPlaylist(ids) {
   function playNext() {
     if (playback.cancelled) return;
     if (i >= playlist.length) {
-      setStatus('Đã phát xong.');
+      stopPlayback('Đã phát xong.');
       return;
     }
     current = playlist[i];
+    document.querySelector('.playing')?.classList.remove('playing');
+    const li = listEl.children[i];
+    li?.classList.add('playing');
+    li?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     i += 1;
+    els.nowPlaying.textContent = `Bài ${i}/${playlist.length}: ${current.name}`;
+    els.nowPlaying.hidden = false;
     setStatus(`Đang phát: ${current.name} (${i}/${playlist.length})`);
     const goToNextAfterGap = () => {
       if (playback.cancelled) return;
@@ -230,10 +240,19 @@ function renderSoundboard() {
   soundboard.forEach((key) => {
     const b = button(key.label, () => {
       stopPlayback();
+      b.classList.add('playing');
+      els.player.onended = () => b.classList.remove('playing');
       els.player.playbackRate = 1;
       els.player.src = `content/audio/${key.audio}`;
-      els.player.play().catch(() => setStatus(`Lỗi phát "${key.label}".`));
+      els.player.play().catch(() => {
+        b.classList.remove('playing');
+        setStatus(`Lỗi phát "${key.label}".`);
+      });
     });
+    const icon = document.createElement('span');
+    icon.textContent = key.icon;
+    icon.setAttribute('aria-hidden', 'true');
+    b.prepend(icon, ' ');
     b.className = `tile tile-${key.color}`;
     els.soundboard.appendChild(b);
   });
@@ -266,21 +285,29 @@ async function main() {
   document.getElementById('btn-bo-chuan-c1').addEventListener('click', () =>
     openStandardSet('Hạng C1', standardSet.filter((id) => id !== 'ghep-xe-ngang')),
   );
-  document.getElementById('btn-duong-truong').addEventListener('click', () => showView('duong-truong'));
+  document.getElementById('btn-duong-truong').addEventListener('click', async () => {
+    showView('duong-truong');
+    // Giữ màn hình sáng khi đang dạy trên xe.
+    // shortcut: mất khóa nếu chuyển app rồi quay lại, cần thì bắt visibilitychange để xin lại.
+    wakeLock = await navigator.wakeLock?.request('screen').catch(() => null);
+  });
+  document.getElementById('stop-duong-truong').addEventListener('click', () => stopPlayback());
   document.getElementById('btn-bo-tu-ghep').addEventListener('click', () => showView('bo-tu-ghep'));
   document.getElementById('btn-ly-thuyet').addEventListener('click', () => showView('theory-menu'));
   document.querySelectorAll('.btn-back').forEach((b) =>
     b.addEventListener('click', () => {
       stopPlayback();
+      wakeLock?.release();
+      wakeLock = null;
       theoryHandle.cancelTimer();
       showView(b.dataset.back || 'menu');
     }),
   );
 
-  document.getElementById('play-bo-chuan').addEventListener('click', () => playPlaylist(currentSet));
+  document.getElementById('play-bo-chuan').addEventListener('click', () => playPlaylist(currentSet, els.listBoChuan));
   document.getElementById('stop-bo-chuan').addEventListener('click', () => stopPlayback('Đã dừng.'));
   document.getElementById('save-bo-tu-ghep').addEventListener('click', saveSelected);
-  document.getElementById('play-bo-tu-ghep').addEventListener('click', () => playPlaylist(selected));
+  document.getElementById('play-bo-tu-ghep').addEventListener('click', () => playPlaylist(selected, els.listSelected));
   document.getElementById('stop-bo-tu-ghep').addEventListener('click', () => stopPlayback('Đã dừng.'));
 
   showView('menu');

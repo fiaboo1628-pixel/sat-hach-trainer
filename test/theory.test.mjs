@@ -117,6 +117,11 @@ test('content/theory/questions.json mọi câu có answer hợp lệ trong choic
   assert.deepEqual(validateAnswerIndices(questions), []);
 });
 
+test('content/theory/questions.json không còn rác trích PDF trong đáp án (tiêu đề chương, 2 đáp án dính nhau)', () => {
+  const bad = questions.filter((q) => q.choices.some((c) => /CHƯƠNG|\.\s+\d\.\s/.test(c))).map((q) => q.id);
+  assert.deepEqual(bad, []);
+});
+
 test('content/theory/questions.json is_liet khớp chapter "tinh-huong-atgt" (2 chiều)', () => {
   assert.deepEqual(validateLietChapterConsistency(questions), []);
 });

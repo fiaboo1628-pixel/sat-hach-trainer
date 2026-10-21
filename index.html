@@ -22,6 +22,8 @@
   </header>
 
   <main>
+    <p id="now-playing" hidden></p>
+
     <section id="menu">
       <button id="btn-bo-chuan" class="tile tile-blue" type="button">🔊 Hạng B</button>
       <button id="btn-bo-chuan-c1" class="tile tile-blue" type="button">🔊 Hạng C1</button>
@@ -42,9 +44,10 @@
     </section>
 
     <section id="view-duong-truong" hidden>
+      <button class="btn-back" type="button">← Quay lại</button>
       <h2>Đường trường</h2>
       <div id="soundboard"></div>
-      <button class="btn-back" type="button">← Quay lại</button>
+      <button id="stop-duong-truong" class="tile" type="button">⏹ Dừng</button>
     </section>
 
     <section id="view-bo-tu-ghep" hidden>
