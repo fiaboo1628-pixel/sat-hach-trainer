@@ -8,6 +8,7 @@ import { buildPlaylist, validateStations, validateStandardSet } from '../js/play
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const stations = JSON.parse(readFileSync(join(__dirname, '../content/stations.json'), 'utf8'));
 const standardSet = JSON.parse(readFileSync(join(__dirname, '../content/standard-set.json'), 'utf8'));
+const soundboard = JSON.parse(readFileSync(join(__dirname, '../content/soundboard.json'), 'utf8'));
 
 test('stations.json không có id trùng', () => {
   assert.deepEqual(validateStations(stations), []);
@@ -38,5 +39,10 @@ test('buildPlaylist báo lỗi rõ ràng khi id không tồn tại', () => {
 test('mỗi station trong stations.json có file audio (và cue nếu có) tồn tại trên đĩa', () => {
   const files = stations.flatMap((s) => [s.audio, s.cue].filter(Boolean));
   const missing = files.filter((f) => !existsSync(join(__dirname, '../content/audio', f)));
+  assert.deepEqual(missing, []);
+});
+
+test('mỗi phím đường trường trong soundboard.json có file audio tồn tại trên đĩa', () => {
+  const missing = soundboard.map((k) => k.audio).filter((f) => !existsSync(join(__dirname, '../content/audio', f)));
   assert.deepEqual(missing, []);
 });

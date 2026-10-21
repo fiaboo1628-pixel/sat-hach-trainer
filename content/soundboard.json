@@ -1,0 +1,13 @@
+[
+  { "label": "Xuất phát", "audio": "xuat-phat.mp3", "color": "blue" },
+  { "label": "Ting tong", "audio": "ting-tong.mp3", "color": "yellow" },
+  { "label": "Tút", "audio": "tut.mp3", "color": "yellow" },
+  { "label": "Tăng số", "audio": "tang-so.mp3", "color": "blue" },
+  { "label": "Giảm số", "audio": "giam-so.mp3", "color": "blue" },
+  { "label": "Vào số sai", "audio": "vao-so-sai.mp3", "color": "red" },
+  { "label": "Không thắt dây an toàn", "audio": "khong-that-day-an-toan.mp3", "color": "red" },
+  { "label": "Không hạ thắng tay", "audio": "khong-ha-thang-tay.mp3", "color": "red" },
+  { "label": "Không bật xi nhan", "audio": "khong-bat-xi-nhan.mp3", "color": "red" },
+  { "label": "Không tăng số", "audio": "khong-tang-so.mp3", "color": "red" },
+  { "label": "Không giảm số", "audio": "khong-giam-so.mp3", "color": "red" }
+]

@@ -5,28 +5,34 @@ const STORAGE_KEY = 'bo-tu-ghep';
 
 const els = {
   listBoChuan: document.getElementById('list-bo-chuan'),
+  titleBoChuan: document.getElementById('title-bo-chuan'),
   listStations: document.getElementById('list-stations'),
   listSelected: document.getElementById('list-selected'),
+  soundboard: document.getElementById('soundboard'),
   status: document.getElementById('status'),
   player: document.getElementById('player'),
 };
 
 let stations = [];
 let standardSet = [];
+let soundboard = [];
+let currentSet = [];
 let theoryQuestions = [];
 let theoryHandle = { cancelTimer: () => {} };
 let selected = loadSelected();
 let currentPlayback = null;
 
 async function loadContent() {
-  const [stationsRes, standardRes, theoryRes] = await Promise.all([
+  const [stationsRes, standardRes, theoryRes, soundboardRes] = await Promise.all([
     fetch('content/stations.json'),
     fetch('content/standard-set.json'),
     fetch('content/theory/questions.json'),
+    fetch('content/soundboard.json'),
   ]);
   stations = await stationsRes.json();
   standardSet = await standardRes.json();
   theoryQuestions = await theoryRes.json();
+  soundboard = await soundboardRes.json();
 }
 
 function loadSelected() {
@@ -43,7 +49,7 @@ function saveSelected() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(selected));
     setStatus('Đã lưu bộ tự ghép.');
   } catch {
-    setStatus('Không lưu được (trình duyệt chặn bộ nhớ) — Bộ chuẩn vẫn dùng bình thường.');
+    setStatus('Không lưu được (trình duyệt chặn bộ nhớ) — Hạng B/C1 vẫn dùng bình thường.');
   }
 }
 
@@ -55,6 +61,7 @@ const VIEWS = [
   'menu',
   'bo-chuan',
   'bo-tu-ghep',
+  'duong-truong',
   'theory-menu',
   'theory-exam',
   'theory-result',
@@ -131,6 +138,7 @@ function stopPlayback(message) {
   currentPlayback = null;
   els.player.onended = null;
   els.player.onerror = null;
+  els.player.onloadedmetadata = null;
   els.player.pause();
   if (message) setStatus(message);
 }
@@ -217,6 +225,27 @@ function playPlaylist(ids) {
   playNext();
 }
 
+// Đường trường: each key plays its clip right away, cutting off whatever was playing.
+function renderSoundboard() {
+  soundboard.forEach((key) => {
+    const b = button(key.label, () => {
+      stopPlayback();
+      els.player.playbackRate = 1;
+      els.player.src = `content/audio/${key.audio}`;
+      els.player.play().catch(() => setStatus(`Lỗi phát "${key.label}".`));
+    });
+    b.className = `tile tile-${key.color}`;
+    els.soundboard.appendChild(b);
+  });
+}
+
+function openStandardSet(label, ids) {
+  currentSet = ids;
+  els.titleBoChuan.textContent = `${label} (${ids.length} bài)`;
+  renderList(els.listBoChuan, ids);
+  showView('bo-chuan');
+}
+
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
@@ -227,12 +256,17 @@ function registerServiceWorker() {
 
 async function main() {
   await loadContent();
-  renderList(els.listBoChuan, standardSet);
   renderStationsPicker();
+  renderSoundboard();
   renderList(els.listSelected, selected, { removable: true });
   theoryHandle = initTheory(theoryQuestions, { showView, setStatus });
 
-  document.getElementById('btn-bo-chuan').addEventListener('click', () => showView('bo-chuan'));
+  document.getElementById('btn-bo-chuan').addEventListener('click', () => openStandardSet('Hạng B', standardSet));
+  // Sa hình hạng C1 không có bài ghép xe ngang.
+  document.getElementById('btn-bo-chuan-c1').addEventListener('click', () =>
+    openStandardSet('Hạng C1', standardSet.filter((id) => id !== 'ghep-xe-ngang')),
+  );
+  document.getElementById('btn-duong-truong').addEventListener('click', () => showView('duong-truong'));
   document.getElementById('btn-bo-tu-ghep').addEventListener('click', () => showView('bo-tu-ghep'));
   document.getElementById('btn-ly-thuyet').addEventListener('click', () => showView('theory-menu'));
   document.querySelectorAll('.btn-back').forEach((b) =>
@@ -243,7 +277,7 @@ async function main() {
     }),
   );
 
-  document.getElementById('play-bo-chuan').addEventListener('click', () => playPlaylist(standardSet));
+  document.getElementById('play-bo-chuan').addEventListener('click', () => playPlaylist(currentSet));
   document.getElementById('stop-bo-chuan').addEventListener('click', () => stopPlayback('Đã dừng.'));
   document.getElementById('save-bo-tu-ghep').addEventListener('click', saveSelected);
   document.getElementById('play-bo-tu-ghep').addEventListener('click', () => playPlaylist(selected));

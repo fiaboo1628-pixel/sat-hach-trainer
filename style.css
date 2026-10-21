@@ -219,6 +219,18 @@ ol, ul {
   color: var(--red);
 }
 
+#soundboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+#soundboard .tile {
+  min-height: 4.5rem;
+  font-size: 1.05rem;
+}
+
 #practice-topics {
   display: flex;
   flex-direction: column;
