@@ -46,3 +46,11 @@ test('mỗi phím đường trường trong soundboard.json có file audio tồn
   const missing = soundboard.map((k) => k.audio).filter((f) => !existsSync(join(__dirname, '../content/audio', f)));
   assert.deepEqual(missing, []);
 });
+
+// `color` chỉ nhận 3 token road-sign trong style.css, không phải màu CSS tự do: một giá trị
+// lạ không làm gì cả, phím hiện ra không màu và chỉ phát hiện được bằng mắt.
+test('mỗi phím đường trường dùng color là một token hợp lệ', () => {
+  const allowed = new Set(['blue', 'yellow', 'red']);
+  const bad = soundboard.filter((k) => !allowed.has(k.color)).map((k) => `${k.label}: ${k.color}`);
+  assert.deepEqual(bad, []);
+});

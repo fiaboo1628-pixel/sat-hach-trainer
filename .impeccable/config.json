@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-10-21T03:21:03.979Z",
+        "reason": "user confirmed: owner said the beige frame colour #E3E1D6 is fine (2026-10-21)"
+      }
+    ]
+  }
+}

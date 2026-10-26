@@ -20,10 +20,26 @@ Mở địa chỉ server báo ra (vd `http://localhost:8080`).
 
 ## Audio
 
-`content/audio/*.mp3` gồm 2 loại:
+`content/audio/` gồm 3 loại:
 
 - **11 file giọng đọc theo `audio` trong `content/stations.json`** — audio thật (giọng
   AI, thay xong 2026-09-11), không còn placeholder.
+- **10 file giọng phím Đường trường** nằm trong `content/audio/soundboard/` — render ngày
+  2026-10-27 bằng `tools/render-soundboard.sh`, giọng **piper `vi_VN-vais1000-medium`**
+  (22.050 Hz gốc, wrapper `vi-tts` resample về mono 44.1 kHz và loudnorm ~-19 LUFS cho khớp
+  các file còn lại). Corpus **VAIS-1000**, giấy phép **CC-BY-4.0** → cần ghi nguồn:
+  [VAIS-1000 Vietnamese Speech Synthesis Corpus](https://ieee-dataport.org/documents/vais-1000-vietnamese-speech-synthesis-corpus),
+  model từ [rhasspy/piper-voices](https://huggingface.co/rhasspy/piper-voices).
+
+  Trước đó `content/audio/` có **hai họ giọng** mà repo không ghi: 11 file station 48 kHz và
+  một đợt soundboard 44.1 kHz làm sau, không rõ engine. Phím kề nhau khác giọng chính là lỗi;
+  thư mục `soundboard/` tách hẳn hai consumer, nên `xuat-phat.mp3` của station **không còn bị
+  soundboard dùng chung** và giọng sa hình không bị đổi.
+
+  Đổi nhãn phím trong `content/soundboard.json` rồi chạy lại script (`--force` để render đè),
+  sau đó **tăng `CACHE_NAME`**. `ting-tong.mp3` và `tut.mp3` không bị script chạm — đó là
+  tiếng máy phát, không phải lời đọc.
+
 - **`ting-tong.mp3`** (field `cue`, tín hiệu nhận bài phát sau tên bài) — bản ghi thật
   tiếng chuông cửa "ding-dong" (thay xong 2026-10-02): [Doorbell #6, BigSoundBank](https://bigsoundbank.com/doorbell-6-s2365.html),
   tác giả Dorian Clair, giấy phép **CC0** (không cần ghi nguồn). Đã xử lý từ file WAV gốc:
