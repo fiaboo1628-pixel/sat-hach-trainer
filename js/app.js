@@ -277,6 +277,8 @@ async function openStandardSet(ids) {
 }
 
 function registerServiceWorker() {
+  // Bản Android (Capacitor) đã mang sẵn mọi file trong APK: không cần service worker.
+  if (window.Capacitor) return;
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('service-worker.js')
