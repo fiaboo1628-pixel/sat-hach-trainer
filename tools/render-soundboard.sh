@@ -35,6 +35,9 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 force=${1:-}
+# Cùng 1.4 nhưng piper bản Nix (2026-10-27) ra clip ngắn hơn bản Arch ~30% (2026-10-28: "Không tăng số"
+# 0.65 s so với 0.87 s), nên phím Nix nghe nhanh hẳn. Render lại thì render cả bộ (--force) bằng một
+# bản piper, đừng trộn.
 export VI_TTS_LENGTH_SCALE=1.4    # xem ghi chú tốc độ đọc ở đầu file
 
 command -v vi-tts >/dev/null || {
