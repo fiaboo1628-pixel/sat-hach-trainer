@@ -88,7 +88,40 @@ function showView(view) {
     const elId = v === 'menu' ? 'menu' : `view-${v}`;
     document.getElementById(elId).hidden = v !== view;
   });
+  syncHistory(view);
 }
+
+// Nút Back của Android (và của trình duyệt) lùi một màn như nút "← Quay lại", thay vì thoát app.
+// Ngoài menu luôn giữ đúng một mục lịch sử để Back có chỗ bắt; về menu thì trả mục đó lại.
+let ignorePop = false;
+function syncHistory(view) {
+  if (window.Capacitor) return; // bản Android bắt nút Back bằng plugin App, xem main()
+  if (view !== 'menu' && !history.state) history.pushState({ inApp: true }, '');
+  else if (view === 'menu' && history.state) {
+    ignorePop = true;
+    history.back();
+  }
+}
+
+function goBackOneScreen() {
+  const visible = document.querySelector('main > section:not([hidden])');
+  visible?.querySelector('.btn-back, .btn-back-practice')?.click();
+}
+
+window.addEventListener('popstate', () => {
+  if (ignorePop) {
+    ignorePop = false;
+    return;
+  }
+  goBackOneScreen();
+});
+
+// Android: WebView bỏ qua mục lịch sử thêm lúc không có thao tác chạm, nên không dựa vào lịch sử
+// mà nghe thẳng nút Back: ở menu thì thoát app, màn khác thì lùi một màn.
+window.Capacitor?.Plugins?.App?.addListener('backButton', () => {
+  if (!document.getElementById('menu').hidden) window.Capacitor.Plugins.App.exitApp();
+  else goBackOneScreen();
+});
 
 function button(label, onClick) {
   const b = document.createElement('button');
