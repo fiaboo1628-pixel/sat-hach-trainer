@@ -146,7 +146,6 @@ ol, ul {
   counter-reset: item;
 }
 
-#list-bo-chuan li,
 #list-selected li {
   counter-increment: item;
   padding: 0.5rem 0.6rem;
@@ -156,7 +155,6 @@ ol, ul {
   border-radius: 2px;
 }
 
-#list-bo-chuan li::before,
 #list-selected li::before {
   content: counter(item) '. ';
   font-weight: 600;
@@ -278,12 +276,16 @@ ol, ul {
 /* Đang phát: một vạch tối chạy ngang phím theo độ dài clip, mép dẫn 2px. Là hình học, không
    phải màu -- nên nó đọc được cả trên hai phím vốn đã vàng, và nó còn cho biết còn bao lâu,
    thứ người bấm cần để quyết có bấm phím tiếp hay chưa. */
-.sb-key.playing {
+.sb-key.playing,
+.sh-cue.playing,
+.sh-next.playing {
   border-color: var(--ink);
   box-shadow: 0 1px 2px rgba(16, 21, 31, 0.06), inset 0 0 0 2px var(--ink);
 }
 
-.sb-key.playing::after {
+.sb-key.playing::after,
+.sh-cue.playing::after,
+.sh-next.playing::after {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
@@ -295,7 +297,9 @@ ol, ul {
 
 /* Giảm chuyển động: giữ dấu "phím này đang nói", bỏ phần chạy. */
 @media (prefers-reduced-motion: reduce) {
-  .sb-key.playing::after {
+  .sb-key.playing::after,
+  .sh-cue.playing::after,
+  .sh-next.playing::after {
     width: 100%;
     background: rgba(16, 21, 31, 0.08);
     border-right: 0;
@@ -316,24 +320,73 @@ ol, ul {
   color: var(--ink);
 }
 
-/* Sa hình playback: big card says which bài is being read; the list row is marked too */
-#now-playing:not([hidden]) {
+/* Bảng bấm sa hình. Ting tong và Tút bấm nhiều nhất: to nhất, trên cùng, và dính mép trên khi
+   cuộn xuống khu báo lỗi -- người ngồi cạnh không phải cuộn ngược lên tìm. */
+.sh-cues {
   position: sticky;
   top: 0;
   z-index: 1;
-  margin: 0 0 0.8rem;
-  padding: 0.9rem 1rem;
-  border-radius: 4px;
-  background: var(--blue);
-  color: #fff;
-  font-size: 1.2rem;
-  font-weight: 800;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  background: var(--bg);
 }
 
-#list-bo-chuan li.playing,
-#list-selected li.playing {
-  background: var(--yellow);
-  font-weight: 700;
+.sh-cue {
+  position: relative;
+  overflow: hidden;
+  min-height: 5.5rem;
+  margin: 0;
+  padding: 0.5rem 0.3rem;
+  white-space: nowrap;
+  font-size: 1.4rem;
+  font-weight: 800;
+  border: 1px solid #e0c56a;
+  border-radius: 6px;
+  background: #fdf6e3;
+}
+
+.sh-cue small,
+.sh-next small {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* Bài kế: một mặt xanh đặc như thẻ Đường trường ở menu -- đây là phím đổi bài, khác hẳn hai
+   tiếng máy phía trên. */
+.sh-next {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  margin: 0.25rem 0 0;
+  padding: 0.8rem 1rem;
+  text-align: left;
+  border: 1px solid var(--blue);
+  border-radius: 6px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.sh-next small { color: #cfe0f5; }
+.sh-next.playing::after { background: rgba(255, 255, 255, 0.18); border-right-color: #fff; }
+
+.sh-step {
+  gap: 0.5rem;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.sh-step button {
+  flex: 1;
+  margin: 0;
+  padding: 0.6rem 0.4rem;
+  font-size: 1rem;
 }
 
 #stop-duong-truong {
@@ -342,7 +395,8 @@ ol, ul {
 }
 
 /* Đường trường is used in a moving car: give the keys the header's space */
-body:has(#view-duong-truong:not([hidden])) header {
+body:has(#view-duong-truong:not([hidden])) header,
+body:has(#view-bo-chuan:not([hidden])) header {
   display: none;
 }
 
@@ -400,7 +454,8 @@ body:has(#view-duong-truong:not([hidden])) header {
 /* Car mode lấy lại khoảng đệm của main cho phím: đo được 12 phím + hàng điều khiển tràn 7px
    trên 375x667 với padding 1.2rem, và ở đây viền trang không làm việc gì cả. Chỉ áp cho một
    view, qua :has() nên không cần JS thêm. */
-body:has(#view-duong-truong:not([hidden])) main {
+body:has(#view-duong-truong:not([hidden])) main,
+body:has(#view-bo-chuan:not([hidden])) main {
   padding: 0.5rem;
 }
 
@@ -434,4 +489,72 @@ body:has(#view-duong-truong:not([hidden])) main {
   font-weight: 600;
   line-height: 1.3;
   color: #cfe0f5;
+}
+
+/* Lối vào trang hướng dẫn: một dòng chữ có khung nhẹ dưới thẻ Đường trường, không phải tile thứ
+   sáu -- đây là trang để đọc, không phải một chế độ. */
+.btn-guide {
+  display: block;
+  width: 100%;
+  margin: 0.5rem 0 0;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--blue);
+}
+
+#view-huong-dan-dt h3 {
+  margin: 1.4rem 0 0.4rem;
+  color: var(--blue);
+}
+
+.guide-lead {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.guide-steps {
+  margin: 0 0 0.6rem;
+  line-height: 1.5;
+}
+
+.guide-steps li {
+  padding-left: 1rem;
+  text-indent: -1rem;
+}
+
+.guide-steps li::before {
+  content: "• ";
+  color: var(--blue);
+}
+
+.guide-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+}
+
+.guide-table td {
+  padding: 0.5rem 0.6rem;
+  border-top: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.guide-table td:last-child {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+  font-weight: 800;
+  color: var(--red);
+}
+
+.guide-out {
+  font-weight: 800;
+}
+
+/* Quay lại là phím duy nhất dưới khu báo lỗi của bảng sa hình. */
+.sh-quit {
+  width: 100%;
+  margin: 0.75rem 0 0;
 }

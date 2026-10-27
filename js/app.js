@@ -4,12 +4,12 @@ import { initTheory } from './theory-ui.js';
 const STORAGE_KEY = 'bo-tu-ghep';
 
 const els = {
-  listBoChuan: document.getElementById('list-bo-chuan'),
-  titleBoChuan: document.getElementById('title-bo-chuan'),
   listStations: document.getElementById('list-stations'),
   listSelected: document.getElementById('list-selected'),
   soundboard: document.getElementById('soundboard'),
-  nowPlaying: document.getElementById('now-playing'),
+  shNext: document.getElementById('sh-next'),
+  shErrors: document.getElementById('sh-errors'),
+  shNotices: document.getElementById('sh-notices'),
   status: document.getElementById('status'),
   player: document.getElementById('player'),
 };
@@ -17,24 +17,31 @@ const els = {
 let stations = [];
 let standardSet = [];
 let soundboard = [];
+let saHinhErrors = [];
+let saHinhNotices = [];
 let wakeLock = null;
-let currentSet = [];
 let theoryQuestions = [];
 let theoryHandle = { cancelTimer: () => {} };
 let selected = loadSelected();
-let currentPlayback = null;
+// Bảng bấm sa hình: các bài của bộ đang mở, và chỉ số bài sẽ đọc khi bấm "Bài kế".
+let board = [];
+let nextIdx = 0;
 
 async function loadContent() {
-  const [stationsRes, standardRes, theoryRes, soundboardRes] = await Promise.all([
+  const [stationsRes, standardRes, theoryRes, soundboardRes, errorsRes, noticesRes] = await Promise.all([
     fetch('content/stations.json'),
     fetch('content/standard-set.json'),
     fetch('content/theory/questions.json'),
     fetch('content/soundboard.json'),
+    fetch('content/sa-hinh-loi.json'),
+    fetch('content/sa-hinh-thong-bao.json'),
   ]);
   stations = await stationsRes.json();
   standardSet = await standardRes.json();
   theoryQuestions = await theoryRes.json();
   soundboard = await soundboardRes.json();
+  saHinhErrors = await errorsRes.json();
+  saHinhNotices = await noticesRes.json();
 }
 
 function loadSelected() {
@@ -64,6 +71,7 @@ const VIEWS = [
   'bo-chuan',
   'bo-tu-ghep',
   'duong-truong',
+  'huong-dan-dt',
   'theory-menu',
   'theory-exam',
   'theory-result',
@@ -131,111 +139,47 @@ function removeSelected(index) {
   renderList(els.listSelected, selected, { removable: true });
 }
 
-// Stops whatever is currently playing (if anything) and invalidates its
-// callbacks, so a stale playNext()/onended/onerror from a previous playlist
-// can never advance playback again. Shared by the Stop button and by
-// starting a new playlist (double-tapping Play).
+// Cắt tiếng đang phát (nếu có) và bỏ dấu "đang phát" trên phím của nó.
 function stopPlayback(message) {
-  if (currentPlayback) currentPlayback.cancelled = true;
-  currentPlayback = null;
   els.player.onended = null;
-  els.player.onerror = null;
   els.player.onloadedmetadata = null;
-  // Phím Đường trường gắn ontimeupdate để chạy vạch tiến trình; không xoá là nó còn ghi
-  // --played lên phím cũ suốt lần phát sau.
+  // Phím gắn ontimeupdate để chạy vạch tiến trình; không xoá là nó còn ghi --played lên phím
+  // cũ suốt lần phát sau.
   els.player.ontimeupdate = null;
   els.player.pause();
   document.querySelector('.playing')?.classList.remove('playing');
-  els.nowPlaying.hidden = true;
   if (message) setStatus(message);
 }
 
-const VOICE_PLAYBACK_RATE = 0.85; // giọng đọc chậm hơn cho dễ nghe/phản ứng kịp
-const CUE_DELAY_MS = 2500; // nghỉ giữa lúc đọc xong tên bài và tiếng báo nhận bài
-const STATION_GAP_MS = 1500; // nghỉ giữa lúc dứt tiếng báo nhận bài và bài kế
+const VOICE_PLAYBACK_RATE = 0.85; // giọng đọc tên bài sa hình chậm hơn cho dễ nghe/phản ứng kịp
 
-function playPlaylist(ids, listEl) {
-  if (ids.length === 0) {
-    setStatus('Chưa chọn bài nào để phát.');
-    return;
-  }
-
-  let playlist;
-  try {
-    playlist = buildPlaylist(ids, stations);
-  } catch (err) {
-    setStatus(`Lỗi dữ liệu: ${err.message}`);
-    return;
-  }
-
+// Một phím: phát ngay, cắt tiếng đang phát. Dùng chung cho Đường trường và bảng bấm sa hình.
+function playKey(b, src, label, rate = 1) {
   stopPlayback();
-  const playback = { cancelled: false };
-  currentPlayback = playback;
-
-  let i = 0;
-  let current = null;
-
-  // Plays one file, then calls onDone exactly once (ended, load error, or
-  // play() rejection) — guards against those three firing more than once
-  // for the same track.
-  function playTrack(src, label, onDone, rate = 1) {
-    if (playback.cancelled) return;
-    let handled = false;
-    const advance = (errMessage) => {
-      if (playback.cancelled || handled) return;
-      handled = true;
-      if (errMessage) setStatus(errMessage);
-      onDone();
-    };
-    els.player.onended = () => advance();
-    els.player.onerror = () => advance(`Lỗi audio "${label}", bỏ qua, tiếp tục bài kế.`);
-    // iOS Safari: đổi playbackRate ngay khi vừa gán src (trước khi có metadata)
-    // hay bị nuốt/giật đúng lúc bắt đầu phát — chốt lại rate khi loadedmetadata
-    // bắn ra, lúc pipeline audio đã sẵn sàng.
-    els.player.onloadedmetadata = () => {
-      els.player.playbackRate = rate;
-    };
-    els.player.src = src;
+  b.classList.add('playing');
+  // --played lái vạch chạy trong .playing::after: trạng thái đang phát phải đọc được
+  // mà không dựa vào màu, vì có phím vốn đã là màu vàng.
+  b.style.setProperty('--played', '0');
+  els.player.ontimeupdate = () => {
+    const total = els.player.duration;
+    if (total) b.style.setProperty('--played', (els.player.currentTime / total).toFixed(3));
+  };
+  els.player.onended = () => {
+    b.classList.remove('playing');
+    els.player.ontimeupdate = null;
+  };
+  // iOS Safari: đổi playbackRate ngay khi vừa gán src (trước khi có metadata) hay bị nuốt —
+  // chốt lại rate khi loadedmetadata bắn ra, lúc pipeline audio đã sẵn sàng.
+  els.player.onloadedmetadata = () => {
     els.player.playbackRate = rate;
-    els.player.play().catch(() => advance(`Lỗi phát "${label}", bỏ qua, tiếp tục bài kế.`));
-  }
-
-  function playNext() {
-    if (playback.cancelled) return;
-    if (i >= playlist.length) {
-      stopPlayback('Đã phát xong.');
-      return;
-    }
-    current = playlist[i];
-    document.querySelector('.playing')?.classList.remove('playing');
-    const li = listEl.children[i];
-    li?.classList.add('playing');
-    li?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    i += 1;
-    els.nowPlaying.textContent = `Bài ${i}/${playlist.length}: ${current.name}`;
-    els.nowPlaying.hidden = false;
-    setStatus(`Đang phát: ${current.name} (${i}/${playlist.length})`);
-    const goToNextAfterGap = () => {
-      if (playback.cancelled) return;
-      setTimeout(playNext, STATION_GAP_MS);
-    };
-    // Đọc tên bài trước, rồi mới kêu tín hiệu nhận bài sau một nhịp nghỉ —
-    // không phát tín hiệu trước tên bài như trước nữa.
-    const playCue = () => {
-      if (playback.cancelled) return;
-      if (!current.cue) {
-        goToNextAfterGap();
-        return;
-      }
-      setTimeout(() => {
-        if (playback.cancelled) return;
-        playTrack(`content/audio/${current.cue}`, `${current.name} (tín hiệu nhận bài)`, goToNextAfterGap);
-      }, CUE_DELAY_MS);
-    };
-    playTrack(`content/audio/${current.audio}`, current.name, playCue, VOICE_PLAYBACK_RATE);
-  }
-
-  playNext();
+  };
+  els.player.src = src;
+  els.player.playbackRate = rate;
+  els.player.play().catch(() => {
+    b.classList.remove('playing');
+    els.player.ontimeupdate = null;
+    setStatus(`Lỗi phát "${label}".`);
+  });
 }
 
 // Ba khu của Đường trường. `color` trong soundboard.json đã mã hoá sẵn nhóm — lệnh, tín hiệu,
@@ -261,47 +205,69 @@ function renderSoundboard() {
 
     const grid = document.createElement('div');
     grid.className = 'sb-grid';
-    keys.forEach((key) => {
-      const b = button(key.label, () => {
-        stopPlayback();
-        b.classList.add('playing');
-        // --played lái vạch chạy trong .playing::after: trạng thái đang phát phải đọc được
-        // mà không dựa vào màu, vì 2 phím vốn đã là màu vàng.
-        b.style.setProperty('--played', '0');
-        els.player.ontimeupdate = () => {
-          const total = els.player.duration;
-          if (total) b.style.setProperty('--played', (els.player.currentTime / total).toFixed(3));
-        };
-        els.player.onended = () => {
-          b.classList.remove('playing');
-          els.player.ontimeupdate = null;
-        };
-        els.player.playbackRate = 1;
-        els.player.src = `content/audio/${key.audio}`;
-        els.player.play().catch(() => {
-          b.classList.remove('playing');
-          els.player.ontimeupdate = null;
-          setStatus(`Lỗi phát "${key.label}".`);
-        });
-      });
-      const icon = document.createElement('span');
-      icon.textContent = key.icon;
-      icon.setAttribute('aria-hidden', 'true');
-      b.prepend(icon, ' ');
-      b.className = 'tile sb-key';
-      grid.appendChild(b);
-    });
+    keys.forEach((key) => grid.appendChild(soundKey(key)));
 
     section.append(grid);
     els.soundboard.appendChild(section);
   });
 }
 
-function openStandardSet(label, ids) {
-  currentSet = ids;
-  els.titleBoChuan.textContent = `${label} (${ids.length} bài)`;
-  renderList(els.listBoChuan, ids);
+// Một phím âm thanh: biểu tượng + nhãn, bấm là phát.
+function soundKey(key) {
+  const b = button(key.label, () => playKey(b, `content/audio/${key.audio}`, key.label));
+  const icon = document.createElement('span');
+  icon.textContent = key.icon;
+  icon.setAttribute('aria-hidden', 'true');
+  b.prepend(icon, ' ');
+  b.className = 'tile sb-key';
+  return b;
+}
+
+function renderSaHinhErrors() {
+  saHinhErrors.forEach((key) => els.shErrors.appendChild(soundKey(key)));
+  saHinhNotices.forEach((key) => els.shNotices.appendChild(soundKey(key)));
+}
+
+// "Bài kế" đọc tên bài ở nextIdx rồi dời con trỏ sang bài sau; hết bộ thì phím quay về đầu.
+function renderBoardNext() {
+  const station = board[nextIdx];
+  els.shNext.textContent = '';
+  const small = document.createElement('small');
+  const big = document.createElement('span');
+  if (station) {
+    small.textContent = `Bài kế ${nextIdx + 1}/${board.length}`;
+    big.textContent = `▶ ${station.name}`;
+  } else {
+    small.textContent = `Đã đọc hết ${board.length} bài`;
+    big.textContent = '↺ Về bài đầu';
+  }
+  els.shNext.append(small, big);
+}
+
+function readStation(i) {
+  const station = board[i];
+  if (!station) return;
+  nextIdx = i + 1;
+  renderBoardNext();
+  playKey(els.shNext, `content/audio/${station.audio}`, station.name, VOICE_PLAYBACK_RATE);
+}
+
+async function openStandardSet(ids) {
+  if (ids.length === 0) {
+    setStatus('Chưa chọn bài nào.');
+    return;
+  }
+  try {
+    board = buildPlaylist(ids, stations);
+  } catch (err) {
+    setStatus(`Lỗi dữ liệu: ${err.message}`);
+    return;
+  }
+  nextIdx = 0;
+  renderBoardNext();
   showView('bo-chuan');
+  // Bảng bấm cũng dùng trong xe, như Đường trường: giữ màn hình sáng.
+  wakeLock = await navigator.wakeLock?.request('screen').catch(() => null);
 }
 
 function registerServiceWorker() {
@@ -316,13 +282,14 @@ async function main() {
   await loadContent();
   renderStationsPicker();
   renderSoundboard();
+  renderSaHinhErrors();
   renderList(els.listSelected, selected, { removable: true });
   theoryHandle = initTheory(theoryQuestions, { showView, setStatus });
 
-  document.getElementById('btn-bo-chuan').addEventListener('click', () => openStandardSet('Hạng B', standardSet));
+  document.getElementById('btn-bo-chuan').addEventListener('click', () => openStandardSet(standardSet));
   // Sa hình hạng C1 không có bài ghép xe ngang.
   document.getElementById('btn-bo-chuan-c1').addEventListener('click', () =>
-    openStandardSet('Hạng C1', standardSet.filter((id) => id !== 'ghep-xe-ngang')),
+    openStandardSet(standardSet.filter((id) => id !== 'ghep-xe-ngang')),
   );
   document.getElementById('btn-duong-truong').addEventListener('click', async () => {
     showView('duong-truong');
@@ -332,6 +299,7 @@ async function main() {
   });
   document.getElementById('stop-duong-truong').addEventListener('click', () => stopPlayback());
   document.getElementById('btn-bo-tu-ghep').addEventListener('click', () => showView('bo-tu-ghep'));
+  document.getElementById('btn-huong-dan-dt').addEventListener('click', () => showView('huong-dan-dt'));
   document.getElementById('btn-ly-thuyet').addEventListener('click', () => showView('theory-menu'));
   document.querySelectorAll('.btn-back').forEach((b) =>
     b.addEventListener('click', () => {
@@ -343,11 +311,28 @@ async function main() {
     }),
   );
 
-  document.getElementById('play-bo-chuan').addEventListener('click', () => playPlaylist(currentSet, els.listBoChuan));
-  document.getElementById('stop-bo-chuan').addEventListener('click', () => stopPlayback('Đã dừng.'));
+  els.shNext.addEventListener('click', () => {
+    if (nextIdx >= board.length) {
+      nextIdx = 0;
+      renderBoardNext();
+      return;
+    }
+    readStation(nextIdx);
+  });
+  document.getElementById('sh-replay').addEventListener('click', () => readStation(Math.max(nextIdx - 1, 0)));
+  document.getElementById('sh-back').addEventListener('click', () => {
+    stopPlayback();
+    nextIdx = Math.max(nextIdx - 1, 0);
+    renderBoardNext();
+  });
+  const cue = (id, file, label) => {
+    const b = document.getElementById(id);
+    b.addEventListener('click', () => playKey(b, `content/audio/${file}`, label));
+  };
+  cue('sh-ting-tong', 'ting-tong.mp3', 'Ting tong');
+  cue('sh-tut', 'tut.mp3', 'Tút');
   document.getElementById('save-bo-tu-ghep').addEventListener('click', saveSelected);
-  document.getElementById('play-bo-tu-ghep').addEventListener('click', () => playPlaylist(selected, els.listSelected));
-  document.getElementById('stop-bo-tu-ghep').addEventListener('click', () => stopPlayback('Đã dừng.'));
+  document.getElementById('play-bo-tu-ghep').addEventListener('click', () => openStandardSet(selected));
 
   showView('menu');
   registerServiceWorker();

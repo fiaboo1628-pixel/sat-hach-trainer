@@ -54,3 +54,12 @@ test('mỗi phím đường trường dùng color là một token hợp lệ', (
   const bad = soundboard.filter((k) => !allowed.has(k.color)).map((k) => `${k.label}: ${k.color}`);
   assert.deepEqual(bad, []);
 });
+
+const saHinhErrors = JSON.parse(readFileSync(join(__dirname, '../content/sa-hinh-loi.json'), 'utf8'));
+
+const saHinhNotices = JSON.parse(readFileSync(join(__dirname, '../content/sa-hinh-thong-bao.json'), 'utf8'));
+
+test('mỗi phím lỗi và thông báo sa hình có file audio tồn tại trên đĩa', () => {
+  const missing = [...saHinhErrors, ...saHinhNotices].map((k) => k.audio).filter((f) => !existsSync(join(__dirname, '../content/audio', f)));
+  assert.deepEqual(missing, []);
+});

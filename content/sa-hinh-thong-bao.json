@@ -1,0 +1,4 @@
+[
+  {"label": "Đậu", "say": "Bạn đã thi đậu phần thi sát hạch lái xe trong hình", "icon": "🎉", "audio": "soundboard/da-thi-dau.mp3"},
+  {"label": "Trượt", "say": "Bạn đã thi trượt", "icon": "❌", "audio": "soundboard/da-thi-truot.mp3"}
+]

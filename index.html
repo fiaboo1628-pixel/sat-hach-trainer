@@ -22,8 +22,6 @@
   </header>
 
   <main>
-    <p id="now-playing" hidden></p>
-
     <section id="menu">
       <button id="btn-bo-chuan" class="tile tile-blue" type="button">🔊 Hạng B</button>
       <button id="btn-bo-chuan-c1" class="tile tile-blue" type="button">🔊 Hạng C1</button>
@@ -37,17 +35,32 @@
         <span class="mode-card-label">🚗 Đường trường</span>
         <span class="mode-card-sub">Chế độ trong xe — người ngồi cạnh bấm để hô lệnh và báo lỗi</span>
       </button>
+      <button id="btn-huong-dan-dt" class="btn-guide" type="button">📋 Đọc trước khi thi đường trường</button>
       <p class="menu-stats">600 câu lý thuyết · 316 ảnh biển báo/sa hình · 11 bài sa hình chuẩn</p>
     </section>
 
+    <!-- Sa hình bấm tay: người ngồi cạnh phát từng tiếng đúng lúc xe tới, thay cho phát tự động
+         theo giờ cố định (xe thật không đi đúng nhịp đó). Ting tong và Tút là hai phím bấm nhiều
+         nhất, nên nằm trên cùng và dính mép trên khi cuộn xuống khu báo lỗi. -->
     <section id="view-bo-chuan" hidden>
-      <h2 id="title-bo-chuan"></h2>
-      <ol id="list-bo-chuan"></ol>
-      <div class="action-row">
-        <button id="play-bo-chuan" class="btn-primary" type="button">▶ Phát</button>
-        <button id="stop-bo-chuan" class="btn-secondary" type="button">⏹ Dừng</button>
+      <div class="sh-cues">
+        <button id="sh-ting-tong" class="sh-cue" type="button"><span aria-hidden="true">🔔</span> Ting tong<small>Vào bài</small></button>
+        <button id="sh-tut" class="sh-cue" type="button"><span aria-hidden="true">✅</span> Tút<small>Nhận bài</small></button>
       </div>
-      <button class="btn-back" type="button">← Quay lại</button>
+      <button id="sh-next" class="sh-next" type="button"></button>
+      <div class="action-row sh-step">
+        <button id="sh-back" class="btn-secondary" type="button">◀ Lùi</button>
+        <button id="sh-replay" class="btn-secondary" type="button">↻ Đọc lại</button>
+      </div>
+      <section class="sb-zone sb-zone-blue">
+        <h3>Thông báo</h3>
+        <div id="sh-notices" class="sb-grid"></div>
+      </section>
+      <section class="sb-zone sb-zone-red">
+        <h3>Báo lỗi</h3>
+        <div id="sh-errors" class="sb-grid"></div>
+      </section>
+      <button class="btn-back btn-back-boxed sh-quit" type="button">← Quay lại</button>
     </section>
 
     <!-- Không có <h2> ở đây: ba khu tự nhãn, và hàng tiêu đề là chỗ duy nhất mua lại được
@@ -59,6 +72,29 @@
         <button id="stop-duong-truong" class="btn-primary" type="button">⏹ Dừng</button>
         <button class="btn-back btn-back-boxed" type="button">← Quay lại</button>
       </div>
+    </section>
+
+    <!-- Hướng dẫn thi đường trường: để học viên đọc trước, không phải để bấm trong xe. Nội dung
+         theo quy trình sát hạch trên đường hạng B (Thông tư 35/2024 Phụ lục XV mục C.2.2.2,
+         giữ ở TT 12/2025/TT-BCA); xem README. -->
+    <section id="view-huong-dan-dt" hidden>
+      <h2>Thi đường trường</h2>
+      <p class="guide-lead">Bài thi có 100 điểm, cần từ 80 điểm trở lên để đậu. Loa trên xe ra lệnh từng bài; làm đúng lệnh của loa và của sát hạch viên.</p>
+      <h3>1. Xuất phát</h3>
+      <ul class="guide-steps"><li>Thắt dây an toàn, dừng xe trước vạch xuất phát và chờ lệnh.</li><li>Loa báo xuất phát: bật xi nhan trái, nhả hết thắng tay, cho xe qua vạch.</li><li>Trong 15 m đầu, lên từ số 1 lên số 3.</li></ul>
+      <table class="guide-table"><tbody><tr><td>Không thắt dây an toàn</td><td>−5</td></tr><tr><td>Không bật xi nhan trái</td><td>−5</td></tr><tr><td>Không nhả hết thắng tay</td><td>−5</td></tr><tr><td>Đi 15 m chưa lên được số 3</td><td>−5</td></tr><tr><td>Quá 30 giây chưa qua vạch xuất phát</td><td><span class="guide-out">Bị loại</span></td></tr></tbody></table>
+      <h3>2. Tăng số, tăng tốc độ</h3>
+      <ul class="guide-steps"><li>Trong 100 m: tăng lên 1 số và tăng tốc độ thêm ít nhất 5 km/h.</li></ul>
+      <table class="guide-table"><tbody><tr><td>Đi 100 m chưa tăng được số và tốc độ</td><td>−5</td></tr></tbody></table>
+      <h3>3. Giảm số, giảm tốc độ</h3>
+      <ul class="guide-steps"><li>Trong 100 m: giảm xuống 1 số và giảm tốc độ ít nhất 5 km/h.</li></ul>
+      <table class="guide-table"><tbody><tr><td>Đi 100 m chưa giảm được số và tốc độ</td><td>−5</td></tr></tbody></table>
+      <h3>4. Kết thúc</h3>
+      <ul class="guide-steps"><li>Loa báo kết thúc: trong 5 m bật xi nhan phải, đánh lái vào sát lề phải.</li><li>Dừng hẳn xe, về số 0 (xe số tự động: về P), rồi kéo thắng tay.</li></ul>
+      <table class="guide-table"><tbody><tr><td>Không bật xi nhan phải</td><td>−5</td></tr><tr><td>Dừng xe không về số 0 (hoặc P)</td><td>−5</td></tr><tr><td>Dừng xe không kéo thắng tay</td><td>−5</td></tr></tbody></table>
+      <h3>Lỗi tính ở mọi bài</h3>
+      <table class="guide-table"><tbody><tr><td>Xe rung giật mạnh</td><td>−5</td></tr><tr><td>Xe chết máy, mỗi lần</td><td>−5</td></tr><tr><td>Ga quá 4000 vòng/phút, mỗi lần</td><td>−5</td></tr><tr><td>Đi số 3 trở lên khi xe dưới 20 km/h, cứ 3 giây</td><td>−2</td></tr><tr><td>Vi phạm luật giao thông</td><td>−10</td></tr><tr><td>Lúc đổi số, xe choạng lái ra khỏi làn</td><td><span class="guide-out">Bị loại</span></td></tr><tr><td>Không làm theo lệnh sát hạch viên</td><td><span class="guide-out">Bị loại</span></td></tr><tr><td>Xử lý tình huống gây tai nạn</td><td><span class="guide-out">Bị loại</span></td></tr></tbody></table>
+      <button class="btn-back" type="button">← Quay lại</button>
     </section>
 
     <section id="view-bo-tu-ghep" hidden>
@@ -75,8 +111,7 @@
       </div>
       <div class="action-row">
         <button id="save-bo-tu-ghep" class="btn-secondary" type="button">💾 Lưu</button>
-        <button id="play-bo-tu-ghep" class="btn-primary" type="button">▶ Phát</button>
-        <button id="stop-bo-tu-ghep" class="btn-secondary" type="button">⏹ Dừng</button>
+        <button id="play-bo-tu-ghep" class="btn-primary" type="button">▶ Mở bảng bấm</button>
       </div>
       <button class="btn-back" type="button">← Quay lại</button>
     </section>

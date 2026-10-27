@@ -40,6 +40,10 @@ Mở địa chỉ server báo ra (vd `http://localhost:8080`).
   sau đó **tăng `CACHE_NAME`**. `ting-tong.mp3` và `tut.mp3` không bị script chạm — đó là
   tiếng máy phát, không phải lời đọc.
 
+- **12 file giọng phím lỗi sa hình** trong `content/audio/soundboard/` (đè vạch, dừng chưa đến/quá vạch, quá thời gian bài, chết máy…) — render 2026-10-28 cùng giọng piper ở trên, danh sách trong `content/sa-hinh-loi.json`. Hai phím "Không bật xi nhan" và "Không thắt dây an toàn" dùng chung file với Đường trường. Danh sách lỗi và mức trừ điểm theo quy trình sát hạch hạng B trong hình ([LuatVietnam tóm tắt Thông tư 35/2024/TT-BGTVT, Phụ lục XV mục C](https://luatvietnam.vn/giao-thong/tru-diem-khi-thi-thuc-hanh-bang-lai-o-to-863-100553-article.html); tụt dốc quá 50 cm là truất quyền).
+
+- Trang **Hướng dẫn thi đường trường** (chỉ chữ, không audio) lấy theo quy trình sát hạch trên đường hạng B, mục 2.2.2 ([bản trích Phụ lục, thuvienphapluat](https://cdn.thuvienphapluat.vn/uploads/danluatfile/2024/06/10/Phan-C-2.docx)); mức đậu 80/100.
+
 - **`ting-tong.mp3`** (field `cue`, tín hiệu nhận bài phát sau tên bài) — bản ghi thật
   tiếng chuông cửa "ding-dong" (thay xong 2026-10-02): [Doorbell #6, BigSoundBank](https://bigsoundbank.com/doorbell-6-s2365.html),
   tác giả Dorian Clair, giấy phép **CC0** (không cần ghi nguồn). Đã xử lý từ file WAV gốc:
