@@ -11,6 +11,15 @@
         ],
         "createdAt": "2026-10-21T03:21:03.979Z",
         "reason": "user confirmed: owner said the beige frame colour #E3E1D6 is fine (2026-10-21)"
+      },
+      {
+        "rule": "repeated-container-text",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-10-26T20:23:16.947Z",
+        "reason": "architecture, not messaging: every screen is a <section> inside one <main> and only one is visible at a time (js/app.js showView toggles [hidden]), so the 8 '← Quay lại' and 3 '⏹ Dừng' are one control per screen, never repeated on a screen the user sees. Predates this session; 7 of the 8 were already there."
       }
     ]
   }

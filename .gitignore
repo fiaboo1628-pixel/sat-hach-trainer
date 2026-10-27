@@ -3,3 +3,6 @@
 # impeccable: critique/ và config.json là tài liệu thật (CLAUDE.md trỏ vào chúng như
 # quyết định binding), nên được track. hook.cache.json thì chỉ là cache của plugin.
 .impeccable/hook.cache.json
+
+# playwright-mcp ghi snapshot/console log vào đây khi drive app lúc làm UI
+.playwright-mcp/

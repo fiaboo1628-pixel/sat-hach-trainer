@@ -27,9 +27,16 @@
     <section id="menu">
       <button id="btn-bo-chuan" class="tile tile-blue" type="button">🔊 Hạng B</button>
       <button id="btn-bo-chuan-c1" class="tile tile-blue" type="button">🔊 Hạng C1</button>
-      <button id="btn-duong-truong" class="tile tile-red" type="button">🚗 Đường trường</button>
       <button id="btn-bo-tu-ghep" class="tile tile-yellow" type="button">🧩 Bộ tự ghép</button>
       <button id="btn-ly-thuyet" class="tile tile-red" type="button">📘 Lý thuyết</button>
+
+      <!-- Đường trường không phải mục thứ năm của danh sách: nó là chế độ dùng trong xe,
+           và người bấm thường là người ngồi cạnh, không phải người đã cài app. Nên nó có
+           khối riêng và một dòng nói nó dùng khi nào. -->
+      <button id="btn-duong-truong" class="mode-card" type="button">
+        <span class="mode-card-label">🚗 Đường trường</span>
+        <span class="mode-card-sub">Chế độ trong xe — người ngồi cạnh bấm để hô lệnh và báo lỗi</span>
+      </button>
       <p class="menu-stats">600 câu lý thuyết · 316 ảnh biển báo/sa hình · 11 bài sa hình chuẩn</p>
     </section>
 
@@ -43,11 +50,15 @@
       <button class="btn-back" type="button">← Quay lại</button>
     </section>
 
+    <!-- Không có <h2> ở đây: ba khu tự nhãn, và hàng tiêu đề là chỗ duy nhất mua lại được
+         cho 12 phím trên một màn 375x667. Quay lại nằm dưới cùng, xa khu báo lỗi, vì người
+         bấm là người ngồi cạnh đang tìm phím gấp. -->
     <section id="view-duong-truong" hidden>
-      <button class="btn-back" type="button">← Quay lại</button>
-      <h2>Đường trường</h2>
       <div id="soundboard"></div>
-      <button id="stop-duong-truong" class="tile" type="button">⏹ Dừng</button>
+      <div class="action-row sb-controls">
+        <button id="stop-duong-truong" class="btn-primary" type="button">⏹ Dừng</button>
+        <button class="btn-back btn-back-boxed" type="button">← Quay lại</button>
+      </div>
     </section>
 
     <section id="view-bo-tu-ghep" hidden>

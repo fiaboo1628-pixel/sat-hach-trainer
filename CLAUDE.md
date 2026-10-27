@@ -8,7 +8,7 @@ Offline-capable PWA for Vietnamese driving-test practice (UI and content are in 
 
 Three modules:
 - **Sa hình audio**: plays practical-test station announcements (name audio, then a "ting-tong" cue) as a standard set (`content/standard-set.json`) or a user-built set saved in localStorage.
-- **Đường trường**: a soundboard of eleven road-call cues (`content/soundboard.json`), meant to be pressed while driving rather than browsed as a menu.
+- **Đường trường**: a soundboard of twelve road-call cues (`content/soundboard.json`), pressed by the passenger who calls the stations out while someone else drives -- not browsed as a menu. Ten of them are voice files rendered by `tools/render-soundboard.sh` into `content/audio/soundboard/`; the other two are machine sounds that script leaves alone.
 - **Lý thuyết** (theory): 600 official questions (`content/theory/questions.json`). Timed mock exams for license classes B / C1, plus untimed per-topic practice with bookmarks and a wrong-answer review list.
 
 ## Commands
@@ -16,7 +16,7 @@ Three modules:
 ```sh
 npx serve . -l 8080               # service worker needs http, not file://. NOT python3 -m
                                   # http.server: python3 is not installed here.
-node --test                       # all tests (27). `node --test test/` is BROKEN on
+node --test                       # all tests (28). `node --test test/` is BROKEN on
                                   # Node 24 -- it treats the dir as one module and fails
                                   # with MODULE_NOT_FOUND, which looks like a real bug.
 node --test test/theory.test.mjs   # one file

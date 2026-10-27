@@ -220,23 +220,54 @@ ol, ul {
 }
 
 #soundboard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Ba khu: lệnh, tín hiệu, báo lỗi. Màu nằm ở khu, không ở từng phím -- nên không còn
+   border-left 6px, và tìm phím là tìm khu. Nhãn khu thay cho <h2> đã bỏ. */
+.sb-zone {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.45rem 0.55rem 0.55rem;
+  background: var(--card-bg);
+}
+
+.sb-zone > h3 {
+  margin: 0 0 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sb-zone-blue { background: #eef3fa; }
+.sb-zone-yellow { background: #fdf6e3; }
+.sb-zone-red { background: #fbeeee; }
+
+/* Chữ nhãn khu lấy từ chính sắc của khu, không phải xám. */
+.sb-zone-blue > h3 { color: var(--blue); }
+.sb-zone-yellow > h3 { color: #7a5c00; }
+.sb-zone-red > h3 { color: var(--red); }
+
+.sb-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-  margin-bottom: 1rem;
+  gap: 0.45rem;
 }
 
-/* Sized so all 11 keys + Dừng fit one 375x667 screen without scrolling */
-#soundboard .tile {
-  min-height: 4rem;
+/* Sized so all 12 keys + hàng điều khiển fit one 375x667 screen without scrolling */
+.sb-key {
+  position: relative;
+  overflow: hidden;
+  min-height: 3.4rem;
   margin: 0;
-  padding: 0.4rem 0.7rem;
-  font-size: 1.2rem;
-  line-height: 1.2;
-}
-
-#view-duong-truong h2 {
-  margin: 0 0 0.5rem;
+  padding: 0.4rem 0.6rem;
+  font-size: 1.05rem;
+  line-height: 1.15;
+  border-left-width: 1px;
 }
 
 #view-duong-truong .btn-back {
@@ -244,9 +275,45 @@ ol, ul {
 }
 
 /* Playing key: filled, not just a colour change, so it reads at a glance in the car */
-#soundboard .tile.playing {
-  background: var(--yellow);
+/* Đang phát: một vạch tối chạy ngang phím theo độ dài clip, mép dẫn 2px. Là hình học, không
+   phải màu -- nên nó đọc được cả trên hai phím vốn đã vàng, và nó còn cho biết còn bao lâu,
+   thứ người bấm cần để quyết có bấm phím tiếp hay chưa. */
+.sb-key.playing {
   border-color: var(--ink);
+  box-shadow: 0 1px 2px rgba(16, 21, 31, 0.06), inset 0 0 0 2px var(--ink);
+}
+
+.sb-key.playing::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--played, 0) * 100%);
+  background: rgba(16, 21, 31, 0.14);
+  border-right: 2px solid var(--ink);
+  pointer-events: none;
+}
+
+/* Giảm chuyển động: giữ dấu "phím này đang nói", bỏ phần chạy. */
+@media (prefers-reduced-motion: reduce) {
+  .sb-key.playing::after {
+    width: 100%;
+    background: rgba(16, 21, 31, 0.08);
+    border-right: 0;
+  }
+}
+
+/* Hàng điều khiển nằm dưới cả ba khu: Dừng là việc hay làm nhất, Quay lại có hộp hẳn hoi
+   thay vì một link mờ sát phím đầu tiên. */
+.sb-controls {
+  gap: 0.5rem;
+}
+
+.btn-back-boxed {
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--card-bg);
+  color: var(--ink);
 }
 
 /* Sa hình playback: big card says which bài is being read; the list row is marked too */
@@ -328,4 +395,43 @@ body:has(#view-duong-truong:not([hidden])) header {
 
 #theory-result-summary {
   font-size: 1.1rem;
+}
+
+/* Car mode lấy lại khoảng đệm của main cho phím: đo được 12 phím + hàng điều khiển tràn 7px
+   trên 375x667 với padding 1.2rem, và ở đây viền trang không làm việc gì cả. Chỉ áp cho một
+   view, qua :has() nên không cần JS thêm. */
+body:has(#view-duong-truong:not([hidden])) main {
+  padding: 0.5rem;
+}
+
+/* Đường trường là một chế độ, không phải mục thứ năm. Khối riêng, mặt nền đặc thay vì thẻ
+   trắng, và một dòng nói dùng khi nào -- vì người bấm thường là người vừa được đưa máy và
+   chưa từng mở app này. Không dùng border-left màu như các tile khác: màu ở đây là cả mặt. */
+.mode-card {
+  display: block;
+  width: 100%;
+  margin: 1.1rem 0 0;
+  padding: 0.95rem 1.1rem;
+  text-align: left;
+  border: 1px solid var(--blue);
+  border-radius: 6px;
+  background: var(--blue);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(16, 21, 31, 0.18);
+}
+
+.mode-card-label {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+/* Dòng phụ lấy sắc từ chính nền xanh, không phải xám -- xám trên nền đặc là chữ chết. */
+.mode-card-sub {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #cfe0f5;
 }

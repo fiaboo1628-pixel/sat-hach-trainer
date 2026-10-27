@@ -141,6 +141,9 @@ function stopPlayback(message) {
   els.player.onended = null;
   els.player.onerror = null;
   els.player.onloadedmetadata = null;
+  // Phím Đường trường gắn ontimeupdate để chạy vạch tiến trình; không xoá là nó còn ghi
+  // --played lên phím cũ suốt lần phát sau.
+  els.player.ontimeupdate = null;
   els.player.pause();
   document.querySelector('.playing')?.classList.remove('playing');
   els.nowPlaying.hidden = true;
@@ -235,26 +238,62 @@ function playPlaylist(ids, listEl) {
   playNext();
 }
 
+// Ba khu của Đường trường. `color` trong soundboard.json đã mã hoá sẵn nhóm — lệnh, tín hiệu,
+// báo lỗi — nên đây là đọc ra thứ có trong data, không phải đặt thêm phân loại mới. Người bấm
+// là người ngồi cạnh, đang tìm một phím dưới áp lực: tách khu để không hô nhầm một lỗi.
+const SOUNDBOARD_ZONES = [
+  { color: 'blue', label: 'Lệnh' },
+  { color: 'yellow', label: 'Tín hiệu' },
+  { color: 'red', label: 'Báo lỗi' },
+];
+
 // Đường trường: each key plays its clip right away, cutting off whatever was playing.
 function renderSoundboard() {
-  soundboard.forEach((key) => {
-    const b = button(key.label, () => {
-      stopPlayback();
-      b.classList.add('playing');
-      els.player.onended = () => b.classList.remove('playing');
-      els.player.playbackRate = 1;
-      els.player.src = `content/audio/${key.audio}`;
-      els.player.play().catch(() => {
-        b.classList.remove('playing');
-        setStatus(`Lỗi phát "${key.label}".`);
+  SOUNDBOARD_ZONES.forEach((zone) => {
+    const keys = soundboard.filter((key) => key.color === zone.color);
+    if (!keys.length) return;
+
+    const section = document.createElement('section');
+    section.className = `sb-zone sb-zone-${zone.color}`;
+    const heading = document.createElement('h3');
+    heading.textContent = zone.label;
+    section.append(heading);
+
+    const grid = document.createElement('div');
+    grid.className = 'sb-grid';
+    keys.forEach((key) => {
+      const b = button(key.label, () => {
+        stopPlayback();
+        b.classList.add('playing');
+        // --played lái vạch chạy trong .playing::after: trạng thái đang phát phải đọc được
+        // mà không dựa vào màu, vì 2 phím vốn đã là màu vàng.
+        b.style.setProperty('--played', '0');
+        els.player.ontimeupdate = () => {
+          const total = els.player.duration;
+          if (total) b.style.setProperty('--played', (els.player.currentTime / total).toFixed(3));
+        };
+        els.player.onended = () => {
+          b.classList.remove('playing');
+          els.player.ontimeupdate = null;
+        };
+        els.player.playbackRate = 1;
+        els.player.src = `content/audio/${key.audio}`;
+        els.player.play().catch(() => {
+          b.classList.remove('playing');
+          els.player.ontimeupdate = null;
+          setStatus(`Lỗi phát "${key.label}".`);
+        });
       });
+      const icon = document.createElement('span');
+      icon.textContent = key.icon;
+      icon.setAttribute('aria-hidden', 'true');
+      b.prepend(icon, ' ');
+      b.className = 'tile sb-key';
+      grid.appendChild(b);
     });
-    const icon = document.createElement('span');
-    icon.textContent = key.icon;
-    icon.setAttribute('aria-hidden', 'true');
-    b.prepend(icon, ' ');
-    b.className = `tile tile-${key.color}`;
-    els.soundboard.appendChild(b);
+
+    section.append(grid);
+    els.soundboard.appendChild(section);
   });
 }
 

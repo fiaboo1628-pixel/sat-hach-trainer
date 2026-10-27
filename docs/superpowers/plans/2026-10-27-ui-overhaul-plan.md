@@ -13,8 +13,8 @@ does not say which bài is playing. So this plan has one thesis and one new door
 
 1. **Orientation.** Make each screen and each kind of control look like what it is, and make
    moving between them legible. This is one coherent pass, not three cosmetic tickets.
-2. **Car mode for Đường trường.** Its own entry from the home screen, designed for someone
-   holding a steering wheel.
+2. **Car mode for Đường trường.** Its own entry from the home screen, designed for the passenger
+   who calls the stations out while someone else drives.
 
 **Architecture:** Unchanged. Static PWA, vanilla ES modules, no build step, no dependencies, no
 `package.json`. `index.html` holds every screen as a `<section>`; `js/app.js` `showView()` toggles
@@ -49,20 +49,30 @@ The critique is six days old and three PRs landed after it. Re-verified against 
 
 ## Watch it live
 
-The owner wants to see each change on screen, not read a diff. The app is a web page, so the
-driver is Playwright, not the cua computer-use stack: cua's own platform notes rate browser routes
-on GNOME/Wayland read-only, while Playwright drives the page directly and its browsers here are
-Nix-built, so nothing is fetched at run time.
+The owner wants to see each change on screen, not read a diff. What actually works, found by
+trying it on 2026-10-27:
 
 ```sh
-npx serve . -l 8080          # verified working 2026-10-27. NOT python3 -m http.server:
-                             # python3 is not installed on this machine.
+npx --yes live-server --port=8080 --no-browser --quiet .
+chromium --ozone-platform=wayland --window-size=412,915 --app="http://localhost:8080"
 ```
 
-Use the `playwright-headed` MCP server — headed, `--device "Pixel 5"` — so a real phone-sized
-window is visible. `browser_navigate` to `http://localhost:8080`, then `browser_snapshot` /
-`browser_click`. Keep the phone viewport on for anything about layout: this is a phone app used in
-a car, and the critique's P2 is a desktop-only two-column layout.
+`live-server` injects an inline reload script, so every file write lands in that window with no
+refresh — which is what "watch it live" needs, and plain `npx serve` does not do. Chromium needs
+`--ozone-platform=wayland` under GNOME here or it picks the X11 backend and exits with "Missing X
+server or $DISPLAY". The window size approximates a Pixel 5; keep it, because the critique's P2 is
+a desktop-only two-column layout and this is a phone app.
+
+**Not the cua computer-use stack, and not for the reason first written here.** Measured: a Chromium
+window comes back `accessibility_window_identity_unproven` even on GNOME, where a GTK app does not,
+so no element tokens. Reading a page through AT-SPI also gives no DOM, no selectors and no device
+emulation. Playwright is the right driver for a web page. (The earlier claim that cua's browser
+routes are "read-only on GNOME/Wayland" was repeated from the platform matrix, not measured here.)
+
+A `playwright-headed` MCP server was registered for this, but a newly registered MCP server is not
+loadable into a running Claude Code session — `/mcp` only re-attaches servers that were already
+there. Hence the Chromium-plus-live-server setup above for the owner's eyes, and the headless
+`playwright` MCP for the agent's own verification.
 
 ## Global constraints
 
@@ -73,7 +83,7 @@ a car, and the critique's P2 is a desktop-only two-column layout.
   a bug (task 1 is exactly that bug).
 - `node --test` must pass before and after each task — **bare, no path**. `node --test test/` is
   broken on Node 24 and fails with `MODULE_NOT_FOUND`, which reads as a real bug and is not one.
-  27 tests, green as of 2026-10-27.
+  28 tests, green as of 2026-10-27.
 - Colour must never be the only signal. Three of the findings below are colour-only failures.
 - UI copy is Vietnamese; keep the domain wording (hạng B / C1, điểm liệt, sa hình, đường trường).
 - No new runtime dependency. Fonts, patterns and transitions ship as local files or CSS.
@@ -82,26 +92,42 @@ a car, and the critique's P2 is a desktop-only two-column layout.
 
 ### 1. Car mode for Đường trường
 
-The owner's first-named pain, and now its own door. What is actually left after the merged PRs:
+**The usage scene, from the owner on 2026-10-27 — this corrects what the rest of this task
+originally assumed.** The person pressing is **the passenger, not the driver**. The phone is a
+speaker: it sits loose and nobody is steering while touching it. So car mode is not a blind-press
+pad with giant keys — it is the passenger's announcement panel. They do look at the screen when
+they press, so full labels are right and twelve keys at once is fine.
+
+That moves the risk. It is not "a mis-press while holding the wheel"; it is **hunting for the
+right key under time pressure** and **announcing a fault by accident**. Hence the owner's third
+answer: **separate zones** — commands (Xuất phát, Tăng số/Giảm số, Kết thúc) apart from the six
+red fault calls, with Dừng apart from both. And the wake lock matters *more* than first thought,
+because nothing touches the screen between presses.
+
+Audio is the output that matters. The screen exists to let one person find one key fast.
+
+What is actually left after the merged PRs:
 
 - `index.html:43` puts `<button class="btn-back">← Quay lại</button>` as the **first element of the
-  section**, directly above the keys — a muted text link next to buttons pressed without looking.
-  The critique's "Back adjacent" finding survives.
+  section**, a muted text link immediately above the keys. With a passenger pressing this is less
+  about a steering-wheel mis-press and more that the way out looks like nothing and sits where a
+  hurried hand sweeps. The critique's "Back adjacent" finding survives, for a different reason.
 - `<h2>Đường trường</h2>` still takes a row that the keys could use.
 - **Playing state collides with a key colour, verified:** `content/soundboard.json` has
   `color: "yellow"` on 2 of 11 keys ("Ting tong", "Tút"), and `#soundboard .tile.playing` paints
   `background: var(--yellow)`. Those two keys look like they are playing at rest, and when they
   really play they differ only by `border-color`. Colour-only, and ambiguous.
 
-- [ ] Add a car-mode entry on the home screen, distinct from the sa hình / lý thuyết tiles — it is
-      a mode, not a menu item. Decide its shape with `impeccable`; it should be obvious at a glance
-      which tile you press before starting to drive.
-- [ ] Inside car mode: keys get the whole screen. No `<h2>`, and the way out must not sit where a
-      key press could land on it. Confirm-to-leave is acceptable; a text link above the keys is not.
-- [ ] Replace the playing state with something that is not a palette colour and not colour-only
+- [x] Add a car-mode entry on the home screen, distinct from the sa hình / lý thuyết tiles — it is
+      a mode, not a menu item. It is pressed by whoever is riding along, so it has to be findable by
+      someone who did not set the app up and is being handed the phone.
+- [x] Inside car mode: the three zones get the screen. The `<h2>` goes only if the zones read without
+      it. The way out stops being an unlabelled muted link flush against the first key — finding the
+      right key fast is the bar, not key size for its own sake.
+- [x] Replace the playing state with something that is not a palette colour and not colour-only
       (motion, a mark, a border treatment — `impeccable`'s call). It must be unmistakable on a
       `yellow` key.
-- [ ] Verify in the Pixel 5 viewport: every key plus the way out, no scrolling, and tap targets
+- [x] Verify in the Pixel 5 viewport: every key plus the way out, no scrolling, and tap targets
       measured rather than eyeballed. Press a yellow key and confirm its playing state reads at
       arm's length.
 
