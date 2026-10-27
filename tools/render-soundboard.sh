@@ -35,21 +35,33 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 force=${1:-}
+# Cùng 1.4 nhưng piper bản Nix (2026-10-27) ra clip ngắn hơn bản Arch ~30% (2026-10-28: "Không tăng số"
+# 0.65 s so với 0.87 s), nên phím Nix nghe nhanh hẳn. Render lại thì render cả bộ (--force) bằng một
+# bản piper, đừng trộn.
 export VI_TTS_LENGTH_SCALE=1.4    # xem ghi chú tốc độ đọc ở đầu file
 
 command -v vi-tts >/dev/null || {
-  echo "vi-tts not on PATH. It comes from nixos-config (pkgs/vi-tts.nix)." >&2
+  echo "vi-tts not on PATH. On Arch it is ~/.local/bin/vi-tts (port of nixos-config pkgs/vi-tts.nix)." >&2
   exit 1
 }
 
 mkdir -p content/audio/soundboard
 
 # Only keys whose audio lives under soundboard/ are spoken; the rest are machine sounds.
+# Sa hình's error and announcement keys (content/sa-hinh-loi.json, sa-hinh-thong-bao.json) are the same family of in-car spoken keys, so
+# they share this voice and directory; `say` overrides `label` where digits would be misread.
+# A file used by both boards is rendered once.
 node -e '
-const sb = require("./content/soundboard.json");
-for (const k of sb) {
-  if (!k.audio.startsWith("soundboard/")) continue;
-  process.stdout.write(k.audio + "\t" + k.label + "\n");
+const keys = [
+  ...require("./content/soundboard.json"),
+  ...require("./content/sa-hinh-loi.json"),
+  ...require("./content/sa-hinh-thong-bao.json"),
+];
+const seen = new Set();
+for (const k of keys) {
+  if (!k.audio.startsWith("soundboard/") || seen.has(k.audio)) continue;
+  seen.add(k.audio);
+  process.stdout.write(k.audio + "\t" + (k.say || k.label) + "\n");
 }
 ' | while IFS=$'\t' read -r rel label; do
   out="content/audio/$rel"

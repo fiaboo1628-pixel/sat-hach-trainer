@@ -1,0 +1,16 @@
+[
+  {"label": "Đè vạch", "icon": "〰️", "audio": "soundboard/de-vach.mp3"},
+  {"label": "Dừng chưa đến vạch", "icon": "⏮️", "audio": "soundboard/dung-chua-den-vach.mp3"},
+  {"label": "Dừng quá vạch", "icon": "⏭️", "audio": "soundboard/dung-qua-vach.mp3"},
+  {"label": "Quá thời gian bài thi", "icon": "⏱️", "audio": "soundboard/qua-thoi-gian-bai-thi.mp3"},
+  {"label": "Xe chết máy", "icon": "🔇", "audio": "soundboard/xe-chet-may.mp3"},
+  {"label": "Không bật xi nhan", "icon": "↪️", "audio": "soundboard/khong-bat-xi-nhan.mp3"},
+  {"label": "Không thắt dây an toàn", "icon": "🔗", "audio": "soundboard/khong-that-day-an-toan.mp3"},
+  {"label": "Không đổi đúng số", "icon": "⚙️", "audio": "soundboard/khong-doi-dung-so.mp3"},
+  {"label": "Quá 4000 vòng/phút", "say": "Quá bốn nghìn vòng trên phút", "icon": "🌀", "audio": "soundboard/qua-4000-vong.mp3"},
+  {"label": "Vượt đèn đỏ", "icon": "🚥", "audio": "soundboard/vuot-den-do.mp3"},
+  {"label": "Quá tốc độ", "icon": "💨", "audio": "soundboard/qua-toc-do.mp3"},
+  {"label": "Tụt dốc quá 50 cm", "say": "Tụt dốc quá năm mươi xen ti mét", "icon": "⛰️", "audio": "soundboard/tut-doc.mp3"},
+  {"label": "Lên vỉa hè", "icon": "🧱", "audio": "soundboard/len-via-he.mp3"},
+  {"label": "Đi sai hình", "icon": "🚫", "audio": "soundboard/di-sai-hinh.mp3"}
+]

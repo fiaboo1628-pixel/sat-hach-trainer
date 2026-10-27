@@ -40,6 +40,17 @@ Mở địa chỉ server báo ra (vd `http://localhost:8080`).
   sau đó **tăng `CACHE_NAME`**. `ting-tong.mp3` và `tut.mp3` không bị script chạm — đó là
   tiếng máy phát, không phải lời đọc.
 
+- **12 file giọng phím lỗi sa hình** trong `content/audio/soundboard/` (đè vạch, dừng chưa đến/quá vạch, quá thời gian bài, chết máy…) — render 2026-10-28 cùng giọng piper ở trên, danh sách trong `content/sa-hinh-loi.json`. Hai phím "Không bật xi nhan" và "Không thắt dây an toàn" dùng chung file với Đường trường. Danh sách lỗi và mức trừ điểm theo quy trình sát hạch hạng B trong hình ([LuatVietnam tóm tắt Thông tư 35/2024/TT-BGTVT, Phụ lục XV mục C](https://luatvietnam.vn/giao-thong/tru-diem-khi-thi-thuc-hanh-bang-lai-o-to-863-100553-article.html); tụt dốc quá 50 cm là truất quyền).
+
+- Trang **Hướng dẫn thi đường trường** (chỉ chữ, không audio) lấy theo quy trình sát hạch trên đường hạng B, mục 2.2.2 ([bản trích Phụ lục, thuvienphapluat](https://cdn.thuvienphapluat.vn/uploads/danluatfile/2024/06/10/Phan-C-2.docx)); mức đậu 80/100.
+
+- **`khan-cap.mp3`** (phím Khẩn cấp của bảng sa hình, tình huống nguy hiểm): còi hú tự tổng hợp bằng ffmpeg, không phải bản ghi thật -- quét 650→1200 Hz mỗi 0,5 s trong 3 s:
+
+      ffmpeg -f lavfi -i "aevalsrc='0.3*sin(2*PI*(650*mod(t\,0.5)+550*mod(t\,0.5)^2)) + 0.08*sin(4*PI*(650*mod(t\,0.5)+550*mod(t\,0.5)^2))':s=44100:d=3" \
+        -af "afade=t=in:d=0.02,afade=t=out:st=2.8:d=0.2" -ac 1 -codec:a libmp3lame -q:a 4 khan-cap.mp3
+
+  Có bản ghi tiếng thật ở sân thi thì đè file này rồi tăng `CACHE_NAME`.
+
 - **`ting-tong.mp3`** (field `cue`, tín hiệu nhận bài phát sau tên bài) — bản ghi thật
   tiếng chuông cửa "ding-dong" (thay xong 2026-10-02): [Doorbell #6, BigSoundBank](https://bigsoundbank.com/doorbell-6-s2365.html),
   tác giả Dorian Clair, giấy phép **CC0** (không cần ghi nguồn). Đã xử lý từ file WAV gốc:
