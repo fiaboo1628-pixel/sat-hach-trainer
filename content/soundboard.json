@@ -68,7 +68,7 @@
   {
     "label": "Kết thúc",
     "icon": "🏁",
-    "audio": "soundboard/ket-thuc.mp3",
+    "audio": "ket-thuc.mp3",
     "color": "blue"
   }
 ]
