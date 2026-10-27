@@ -224,6 +224,30 @@ worse than the `alt=""` the critique reported.
       exactly as it is and must not drop text contrast below WCAG AA — measure the worst case
       (muted text over the busiest part), not the average.
 
+## Where this stopped, 2026-10-27 night
+
+Task 1 is done and committed (`c1438d5`). Task 1b shipped the Kết thúc key and the two gear
+calls, and the whole soundboard was re-rendered twice for speaking rate: 1.15 first, then
+**1.4** after the owner heard the full set played back through the car speaker and still
+found it fast. 1.4 is what `tools/render-soundboard.sh` holds now, and the durations moved
+properly at that value (tăng số 1.11 → 1.30s) unlike at 1.15.
+
+**One decision is open: a female voice for the Kết thúc key.** The owner asked for it, which
+deliberately breaks the one-voice rule this soundboard was just unified around — Kết thúc is
+a different kind of event from the eleven calls, so a different voice is a signal rather than
+an inconsistency. Do not "fix" it back.
+
+Progress on that: `vi_VN-vivos-x_low` is the only multi-speaker Vietnamese piper voice (65
+speakers) and its config carries no gender metadata. Seven speakers sampled blind (0, 9, 19,
+29, 39, 49, 59) were all rejected. Every one of the 65 was then rendered and measured with
+`aubiopitch`; the eight highest were 10, 3, 1, 13, 32, 4, 26, 21 (308–374 Hz) and were played
+for the owner — that is where the session ended, with no pick made. Note the measured range
+is high even for female speech, so treat the ranking as a shortlist, not a diagnosis: it is an
+x_low model on a 0.3–0.8s word, and the estimator may be catching harmonics.
+
+If none of the eight work, the conclusion is that this model has no usable female voice, and
+the remaining routes are a one-off online TTS render or asking a person to say two words.
+
 ## Open question — blocks part of task 1b
 
 **"Giảm số" wants the same treatment as "Tăng tốc, tăng số", but there is no audio for it.**
