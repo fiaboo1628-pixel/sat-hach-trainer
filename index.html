@@ -12,31 +12,98 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Sát Hạch" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Be+Vietnam+Pro:wght@400;600;800&display=swap" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Bộ icon dùng chung (nét trắng 24px), gọi bằng <use href="#i-…">. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M3 5.5Q7.5 3.5 12 6Q16.5 3.5 21 5.5V19Q16.5 17 12 19.5Q7.5 17 3 19Z M12 6V19.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cone" viewBox="0 0 24 24"><path d="M9.5 3h5l5 16h-15z M7.6 9.5h8.8 M6 14.5h12 M3 19.5h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-road" viewBox="0 0 24 24"><path d="M8 3L3 21 M16 3l5 18 M12 4v3 M12 10.5v3 M12 17v3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-car" viewBox="0 0 24 24"><path d="M3 15v-3l2.5-5h13L21 12v3z M3 15v3h3v-3 M18 15v3h3v-3 M6.5 12h11" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h12v10H2z M14 9h4.5L22 12.5V16h-8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="6" cy="17.5" r="2" fill="currentColor"/><circle cx="17.5" cy="17.5" r="2" fill="currentColor"/></symbol>
+    <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M4 8h4a2 2 0 1 1 4 0h4v4a2 2 0 1 1 0 4v4H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3L22 20H2z" fill="#f2b705" stroke="#c81e1e" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 9v5" stroke="#10151f" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="17" r="1.3" fill="#10151f"/></symbol>
+  </svg>
+  <!-- Đèn xuất phát: năm đèn đỏ sáng dần rồi tắt cùng lúc khi mở app ("lights out"), rồi menu
+       hiện ra. Chỉ chạy một lần lúc tải trang; quay lại menu không chạy lại. -->
   <header>
+    <div class="start-lights" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
     <h1>Sát Hạch Trainer</h1>
-    <p class="tagline">Luyện thi sa hình &amp; lý thuyết lái xe</p>
   </header>
 
   <main>
     <section id="menu">
-      <button id="btn-bo-chuan" class="tile tile-blue" type="button">🔊 Hạng B</button>
-      <button id="btn-bo-chuan-c1" class="tile tile-blue" type="button">🔊 Hạng C1</button>
-      <button id="btn-bo-tu-ghep" class="tile tile-yellow" type="button">🧩 Bộ tự ghép</button>
-      <button id="btn-ly-thuyet" class="tile tile-red" type="button">📘 Lý thuyết</button>
+      <!-- Menu là một chiếc ô tô nhìn từ trên xuống, tách làm ba khối như bản vẽ tách lớp: đầu xe
+           (đèn pha) là Lý thuyết, khoang lái là Sa hình, đuôi xe (đèn hậu) là Đường trường. Lúc mở
+           app ba khối bay vào ráp lại sau khi đèn xuất phát chuyển xanh. -->
+      <div class="car">
+        <button id="btn-ly-thuyet" class="car-part car-front" type="button">
+          <svg class="car-shape" viewBox="0 0 300 170" aria-hidden="true">
+            <rect class="car-wheel" x="26" y="98" width="16" height="48" rx="5"/><rect class="car-wheel" x="258" y="98" width="16" height="48" rx="5"/>
+            <path class="car-body" d="M40 170 L40 74 Q40 8 150 4 Q260 8 260 74 L260 170 Z"/>
+            <path class="car-lamp" d="M58 46 Q82 22 116 17 M242 46 Q218 22 184 17"/>
+            <path class="car-crease" d="M104 40 Q100 110 104 170 M196 40 Q200 110 196 170"/>
+          </svg>
+          <span class="chip chip-yellow"><svg aria-hidden="true"><use href="#i-book"/></svg>Lý thuyết</span>
+        </button>
+        <button id="btn-sa-hinh" class="car-part car-cabin" type="button">
+          <svg class="car-shape" viewBox="0 0 300 250" aria-hidden="true">
+            <path class="car-body" d="M40 0 L40 250 L260 250 L260 0 Z"/>
+            <path class="car-mirror" d="M40 34 L18 44 L22 58 L40 56 Z M260 34 L282 44 L278 58 L260 56 Z"/>
+            <path class="car-glass" d="M58 22 Q150 0 242 22 L228 72 Q150 60 72 72 Z"/>
+            <path class="car-roof" d="M72 72 Q150 60 228 72 L228 196 Q150 206 72 196 Z"/>
+            <path class="car-glass" d="M72 196 Q150 206 228 196 L238 232 Q150 246 62 232 Z"/>
+            <!-- Hộp đèn trên nóc: ba đèn xanh, vàng, đỏ và biển "XE SÁT HẠCH" như xe thật. -->
+            <rect class="roof-sign" x="82" y="84" width="136" height="30" rx="4"/>
+            <path d="M84 86h10v26H84z M206 86h10v26h-10z" fill="url(#sign-flag)"/>
+            <text class="roof-sign-text" x="150" y="104">XE SÁT HẠCH</text>
+            <g class="roof-lights"><circle cx="108" cy="78" r="9" fill="#3d8bff"/><circle cx="150" cy="78" r="9" fill="#f2b705"/><circle cx="192" cy="78" r="9" fill="#ff4d4d"/></g>
+            <defs><linearGradient id="sign-flag" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#c81e1e"/><stop offset=".33" stop-color="#c81e1e"/><stop offset=".33" stop-color="#f2b705"/><stop offset=".66" stop-color="#f2b705"/><stop offset=".66" stop-color="#1b4d8c"/><stop offset="1" stop-color="#1b4d8c"/>
+            </linearGradient></defs>
+          </svg>
+          <span class="chip chip-blue"><svg aria-hidden="true"><use href="#i-cone"/></svg>Sa hình</span>
+        </button>
+        <button id="btn-duong-truong" class="car-part car-rear" type="button">
+          <svg class="car-shape" viewBox="0 0 300 170" aria-hidden="true">
+            <rect class="car-wheel" x="26" y="24" width="16" height="48" rx="5"/><rect class="car-wheel" x="258" y="24" width="16" height="48" rx="5"/>
+            <path class="car-body" d="M40 0 L40 98 Q40 162 150 166 Q260 162 260 98 L260 0 Z"/>
+            <path class="car-tail" d="M58 130 Q84 150 116 154 M242 130 Q216 150 184 154"/>
+            <path class="car-crease" d="M104 0 Q100 60 106 130 M196 0 Q200 60 194 130"/>
+          </svg>
+          <span class="chip chip-red"><svg aria-hidden="true"><use href="#i-road"/></svg>Đường trường</span>
+        </button>
+      </div>
+      <button id="btn-huong-dan-dt" class="btn-guide" type="button"><svg aria-hidden="true"><use href="#i-warn"/></svg>Quy định phần thi đường trường</button>
 
-      <!-- Đường trường không phải mục thứ năm của danh sách: nó là chế độ dùng trong xe,
-           và người bấm thường là người ngồi cạnh, không phải người đã cài app. Nên nó có
-           khối riêng và một dòng nói nó dùng khi nào. -->
-      <button id="btn-duong-truong" class="mode-card" type="button">
-        <span class="mode-card-label">🚗 Đường trường</span>
-        <span class="mode-card-sub">Chế độ trong xe — người ngồi cạnh bấm để hô lệnh và báo lỗi</span>
-      </button>
-      <button id="btn-huong-dan-dt" class="btn-guide" type="button">📋 Đọc trước khi thi đường trường</button>
-      <p class="menu-stats">600 câu lý thuyết · 316 ảnh biển báo/sa hình · 11 bài sa hình chuẩn</p>
+      <!-- Thương hiệu sát đáy màn hình: logo giữa, tên + hotline góc trái, dev + mail góc phải. Logo "vô lăng mặt trời": ngôi sao 14 cánh giữa mặt trống
+           đồng Đông Sơn làm vô lăng, trục đỏ ở tâm, vòng chấm trống đồng bên ngoài. -->
+      <footer class="brand">
+        <svg class="brand-mark" viewBox="-50 -50 100 100" role="img" aria-label="Logo vô lăng mặt trời trống đồng">
+            <circle r="48" fill="var(--ink)" stroke="#c9964f" stroke-width="3"/>
+            <g fill="#c9964f"><circle cx="0.0" cy="-42.0" r="1.6"/><circle cx="9.3" cy="-40.9" r="1.6"/><circle cx="18.2" cy="-37.8" r="1.6"/><circle cx="26.2" cy="-32.8" r="1.6"/><circle cx="32.8" cy="-26.2" r="1.6"/><circle cx="37.8" cy="-18.2" r="1.6"/><circle cx="40.9" cy="-9.3" r="1.6"/><circle cx="42.0" cy="0.0" r="1.6"/><circle cx="40.9" cy="9.3" r="1.6"/><circle cx="37.8" cy="18.2" r="1.6"/><circle cx="32.8" cy="26.2" r="1.6"/><circle cx="26.2" cy="32.8" r="1.6"/><circle cx="18.2" cy="37.8" r="1.6"/><circle cx="9.3" cy="40.9" r="1.6"/><circle cx="0.0" cy="42.0" r="1.6"/><circle cx="-9.3" cy="40.9" r="1.6"/><circle cx="-18.2" cy="37.8" r="1.6"/><circle cx="-26.2" cy="32.8" r="1.6"/><circle cx="-32.8" cy="26.2" r="1.6"/><circle cx="-37.8" cy="18.2" r="1.6"/><circle cx="-40.9" cy="9.3" r="1.6"/><circle cx="-42.0" cy="0.0" r="1.6"/><circle cx="-40.9" cy="-9.3" r="1.6"/><circle cx="-37.8" cy="-18.2" r="1.6"/><circle cx="-32.8" cy="-26.2" r="1.6"/><circle cx="-26.2" cy="-32.8" r="1.6"/><circle cx="-18.2" cy="-37.8" r="1.6"/><circle cx="-9.3" cy="-40.9" r="1.6"/></g>
+            <polygon points="0.0,-36.0 3.3,-14.6 15.6,-32.4 9.4,-11.7 28.1,-22.4 13.5,-6.5 35.1,-8.0 15.0,0.0 35.1,8.0 13.5,6.5 28.1,22.4 9.4,11.7 15.6,32.4 3.3,14.6 0.0,36.0 -3.3,14.6 -15.6,32.4 -9.4,11.7 -28.1,22.4 -13.5,6.5 -35.1,8.0 -15.0,0.0 -35.1,-8.0 -13.5,-6.5 -28.1,-22.4 -9.4,-11.7 -15.6,-32.4 -3.3,-14.6" fill="#f2c98a"/>
+            <circle r="11" fill="var(--ink)" stroke="#f2c98a" stroke-width="3"/>
+            <circle r="4" fill="var(--red)"/>
+          </svg>
+        <div class="brand-corners">
+          <p class="brand-left"><b>Dinh Vuong Nguyen</b>Hotline <a href="tel:0963281291">0963.281.291</a></p>
+          <p class="brand-right">dev: fiaboo<br><a href="mailto:dinhvuong090997@gmail.com">dinhvuong090997@gmail.com</a></p>
+        </div>
+      </footer>
+    </section>
+
+    <!-- Lớp thứ hai của Sa hình: chọn bộ bài. Tách khỏi menu để trên xe chỉ còn ba chữ. -->
+    <section id="view-sa-hinh-menu" hidden>
+      <h2 class="night-title">Sa hình</h2>
+      <div class="set-list">
+        <button id="btn-bo-chuan" class="set-btn set-blue" type="button"><svg aria-hidden="true"><use href="#i-car"/></svg>Hạng B</button>
+        <button id="btn-bo-chuan-c1" class="set-btn set-yellow" type="button"><svg aria-hidden="true"><use href="#i-truck"/></svg>Hạng C1</button>
+        <button id="btn-bo-tu-ghep" class="set-btn set-red" type="button"><svg aria-hidden="true"><use href="#i-puzzle"/></svg>Tự ghép</button>
+      </div>
+      <button class="btn-back night-back" data-back="menu" type="button">← Quay lại</button>
     </section>
 
     <!-- Sa hình bấm tay: người ngồi cạnh phát từng tiếng đúng lúc xe tới, thay cho phát tự động
@@ -60,7 +127,7 @@
         <h3>Báo lỗi</h3>
         <div id="sh-errors" class="sb-grid"></div>
       </section>
-      <button class="btn-back btn-back-boxed sh-quit" type="button">← Quay lại</button>
+      <button class="btn-back btn-back-boxed sh-quit" data-back="sa-hinh-menu" type="button">← Quay lại</button>
     </section>
 
     <!-- Không có <h2> ở đây: ba khu tự nhãn, và hàng tiêu đề là chỗ duy nhất mua lại được
@@ -113,7 +180,7 @@
         <button id="save-bo-tu-ghep" class="btn-secondary" type="button">💾 Lưu</button>
         <button id="play-bo-tu-ghep" class="btn-primary" type="button">▶ Mở bảng bấm</button>
       </div>
-      <button class="btn-back" type="button">← Quay lại</button>
+      <button class="btn-back" data-back="sa-hinh-menu" type="button">← Quay lại</button>
     </section>
 
     <section id="view-theory-menu" hidden>

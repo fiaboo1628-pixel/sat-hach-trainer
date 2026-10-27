@@ -11,33 +11,94 @@
   --muted: #5b6472;
   --card-bg: #fff;
   --border: #d8dde5;
+  /* Màn menu: đêm ánh đồng xanh rỉ và nét sáng hologram, như trang Trống đồng. */
+  --night: #15181e;
+  --glow: #6fc2ae;
+  --gold: #f2c98a;
+  /* Màu khối xe trên nền tối: sắc biển báo, sáng hơn để phát sáng được. */
+  --sign-yellow: #f2b705;
+  --sign-blue: #3d8bff;
 }
 
 body {
   margin: 0;
+  overflow-x: clip; /* thẻ menu trượt vào từ trái lúc mở app; không để hiện thanh cuộn ngang */
   min-height: 100vh;
   background: #E3E1D6;
   color: var(--ink);
 }
 
+/* Đầu trang tối, liền với nền màn menu; năm đèn xuất phát ở trên tên app. */
 header {
-  background: var(--blue);
-  padding: 1rem 1.2rem;
+  background: var(--night);
+  padding: 0.9rem 1.2rem 0.6rem;
 }
 
 header h1 {
   max-width: 480px;
-  margin-inline: auto;
-  font-size: 1.3rem;
-  font-weight: 800;
+  margin: 0 auto;
+  font-family: 'Unbounded', 'Be Vietnam Pro', sans-serif;
+  font-weight: 700;
+  font-size: 1.35rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
   color: #fff;
 }
 
-header .tagline {
+.start-lights {
+  display: flex;
+  gap: 0.45rem;
   max-width: 480px;
-  margin: 0.2rem auto 0;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.8);
+  margin: 0 auto 0.7rem;
+}
+
+.start-lights i {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  background: #2a303c;
+  box-shadow: inset 0 0 0 2px #3a4150;
+}
+
+/* Lần mở app: đèn đỏ sáng từng chiếc mỗi 0,4 s, chuyển xanh cả loạt ở 2,4 s (xuất phát), rồi menu
+   hiện ra. Sau đó đèn giữ xanh (.lights-go). */
+.start-lights { --green-light: #3ddc6b; }
+
+.lights-run .start-lights i {
+  animation: light-on 2.4s step-end forwards;
+}
+
+.lights-go .start-lights i {
+  background: var(--green-light);
+  box-shadow: 0 0 10px var(--green-light);
+}
+.lights-run .start-lights i:nth-child(1) { animation-name: light-1; }
+.lights-run .start-lights i:nth-child(2) { animation-name: light-2; }
+.lights-run .start-lights i:nth-child(3) { animation-name: light-3; }
+.lights-run .start-lights i:nth-child(4) { animation-name: light-4; }
+.lights-run .start-lights i:nth-child(5) { animation-name: light-5; }
+@keyframes light-1 { 0% { background: #2a303c; } 8% { background: var(--red); box-shadow: 0 0 10px var(--red); } 100% { background: var(--green-light); box-shadow: 0 0 10px var(--green-light); } }
+@keyframes light-2 { 0% { background: #2a303c; } 25% { background: var(--red); box-shadow: 0 0 10px var(--red); } 100% { background: var(--green-light); box-shadow: 0 0 10px var(--green-light); } }
+@keyframes light-3 { 0% { background: #2a303c; } 42% { background: var(--red); box-shadow: 0 0 10px var(--red); } 100% { background: var(--green-light); box-shadow: 0 0 10px var(--green-light); } }
+@keyframes light-4 { 0% { background: #2a303c; } 58% { background: var(--red); box-shadow: 0 0 10px var(--red); } 100% { background: var(--green-light); box-shadow: 0 0 10px var(--green-light); } }
+@keyframes light-5 { 0% { background: #2a303c; } 75% { background: var(--red); box-shadow: 0 0 10px var(--red); } 100% { background: var(--green-light); box-shadow: 0 0 10px var(--green-light); } }
+
+/* Lights out: ba khối xe bay vào ráp lại, đầu xe từ trên, đuôi xe từ dưới. */
+.lights-run .car-front { animation: part-in-top 1.1s cubic-bezier(0.22, 1, 0.36, 1) 2.4s both; }
+.lights-run .car-cabin { animation: part-in 1.1s cubic-bezier(0.22, 1, 0.36, 1) 2.5s both; }
+.lights-run .car-rear { animation: part-in-bottom 1.1s cubic-bezier(0.22, 1, 0.36, 1) 2.6s both; }
+.lights-run .btn-guide,
+.lights-run .brand { animation: part-in 0.8s ease-out 3.2s both; }
+@keyframes part-in-top { from { opacity: 0; transform: translateY(-40px); } }
+@keyframes part-in-bottom { from { opacity: 0; transform: translateY(60px); } }
+@keyframes part-in { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lights-run .start-lights i,
+  .lights-run .car-part,
+  .lights-run .btn-guide,
+  .lights-run .brand { animation: none; }
+  .lights-run .start-lights i { background: var(--green-light); }
 }
 
 main {
@@ -116,13 +177,6 @@ button {
 .tile-blue { border-left-color: var(--blue); }
 .tile-yellow { border-left-color: var(--yellow); }
 .tile-red { border-left-color: var(--red); }
-
-.menu-stats {
-  margin: 0.8rem 0.2rem 0;
-  font-size: 0.85rem;
-  color: var(--muted);
-  text-align: center;
-}
 
 #view-theory-menu .tile {
   margin: 0.25rem 0;
@@ -459,49 +513,6 @@ body:has(#view-bo-chuan:not([hidden])) main {
   padding: 0.5rem;
 }
 
-/* Đường trường là một chế độ, không phải mục thứ năm. Khối riêng, mặt nền đặc thay vì thẻ
-   trắng, và một dòng nói dùng khi nào -- vì người bấm thường là người vừa được đưa máy và
-   chưa từng mở app này. Không dùng border-left màu như các tile khác: màu ở đây là cả mặt. */
-.mode-card {
-  display: block;
-  width: 100%;
-  margin: 1.1rem 0 0;
-  padding: 0.95rem 1.1rem;
-  text-align: left;
-  border: 1px solid var(--blue);
-  border-radius: 6px;
-  background: var(--blue);
-  color: #fff;
-  box-shadow: 0 2px 6px rgba(16, 21, 31, 0.18);
-}
-
-.mode-card-label {
-  display: block;
-  font-size: 1.25rem;
-  font-weight: 800;
-}
-
-/* Dòng phụ lấy sắc từ chính nền xanh, không phải xám -- xám trên nền đặc là chữ chết. */
-.mode-card-sub {
-  display: block;
-  margin-top: 0.2rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  line-height: 1.3;
-  color: #cfe0f5;
-}
-
-/* Lối vào trang hướng dẫn: một dòng chữ có khung nhẹ dưới thẻ Đường trường, không phải tile thứ
-   sáu -- đây là trang để đọc, không phải một chế độ. */
-.btn-guide {
-  display: block;
-  width: 100%;
-  margin: 0.5rem 0 0;
-  text-align: left;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--blue);
-}
 
 #view-huong-dan-dt h3 {
   margin: 1.4rem 0 0.4rem;
@@ -557,4 +568,237 @@ body:has(#view-bo-chuan:not([hidden])) main {
 .sh-quit {
   width: 100%;
   margin: 0.75rem 0 0;
+}
+
+/* ---------- Menu: chiếc ô tô ba khối trên mặt đường đêm ---------- */
+body:has(#menu:not([hidden])),
+body:has(#view-sa-hinh-menu:not([hidden])) {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: radial-gradient(ellipse 90% 60% at 50% 40%, #2a2f38, var(--night) 80%) fixed;
+}
+
+body:has(#menu:not([hidden])) main,
+body:has(#view-sa-hinh-menu:not([hidden])) main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  box-shadow: none;
+}
+
+#menu:not([hidden]) {
+  flex: 1;
+  gap: 0.6rem;
+}
+
+.car {
+  position: relative;
+  display: grid;
+  gap: 10px; /* khe tách lớp giữa ba khối */
+  width: min(100%, 255px);
+  margin: 0 auto;
+  perspective: 900px;
+}
+
+/* Vạch kẻ làn trắng đứt hai bên xe. */
+.car::before,
+.car::after {
+  content: "";
+  position: absolute;
+  top: -1rem;
+  bottom: -1rem;
+  width: 4px;
+  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.55) 0 26px, transparent 26px 52px);
+  pointer-events: none;
+}
+.car::before { left: -2.2rem; }
+.car::after { right: -2.2rem; }
+
+.car-part {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  transform: rotateX(14deg);
+  transform-origin: 50% 100%;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s;
+}
+
+button.car-part { cursor: pointer; }
+
+.car-shape {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Xe sát hạch màu bạc, kính tối, đèn pha trắng, đèn hậu đỏ. */
+.car-body { fill: #b7bec8; stroke: #e6eaf0; stroke-width: 2; }
+.car-crease { fill: none; stroke: #8e97a3; stroke-width: 1.5; }
+.car-mirror { fill: #9aa3ae; stroke: #e6eaf0; stroke-width: 1.5; }
+.car-glass { fill: #1b2430; stroke: #e6eaf0; stroke-width: 1.5; }
+.car-roof { fill: #c4cad3; stroke: #8e97a3; stroke-width: 1; }
+.car-wheel { fill: #101317; stroke: #4a525e; stroke-width: 1.5; }
+.car-lamp { fill: none; stroke: #fffbe8; stroke-width: 6; stroke-linecap: round; filter: drop-shadow(0 0 7px #fff3b0); }
+.car-tail { fill: none; stroke: #ff4d4d; stroke-width: 6; stroke-linecap: round; filter: drop-shadow(0 0 6px #ff4d4d); }
+.roof-lights { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.55)); }
+.roof-sign { fill: #fff; stroke: #8e97a3; stroke-width: 1; }
+.roof-sign-text { font: 800 14px 'Be Vietnam Pro', sans-serif; fill: #1b4d8c; text-anchor: middle; }
+
+/* Phần được bấm nâng lên và sáng theo màu của nó. */
+button.car-part:hover,
+button.car-part:focus-visible {
+  transform: rotateX(14deg) translateY(-6px) scale(1.02);
+  filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.25));
+}
+
+button.car-part:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+
+/* Nút icon + chữ, ba màu như ba đèn trên nóc xe sát hạch: xanh, vàng, đỏ. */
+.chip {
+  position: absolute;
+  left: 50%;
+  translate: -50% -50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.95rem 0.5rem 0.75rem;
+  border-radius: 999px;
+  font-family: 'Unbounded', 'Be Vietnam Pro', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+.chip svg,
+.set-btn svg,
+.btn-guide svg {
+  width: 1.3em;
+  height: 1.3em;
+  flex: none;
+}
+
+.chip-blue { background: #1f6fe0; }
+.chip-yellow { background: var(--sign-yellow); color: var(--ink); }
+.chip-red { background: #d62828; }
+
+.car-front .chip { top: 62%; }
+.car-cabin .chip { top: 70%; }
+.car-rear .chip { top: 44%; }
+
+.btn-guide {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.6rem auto 0;
+  border: 0;
+  background: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* Thương hiệu sát đáy: logo giữa, hai góc dưới là liên hệ và dev. */
+.brand {
+  margin-top: auto;
+  padding-top: 0.8rem;
+  color: #9aa3b2;
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.brand a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: block;
+  width: 2.8rem;
+  height: 2.8rem;
+  margin: 0 auto 0.4rem;
+}
+
+.brand-corners {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 0.8rem;
+}
+
+.brand-corners p { margin: 0; white-space: nowrap; }
+.brand-right { text-align: right; }
+
+.brand-left b {
+  display: block;
+  font-family: 'Unbounded', 'Be Vietnam Pro', sans-serif;
+  font-weight: 500;
+  font-size: 0.72rem;
+  color: #fff;
+}
+
+.brand-left a {
+  font-weight: 700;
+  color: var(--sign-yellow);
+}
+
+/* Lớp chọn bộ bài Sa hình: cùng mặt đường đêm, ba phím lớn viền xanh biển hiệu lệnh. */
+.night-title {
+  margin: 0.4rem 0 1rem;
+  font-family: 'Unbounded', 'Be Vietnam Pro', sans-serif;
+  font-size: 1.6rem;
+  color: #fff;
+
+}
+
+.set-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.set-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  margin: 0;
+  min-height: 5rem;
+  border: 0;
+  border-radius: 14px;
+  color: #fff;
+  font-family: 'Unbounded', 'Be Vietnam Pro', sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.set-btn svg { width: 1.6em; height: 1.6em; }
+.set-blue { background: #1f6fe0; }
+.set-yellow { background: var(--sign-yellow); color: var(--ink); }
+.set-red { background: #d62828; }
+.set-btn:hover,
+.set-btn:focus-visible { filter: brightness(1.12); }
+
+.night-back {
+  margin: 1.2rem 0 0;
+  color: #c4cad6;
+}
+
+/* Trên mặt đường đêm, đầu trang liền với nền thay vì là một dải riêng. */
+body:has(#menu:not([hidden])) header,
+body:has(#view-sa-hinh-menu:not([hidden])) header {
+  background: transparent;
 }

@@ -68,6 +68,7 @@ function setStatus(text) {
 
 const VIEWS = [
   'menu',
+  'sa-hinh-menu',
   'bo-chuan',
   'bo-tu-ghep',
   'duong-truong',
@@ -298,6 +299,7 @@ async function main() {
     wakeLock = await navigator.wakeLock?.request('screen').catch(() => null);
   });
   document.getElementById('stop-duong-truong').addEventListener('click', () => stopPlayback());
+  document.getElementById('btn-sa-hinh').addEventListener('click', () => showView('sa-hinh-menu'));
   document.getElementById('btn-bo-tu-ghep').addEventListener('click', () => showView('bo-tu-ghep'));
   document.getElementById('btn-huong-dan-dt').addEventListener('click', () => showView('huong-dan-dt'));
   document.getElementById('btn-ly-thuyet').addEventListener('click', () => showView('theory-menu'));
@@ -335,6 +337,10 @@ async function main() {
   document.getElementById('play-bo-tu-ghep').addEventListener('click', () => openStandardSet(selected));
 
   showView('menu');
+  // Đèn xuất phát chạy một lần lúc mở app.
+  document.body.classList.add('lights-run');
+  // Gỡ đi khi chạy xong: menu bị ẩn/hiện lại thì animation CSS chạy lại từ đầu.
+  setTimeout(() => document.body.classList.replace('lights-run', 'lights-go'), 3500);
   registerServiceWorker();
 }
 
