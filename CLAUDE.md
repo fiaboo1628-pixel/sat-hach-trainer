@@ -24,7 +24,7 @@ node --test test/theory.test.mjs   # one file
 node --test --test-name-pattern="<regex>"
 ```
 
-Deploy is an rsync of the repo (minus `.git`, `test`, `tools`) to an nginx static root; see README.
+Deploy is GitHub Pages from `main` (root): pushing `main` publishes https://fiaboo1628-pixel.github.io/sat-hach-trainer/ within a minute or two. The nginx rsync in the README is the old path.
 
 ## Architecture
 
