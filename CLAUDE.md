@@ -24,7 +24,7 @@ node --test test/theory.test.mjs   # one file
 node --test --test-name-pattern="<regex>"
 ```
 
-Deploy is GitHub Pages from `main` (root): pushing `main` publishes https://fiaboo1628-pixel.github.io/sat-hach-trainer/ within a minute or two. The nginx rsync in the README is the old path.
+Deploy is Vercel: `vercel deploy --prod` from the repo root publishes https://sat-hach-trainer.vercel.app (`.vercelignore` drops test/tools/docs). The GitHub repo is private since 2026-10-28, so GitHub Pages is off; push-to-deploy needs the Vercel GitHub app plus `vercel git connect`.
 
 ## Architecture
 

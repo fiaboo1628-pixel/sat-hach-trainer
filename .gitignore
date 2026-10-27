@@ -6,3 +6,4 @@
 
 # playwright-mcp ghi snapshot/console log vào đây khi drive app lúc làm UI
 .playwright-mcp/
+.vercel

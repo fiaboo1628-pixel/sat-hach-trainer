@@ -101,11 +101,13 @@ slug mà `generateExam` dùng (`quy-tac`, `tinh-huong-atgt`, `van-hoa`, `ky-thua
 `service-worker.js` và chạy `node --test test/` (bắt id trùng, answer sai chỉ số,
 is_liet-chapter lệch nhau, thiếu câu 1 nhóm cho hạng B/C1, đúng 60 câu điểm liệt).
 
-## Deploy: GitHub Pages (đang dùng)
+## Deploy: Vercel (đang dùng, từ 2026-10-28)
 
-https://fiaboo1628-pixel.github.io/sat-hach-trainer/ — Pages build thẳng từ `main` (thư mục gốc),
-nên **mỗi lần push `main` là tự deploy** sau 1-2 phút. Nhớ tăng `CACHE_NAME` để máy đã cài nhận
-bản mới. Bản Android build riêng ở `../sat-hach-trainer-android`.
+https://sat-hach-trainer.vercel.app — repo GitHub đã chuyển sang riêng tư nên GitHub Pages tắt.
+Đưa bản mới lên: `vercel deploy --prod` trong thư mục repo (CLI ở `~/.local/bin/vercel`, đã đăng
+nhập; `.vercelignore` bỏ test/tools/docs). Nếu đã cài ứng dụng Vercel trên GitHub và chạy
+`vercel git connect` thì push `main` là tự deploy. Nhớ tăng `CACHE_NAME` để máy đã cài nhận bản
+mới. Bản Android build riêng ở `../sat-hach-trainer-android`.
 
 ## Deploy lên M710q (nginx, tự host) (cách cũ, không còn dùng)
 
