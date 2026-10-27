@@ -23,12 +23,19 @@
 # The text spoken is the key's own `label`, so content/soundboard.json stays the single
 # source of truth: change a label, rerun this, bump CACHE_NAME.
 #
+# Tốc độ đọc: owner nghe bốn mức (1.0 / 1.15 / 1.30 / 1.45) qua loa trong xe ngày 2026-10-27 và
+# chọn 1.15 -- 1.0 nghe nhanh quá khi đang chạy. Ghi ở đây chứ không truyền tay, để lần render
+# sau ra đúng giọng này. Đáng biết: phần lớn thời lượng mỗi clip là khoảng lặng đầu/cuối, nên
+# tăng length-scale thêm nữa cũng đổi ít; nếu còn thấy nhanh thì chèn nghỉ bằng dấu câu trong
+# `label`, đừng vặn tiếp con số này.
+#
 # Usage: tools/render-soundboard.sh [--force]
 #        Without --force, existing files are left alone, so adding one key re-renders one file.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 force=${1:-}
+export VI_TTS_LENGTH_SCALE=1.15   # xem ghi chú tốc độ đọc ở đầu file
 
 command -v vi-tts >/dev/null || {
   echo "vi-tts not on PATH. It comes from nixos-config (pkgs/vi-tts.nix)." >&2
