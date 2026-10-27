@@ -1,17 +1,21 @@
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
   font-family: 'Be Vietnam Pro', system-ui, sans-serif;
 
-  --blue: #1B4D8C;
+  /* Cả app trên mặt đường đêm (2026-10-28): ba màu đèn nóc xe sát hạch -- xanh, vàng, đỏ --
+     cộng xanh lá cho "đúng". `-text` là bản sáng hơn để đọc được khi làm màu chữ trên nền tối. */
+  --blue: #1f6fe0;
+  --blue-text: #6aa8ff;
   --yellow: #F2B705;
-  --red: #C81E1E;
-  --green: #1E7A34;
-  --bg: #F5F5F0;
-  --ink: #10151F;
-  --muted: #5b6472;
-  --card-bg: #fff;
-  --border: #d8dde5;
-  /* Màn menu: đêm ánh đồng xanh rỉ và nét sáng hologram, như trang Trống đồng. */
+  --red: #d62828;
+  --red-text: #ff6b6b;
+  --green: #2fbf5b;
+  --on-yellow: #10151F; /* chữ trên nền vàng */
+  --bg: transparent;
+  --ink: #eef1f5;
+  --muted: #9aa3b2;
+  --card-bg: #222833;
+  --border: #3a4250;
   --night: #15181e;
   --glow: #6fc2ae;
   --gold: #f2c98a;
@@ -24,13 +28,14 @@ body {
   margin: 0;
   overflow-x: clip; /* thẻ menu trượt vào từ trái lúc mở app; không để hiện thanh cuộn ngang */
   min-height: 100vh;
-  background: #E3E1D6;
+  background: radial-gradient(ellipse 90% 60% at 50% 40%, #2a2f38, var(--night) 80%) fixed;
+  background-color: var(--night);
   color: var(--ink);
 }
 
 /* Đầu trang tối, liền với nền màn menu; năm đèn xuất phát ở trên tên app. */
 header {
-  background: var(--night);
+  background: transparent;
   padding: 0.9rem 1.2rem 0.6rem;
 }
 
@@ -106,8 +111,8 @@ main {
   max-width: 480px;
   margin-inline: auto;
   padding: 1.2rem;
-  background: var(--bg);
-  box-shadow: 0 0 0 1px rgba(16, 21, 31, 0.05);
+  background: transparent;
+  box-shadow: none;
 }
 
 h2 {
@@ -148,8 +153,8 @@ button {
 
 .btn-secondary {
   background: var(--card-bg);
-  border-color: var(--blue);
-  color: var(--blue);
+  border-color: var(--blue-text);
+  color: var(--blue-text);
   font-weight: 600;
 }
 
@@ -177,10 +182,6 @@ button {
 .tile-blue { border-left-color: var(--blue); }
 .tile-yellow { border-left-color: var(--yellow); }
 .tile-red { border-left-color: var(--red); }
-
-#view-theory-menu .tile {
-  margin: 0.25rem 0;
-}
 
 .ghep-columns {
   display: flex;
@@ -212,7 +213,7 @@ ol, ul {
 #list-selected li::before {
   content: counter(item) '. ';
   font-weight: 600;
-  color: var(--blue);
+  color: var(--blue-text);
 }
 
 #list-stations li {
@@ -259,16 +260,16 @@ ol, ul {
 }
 
 .choice-correct {
-  background: #e4f3e7;
+  background: rgba(47, 191, 91, 0.16);
   border-color: var(--green);
   color: var(--green);
   font-weight: 600;
 }
 
 .choice-wrong {
-  background: #fbe6e6;
+  background: rgba(214, 40, 40, 0.18);
   border-color: var(--red);
-  color: var(--red);
+  color: var(--red-text);
 }
 
 #soundboard {
@@ -295,14 +296,14 @@ ol, ul {
   text-transform: uppercase;
 }
 
-.sb-zone-blue { background: #eef3fa; }
-.sb-zone-yellow { background: #fdf6e3; }
-.sb-zone-red { background: #fbeeee; }
+.sb-zone-blue { background: rgba(31, 111, 224, 0.12); }
+.sb-zone-yellow { background: rgba(242, 183, 5, 0.1); }
+.sb-zone-red { background: rgba(214, 40, 40, 0.12); }
 
 /* Chữ nhãn khu lấy từ chính sắc của khu, không phải xám. */
-.sb-zone-blue > h3 { color: var(--blue); }
-.sb-zone-yellow > h3 { color: #7a5c00; }
-.sb-zone-red > h3 { color: var(--red); }
+.sb-zone-blue > h3 { color: var(--blue-text); }
+.sb-zone-yellow > h3 { color: var(--yellow); }
+.sb-zone-red > h3 { color: var(--red-text); }
 
 .sb-grid {
   display: grid;
@@ -344,7 +345,7 @@ ol, ul {
   position: absolute;
   inset: 0 auto 0 0;
   width: calc(var(--played, 0) * 100%);
-  background: rgba(16, 21, 31, 0.14);
+  background: rgba(255, 255, 255, 0.14);
   border-right: 2px solid var(--ink);
   pointer-events: none;
 }
@@ -355,7 +356,7 @@ ol, ul {
   .sh-cue.playing::after,
   .sh-next.playing::after {
     width: 100%;
-    background: rgba(16, 21, 31, 0.08);
+    background: rgba(255, 255, 255, 0.08);
     border-right: 0;
   }
 }
@@ -374,8 +375,8 @@ ol, ul {
   color: var(--ink);
 }
 
-/* Bảng bấm sa hình. Ting tong và Tút bấm nhiều nhất: to nhất, trên cùng, và dính mép trên khi
-   cuộn xuống khu báo lỗi -- người ngồi cạnh không phải cuộn ngược lên tìm. */
+/* Bảng bấm sa hình. Ting tong và Tút bấm nhiều nhất: to nhất, và dính mép trên khi cuộn xuống
+   khu báo lỗi -- người ngồi cạnh không phải cuộn ngược lên tìm. */
 .sh-cues {
   position: sticky;
   top: 0;
@@ -384,7 +385,7 @@ ol, ul {
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
   padding: 0.5rem 0;
-  background: var(--bg);
+  background: var(--night);
 }
 
 .sh-cue {
@@ -396,9 +397,9 @@ ol, ul {
   white-space: nowrap;
   font-size: 1.4rem;
   font-weight: 800;
-  border: 1px solid #e0c56a;
+  border: 1px solid var(--yellow);
   border-radius: 6px;
-  background: #fdf6e3;
+  background: rgba(242, 183, 5, 0.14);
 }
 
 .sh-cue small,
@@ -471,13 +472,13 @@ body:has(#view-bo-chuan:not([hidden])) header {
   font-size: 1.1rem;
   position: sticky;
   top: 0;
-  background: var(--bg);
+  background: var(--night);
   padding: 0.5rem 0;
   z-index: 1;
-  color: var(--blue);
+  color: var(--blue-text);
 }
 
-#theory-timer.time-warn { color: #a86e00; }
+#theory-timer.time-warn { color: var(--yellow); }
 #theory-timer.time-danger { color: var(--red); }
 
 #theory-questions img,
@@ -516,7 +517,7 @@ body:has(#view-bo-chuan:not([hidden])) main {
 
 #view-huong-dan-dt h3 {
   margin: 1.4rem 0 0.4rem;
-  color: var(--blue);
+  color: var(--blue-text);
 }
 
 .guide-lead {
@@ -536,7 +537,7 @@ body:has(#view-bo-chuan:not([hidden])) main {
 
 .guide-steps li::before {
   content: "• ";
-  color: var(--blue);
+  color: var(--blue-text);
 }
 
 .guide-table {
@@ -557,17 +558,21 @@ body:has(#view-bo-chuan:not([hidden])) main {
   white-space: nowrap;
   text-align: right;
   font-weight: 800;
-  color: var(--red);
+  color: var(--red-text);
 }
 
 .guide-out {
   font-weight: 800;
 }
 
-/* Quay lại là phím duy nhất dưới khu báo lỗi của bảng sa hình. */
+/* Quay lại đứng đầu bảng sa hình. */
 .sh-quit {
   width: 100%;
-  margin: 0.75rem 0 0;
+  margin: 0 0 0.5rem;
+}
+
+.sh-notices {
+  margin-top: 0.75rem;
 }
 
 /* ---------- Menu: chiếc ô tô ba khối trên mặt đường đêm ---------- */
@@ -576,7 +581,6 @@ body:has(#view-sa-hinh-menu:not([hidden])) {
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-  background: radial-gradient(ellipse 90% 60% at 50% 40%, #2a2f38, var(--night) 80%) fixed;
 }
 
 body:has(#menu:not([hidden])) main,
@@ -586,8 +590,6 @@ body:has(#view-sa-hinh-menu:not([hidden])) main {
   flex-direction: column;
   width: 100%;
   box-sizing: border-box;
-  background: transparent;
-  box-shadow: none;
 }
 
 #menu:not([hidden]) {
@@ -690,7 +692,7 @@ button.car-part:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 }
 
 .chip-blue { background: #1f6fe0; }
-.chip-yellow { background: var(--sign-yellow); color: var(--ink); }
+.chip-yellow { background: var(--sign-yellow); color: var(--on-yellow); }
 .chip-red { background: #d62828; }
 
 .car-front .chip { top: 62%; }
@@ -787,7 +789,7 @@ button.car-part:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 
 .set-btn svg { width: 1.6em; height: 1.6em; }
 .set-blue { background: #1f6fe0; }
-.set-yellow { background: var(--sign-yellow); color: var(--ink); }
+.set-yellow { background: var(--sign-yellow); color: var(--on-yellow); }
 .set-red { background: #d62828; }
 .set-btn:hover,
 .set-btn:focus-visible { filter: brightness(1.12); }
@@ -797,8 +799,140 @@ button.car-part:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
   color: #c4cad6;
 }
 
-/* Trên mặt đường đêm, đầu trang liền với nền thay vì là một dải riêng. */
-body:has(#menu:not([hidden])) header,
-body:has(#view-sa-hinh-menu:not([hidden])) header {
-  background: transparent;
+/* Màn bên trong: tiêu đề cùng chữ Unbounded với menu. */
+h2 {
+  font-family: 'Unbounded', 'Be Vietnam Pro', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Ảnh biển báo/sa hình vẽ cho nền trắng: đặt trên một tấm trắng. */
+#theory-questions img,
+#practice-questions img,
+#review-questions img {
+  background: #fff;
+  border-radius: 8px;
+  padding: 0.4rem;
+  box-sizing: border-box;
+}
+
+/* Màn Lý thuyết: ba nút icon + chữ cùng kiểu lớp Sa hình, dòng phụ là số câu và thời gian. */
+#view-theory-menu .set-btn {
+  justify-content: flex-start;
+  min-height: 4.4rem;
+  margin: 0 0 0.7rem;
+  padding: 0.6rem 1.1rem;
+  width: 100%;
+  font-size: 1.1rem;
+  text-align: left;
+}
+
+.set-btn small {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+/* Câu hỏi là thẻ; đáp án thi thử là hàng to có viền, bấm cả hàng, hàng đã chọn sáng viền xanh. */
+#theory-questions > li,
+#practice-questions > li,
+#review-questions > li {
+  padding: 1rem;
+  border: 0;
+  border-radius: 12px;
+  background: var(--card-bg);
+}
+
+#theory-questions label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 0.45rem 0;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#theory-questions label:has(input:checked) {
+  border-color: var(--blue-text);
+  background: rgba(31, 111, 224, 0.18);
+}
+
+#theory-questions input[type="radio"] {
+  flex: none;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin: 0.15rem 0 0;
+  accent-color: var(--blue);
+}
+
+.choice-btn {
+  border-radius: 10px;
+}
+
+#theory-questions img,
+#practice-questions img,
+#review-questions img {
+  width: auto;
+  max-height: 14rem;
+  margin: 0.5rem auto;
+}
+
+/* Bộ tự ghép: một cột -- thứ tự đã chọn trên, danh sách bài dưới (hai cột vỡ chữ trên điện
+   thoại); Lưu và Mở bảng bấm dính đáy màn hình. */
+.ghep-columns {
+  flex-direction: column;
+}
+
+.ghep-columns > div:last-child {
+  order: -1;
+}
+
+.ghep-columns h3 {
+  margin: 0.4rem 0;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+#list-stations button {
+  width: 100%;
+  margin: 0 0 0.4rem;
+  text-align: left;
+  border-radius: 10px;
+}
+
+#list-selected li {
+  border-radius: 8px;
+}
+
+#list-selected li button {
+  min-height: 36px;
+  padding: 0.2rem 0.6rem;
+}
+
+#view-bo-tu-ghep .action-row {
+  position: sticky;
+  bottom: 0;
+  gap: 0.5rem;
+  padding: 0.6rem 0;
+  background: var(--night);
+}
+
+#view-bo-tu-ghep .action-row button {
+  flex: 1;
+  margin: 0;
+}
+
+#list-selected:empty::before {
+  content: "Chưa có bài nào. Bấm bài bên dưới để thêm.";
+  display: block;
+  padding: 0.8rem 0.2rem;
+  color: var(--muted);
 }

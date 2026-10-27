@@ -49,6 +49,13 @@ Deploy is an rsync of the repo (minus `.git`, `test`, `tools`) to an nginx stati
 
 Design specs and implementation plans live in `docs/superpowers/specs/` and `docs/superpowers/plans/`.
 
+**Look (2026-10-28, owner-directed):** the whole app is a night road -- dark tokens in `:root`
+(`--night`, `--card-bg`, light `--ink`; `-text` variants of blue/red for text on dark), the
+roof-light trio blue/yellow/red of a xe sát hạch for the three of anything (icon + text buttons,
+`.set-btn`), Unbounded for titles. The menu is a top-down exam car split into Lý thuyết / Sa hình
+/ Đường trường; Sa hình opens its own layer (`view-sa-hinh-menu`). This replaces the beige frame
+`#E3E1D6` recorded below as confirmed -- the owner chose the new direction.
+
 `.impeccable/` is not scratch state: `critique/` holds the design audits (the 2026-10-21 one
 scored the app 17/40 and is the baseline for any UI work), and `config.json` records decisions
 the owner has already made -- the beige frame `#E3E1D6` is confirmed as intended, so do not

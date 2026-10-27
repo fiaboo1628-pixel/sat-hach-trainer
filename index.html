@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#1B4D8C" />
+  <meta name="theme-color" content="#15181e" />
   <title>Sát Hạch Trainer</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
@@ -107,27 +107,25 @@
     </section>
 
     <!-- Sa hình bấm tay: người ngồi cạnh phát từng tiếng đúng lúc xe tới, thay cho phát tự động
-         theo giờ cố định (xe thật không đi đúng nhịp đó). Ting tong và Tút là hai phím bấm nhiều
-         nhất, nên nằm trên cùng và dính mép trên khi cuộn xuống khu báo lỗi. -->
+         theo giờ cố định (xe thật không đi đúng nhịp đó). Thứ tự do chủ app chọn (2026-10-28):
+         Quay lại, Bài kế, Ting tong / Tút, Báo lỗi, Đậu / Trượt. -->
     <section id="view-bo-chuan" hidden>
-      <div class="sh-cues">
-        <button id="sh-ting-tong" class="sh-cue" type="button"><span aria-hidden="true">🔔</span> Ting tong<small>Vào bài</small></button>
-        <button id="sh-tut" class="sh-cue" type="button"><span aria-hidden="true">✅</span> Tút<small>Nhận bài</small></button>
-      </div>
+      <button class="btn-back btn-back-boxed sh-quit" data-back="sa-hinh-menu" type="button">← Quay lại</button>
       <button id="sh-next" class="sh-next" type="button"></button>
       <div class="action-row sh-step">
         <button id="sh-back" class="btn-secondary" type="button">◀ Lùi</button>
         <button id="sh-replay" class="btn-secondary" type="button">↻ Đọc lại</button>
       </div>
-      <section class="sb-zone sb-zone-blue">
-        <h3>Thông báo</h3>
-        <div id="sh-notices" class="sb-grid"></div>
-      </section>
+      <div class="sh-cues">
+        <button id="sh-ting-tong" class="sh-cue" type="button"><span aria-hidden="true">🔔</span> Ting tong<small>Vào bài</small></button>
+        <button id="sh-tut" class="sh-cue" type="button"><span aria-hidden="true">✅</span> Tút<small>Nhận bài</small></button>
+      </div>
       <section class="sb-zone sb-zone-red">
         <h3>Báo lỗi</h3>
         <div id="sh-errors" class="sb-grid"></div>
       </section>
-      <button class="btn-back btn-back-boxed sh-quit" data-back="sa-hinh-menu" type="button">← Quay lại</button>
+      <!-- Đậu / Trượt ở đáy: bấm một lần khi xong bài thi. -->
+      <div id="sh-notices" class="sb-grid sh-notices"></div>
     </section>
 
     <!-- Không có <h2> ở đây: ba khu tự nhãn, và hàng tiêu đề là chỗ duy nhất mua lại được
@@ -185,9 +183,9 @@
 
     <section id="view-theory-menu" hidden>
       <h2>Lý thuyết</h2>
-      <button id="btn-hang-b" class="tile tile-blue" type="button">Thi thử Hạng B (30 câu / 20 phút)</button>
-      <button id="btn-hang-c1" class="tile tile-blue" type="button">Thi thử Hạng C1 (35 câu / 22 phút)</button>
-      <button id="btn-theory-practice" class="tile tile-yellow" type="button">📖 Ôn tập theo chủ đề</button>
+      <button id="btn-hang-b" class="set-btn set-blue" type="button"><svg aria-hidden="true"><use href="#i-car"/></svg><span>Thi thử Hạng B<small>30 câu, 20 phút</small></span></button>
+      <button id="btn-hang-c1" class="set-btn set-yellow" type="button"><svg aria-hidden="true"><use href="#i-truck"/></svg><span>Thi thử Hạng C1<small>35 câu, 22 phút</small></span></button>
+      <button id="btn-theory-practice" class="set-btn set-red" type="button"><svg aria-hidden="true"><use href="#i-book"/></svg><span>Ôn tập theo chủ đề</span></button>
       <button class="btn-back" data-back="menu" type="button">← Quay lại</button>
     </section>
 
