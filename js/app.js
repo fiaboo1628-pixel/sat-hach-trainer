@@ -26,6 +26,8 @@ let selected = loadSelected();
 // Bảng bấm sa hình: các bài của bộ đang mở, và chỉ số bài sẽ đọc khi bấm "Bài kế".
 let board = [];
 let nextIdx = 0;
+// Việc phải làm khi tiếng đang phát dừng (hết tự nhiên hay bị phím khác cắt ngang).
+let onPlaybackDone = null;
 
 async function loadContent() {
   const [stationsRes, standardRes, theoryRes, soundboardRes, errorsRes, noticesRes] = await Promise.all([
@@ -149,14 +151,18 @@ function stopPlayback(message) {
   els.player.ontimeupdate = null;
   els.player.pause();
   document.querySelector('.playing')?.classList.remove('playing');
+  const done = onPlaybackDone;
+  onPlaybackDone = null;
+  done?.();
   if (message) setStatus(message);
 }
 
 const VOICE_PLAYBACK_RATE = 0.85; // giọng đọc tên bài sa hình chậm hơn cho dễ nghe/phản ứng kịp
 
 // Một phím: phát ngay, cắt tiếng đang phát. Dùng chung cho Đường trường và bảng bấm sa hình.
-function playKey(b, src, label, rate = 1) {
+function playKey(b, src, label, rate = 1, onDone = null) {
   stopPlayback();
+  onPlaybackDone = onDone;
   b.classList.add('playing');
   // --played lái vạch chạy trong .playing::after: trạng thái đang phát phải đọc được
   // mà không dựa vào màu, vì có phím vốn đã là màu vàng.
@@ -165,10 +171,7 @@ function playKey(b, src, label, rate = 1) {
     const total = els.player.duration;
     if (total) b.style.setProperty('--played', (els.player.currentTime / total).toFixed(3));
   };
-  els.player.onended = () => {
-    b.classList.remove('playing');
-    els.player.ontimeupdate = null;
-  };
+  els.player.onended = () => stopPlayback();
   // iOS Safari: đổi playbackRate ngay khi vừa gán src (trước khi có metadata) hay bị nuốt —
   // chốt lại rate khi loadedmetadata bắn ra, lúc pipeline audio đã sẵn sàng.
   els.player.onloadedmetadata = () => {
@@ -176,11 +179,7 @@ function playKey(b, src, label, rate = 1) {
   };
   els.player.src = src;
   els.player.playbackRate = rate;
-  els.player.play().catch(() => {
-    b.classList.remove('playing');
-    els.player.ontimeupdate = null;
-    setStatus(`Lỗi phát "${label}".`);
-  });
+  els.player.play().catch(() => stopPlayback(`Lỗi phát "${label}".`));
 }
 
 // Ba khu của Đường trường. `color` trong soundboard.json đã mã hoá sẵn nhóm — lệnh, tín hiệu,
@@ -245,12 +244,18 @@ function renderBoardNext() {
   els.shNext.append(small, big);
 }
 
+// Lúc đang đọc, phím hiện đúng bài đang đọc; đọc xong (hoặc bị phím khác cắt) mới chuyển sang
+// bài kế -- trước đây chữ nhảy sang bài sau ngay khi loa vừa bắt đầu đọc bài này.
 function readStation(i) {
   const station = board[i];
   if (!station) return;
   nextIdx = i + 1;
-  renderBoardNext();
-  playKey(els.shNext, `content/audio/${station.audio}`, station.name, VOICE_PLAYBACK_RATE);
+  const small = document.createElement('small');
+  const big = document.createElement('span');
+  small.textContent = `Đang đọc ${i + 1}/${board.length}`;
+  big.textContent = station.name;
+  els.shNext.replaceChildren(small, big);
+  playKey(els.shNext, `content/audio/${station.audio}`, station.name, VOICE_PLAYBACK_RATE, renderBoardNext);
 }
 
 async function openStandardSet(ids) {
