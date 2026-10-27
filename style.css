@@ -936,3 +936,12 @@ h2 {
   padding: 0.8rem 0.2rem;
   color: var(--muted);
 }
+
+/* Khẩn cấp: đỏ đặc, rộng hết hàng dưới Ting tong / Tút -- khác hẳn hai tiếng máy thường. */
+.sh-alarm {
+  grid-column: 1 / -1;
+  min-height: 3.6rem;
+  border-color: var(--red);
+  background: var(--red);
+  color: #fff;
+}

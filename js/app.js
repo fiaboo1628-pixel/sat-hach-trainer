@@ -338,6 +338,7 @@ async function main() {
   };
   cue('sh-ting-tong', 'ting-tong.mp3', 'Ting tong');
   cue('sh-tut', 'tut.mp3', 'Tút');
+  cue('sh-khan-cap', 'khan-cap.mp3', 'Khẩn cấp');
   document.getElementById('save-bo-tu-ghep').addEventListener('click', saveSelected);
   document.getElementById('play-bo-tu-ghep').addEventListener('click', () => openStandardSet(selected));
 

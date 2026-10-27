@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sat-hach-trainer-v29';
+const CACHE_NAME = 'sat-hach-trainer-v30';
 const APP_SHELL = [
   './',
   './index.html',
@@ -36,6 +36,7 @@ self.addEventListener('install', (event) => {
         ...errors.map((k) => k.audio),
         ...notices.map((k) => k.audio),
         'tut.mp3', // phím Tút của bảng sa hình
+        'khan-cap.mp3', // phím Khẩn cấp (tình huống nguy hiểm)
       ]);
       await cache.addAll([...audioFiles].filter(Boolean).map((f) => `./content/audio/${f}`));
       const questions = await (await fetch('./content/theory/questions.json')).json();
