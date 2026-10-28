@@ -7,7 +7,7 @@
   { "id": "duong-vong-quanh-co", "name": "Đường vòng quanh co", "audio": "duong-vong-quanh-co.mp3", "cue": "ting-tong.mp3" },
   { "id": "ghep-xe-doc", "name": "Ghép xe dọc", "audio": "ghep-xe-doc.mp3", "cue": "ting-tong.mp3" },
   { "id": "giao-duong-sat", "name": "Dừng xe nơi giao nhau đường sắt", "audio": "giao-duong-sat.mp3", "cue": "ting-tong.mp3" },
-  { "id": "tang-toc-tang-so", "name": "Tăng tốc, tăng số", "audio": "tang-toc-tang-so.mp3", "cue": "ting-tong.mp3" },
+  { "id": "tang-toc-tang-so", "name": "Tăng số, tăng tốc độ", "audio": "soundboard/tang-so-tang-toc-do.mp3", "cue": "ting-tong.mp3" },
   { "id": "ghep-xe-ngang", "name": "Ghép xe ngang (đỗ song song)", "audio": "ghep-xe-ngang.mp3", "cue": "ting-tong.mp3" },
   { "id": "ket-thuc", "name": "Kết thúc", "audio": "ket-thuc.mp3", "cue": "ting-tong.mp3" }
 ]

@@ -22,9 +22,10 @@ Mở địa chỉ server báo ra (vd `http://localhost:8080`).
 
 `content/audio/` gồm 3 loại:
 
-- **11 file giọng đọc tên bài sa hình** theo `audio` trong `content/stations.json` — giọng AI
+- **10 file giọng đọc tên bài sa hình** theo `audio` trong `content/stations.json` — giọng AI
   48 kHz (thay xong 2026-09-11). **Đây là âm thanh gốc** (chủ app, 2026-10-28): phím Đường trường
-  nào trùng nội dung thì dùng lại file sa hình, không làm ngược lại — hiện là Xuất phát và Kết thúc.
+  nào trùng nội dung thì dùng lại file sa hình — hiện là Xuất phát và Kết thúc. Ngoại lệ: bài
+  sa hình "Tăng số, tăng tốc độ" đang dùng file Đường trường (chủ app đang nghe thử).
 - **10 file giọng phím Đường trường** nằm trong `content/audio/soundboard/` — render ngày
   2026-10-27 bằng `tools/render-soundboard.sh`, giọng **piper `vi_VN-vais1000-medium`**
   (22.050 Hz gốc, wrapper `vi-tts` resample về mono 44.1 kHz và loudnorm ~-19 LUFS cho khớp
