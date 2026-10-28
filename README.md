@@ -22,8 +22,10 @@ Mở địa chỉ server báo ra (vd `http://localhost:8080`).
 
 `content/audio/` gồm 3 loại:
 
-- **11 file giọng đọc theo `audio` trong `content/stations.json`** — audio thật (giọng
-  AI, thay xong 2026-09-11), không còn placeholder.
+- **9 file giọng đọc tên bài sa hình** theo `audio` trong `content/stations.json` — giọng AI
+  48 kHz (thay xong 2026-09-11). Hai bài trùng nội dung với phím Đường trường (Xuất phát;
+  Tăng số, tăng tốc độ) dùng thẳng file piper của Đường trường từ 2026-10-28 — chủ app lấy
+  giọng Đường trường làm chuẩn; Kết thúc thì ngược lại, Đường trường dùng file của sa hình.
 - **10 file giọng phím Đường trường** nằm trong `content/audio/soundboard/` — render ngày
   2026-10-27 bằng `tools/render-soundboard.sh`, giọng **piper `vi_VN-vais1000-medium`**
   (22.050 Hz gốc, wrapper `vi-tts` resample về mono 44.1 kHz và loudnorm ~-19 LUFS cho khớp
@@ -33,8 +35,8 @@ Mở địa chỉ server báo ra (vd `http://localhost:8080`).
 
   Trước đó `content/audio/` có **hai họ giọng** mà repo không ghi: 11 file station 48 kHz và
   một đợt soundboard 44.1 kHz làm sau, không rõ engine. Phím kề nhau khác giọng chính là lỗi;
-  thư mục `soundboard/` tách hẳn hai consumer, nên `xuat-phat.mp3` của station **không còn bị
-  soundboard dùng chung** và giọng sa hình không bị đổi.
+  thư mục `soundboard/` tách hẳn hai consumer. (2026-10-28: chủ app chọn cho hai bài sa hình
+  trùng nội dung dùng lại file Đường trường, xem trên.)
 
   Đổi nhãn phím trong `content/soundboard.json` rồi chạy lại script (`--force` để render đè),
   sau đó **tăng `CACHE_NAME`**. `ting-tong.mp3` và `tut.mp3` không bị script chạm — đó là
