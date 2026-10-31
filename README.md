@@ -22,7 +22,14 @@ Mở địa chỉ server báo ra (vd `http://localhost:8080`).
 
 `content/audio/` gồm 3 loại:
 
-- **10 file giọng đọc tên bài sa hình** theo `audio` trong `content/stations.json` — giọng AI
+- **Giọng đọc (từ 2026-11-01): một giọng cho toàn app.** Cả 10 file tên bài sa hình và 22 phím
+  giọng trong `content/audio/soundboard/` render lại bằng **VieNeu-TTS v3 Turbo**
+  ([pnnbao-ump/VieNeu-TTS-v3-Turbo](https://huggingface.co/pnnbao-ump/VieNeu-TTS-v3-Turbo),
+  giấy phép **Apache-2.0**), giọng mẫu **Mai Anh** (nữ, Bắc, kiểu đọc tin tức) do chủ app chọn sau
+  khi nghe 8 giọng. Mono 48 kHz, cắt lặng, loudnorm ~-19 LUFS. Chạy lại:
+  `tools/render-soundboard.sh --force` (cần venv `~/Projects/airi-voice`). Ghi chú dưới đây là
+  lịch sử các giọng cũ.
+- **10 file giọng đọc tên bài sa hình** (cũ) theo `audio` trong `content/stations.json` — giọng AI
   48 kHz (thay xong 2026-09-11). **Đây là âm thanh gốc** (chủ app, 2026-10-28): phím Đường trường
   nào trùng nội dung thì dùng lại file sa hình — hiện là Xuất phát và Kết thúc. Ngoại lệ: bài
   sa hình "Tăng số, tăng tốc độ" đang dùng file Đường trường (chủ app đang nghe thử).

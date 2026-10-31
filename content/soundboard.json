@@ -1,73 +1,61 @@
 [
   {
     "label": "Xuất phát",
-    "icon": "🚦",
     "audio": "xuat-phat.mp3",
     "color": "blue"
   },
   {
     "label": "Ting tong",
-    "icon": "🔔",
     "audio": "ting-tong.mp3",
     "color": "yellow"
   },
   {
     "label": "Tút",
-    "icon": "✅",
     "audio": "tut.mp3",
     "color": "yellow"
   },
   {
     "label": "Tăng số, tăng tốc độ",
-    "icon": "⬆️",
     "audio": "soundboard/tang-so-tang-toc-do.mp3",
     "color": "blue"
   },
   {
     "label": "Giảm số, giảm tốc độ",
-    "icon": "⬇️",
     "audio": "soundboard/giam-so-giam-toc-do.mp3",
     "color": "blue"
   },
   {
     "label": "Vào số sai",
-    "icon": "⚙️",
     "audio": "soundboard/vao-so-sai.mp3",
     "color": "red"
   },
   {
     "label": "Không thắt dây an toàn",
-    "icon": "🔗",
     "audio": "soundboard/khong-that-day-an-toan.mp3",
     "color": "red"
   },
   {
     "label": "Không hạ thắng tay",
-    "icon": "🅿️",
     "audio": "soundboard/khong-ha-thang-tay.mp3",
     "color": "red"
   },
   {
     "label": "Không bật xi nhan",
-    "icon": "↪️",
     "audio": "soundboard/khong-bat-xi-nhan.mp3",
     "color": "red"
   },
   {
     "label": "Không tăng số",
-    "icon": "⬆️",
     "audio": "soundboard/khong-tang-so.mp3",
     "color": "red"
   },
   {
     "label": "Không giảm số",
-    "icon": "⬇️",
     "audio": "soundboard/khong-giam-so.mp3",
     "color": "red"
   },
   {
     "label": "Kết thúc",
-    "icon": "🏁",
     "audio": "ket-thuc.mp3",
     "color": "blue"
   }

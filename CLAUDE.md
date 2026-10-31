@@ -8,7 +8,7 @@ Offline-capable PWA for Vietnamese driving-test practice (UI and content are in 
 
 Three modules:
 - **Sa hình**: a press-to-play board for the passenger, never auto-play (the car does not keep a fixed rhythm). Hạng B, Hạng C1 (B minus `ghep-xe-ngang`) and Bộ tự ghép all open the same board (`view-bo-chuan`): two big sticky keys on top, **Ting tong** (`ting-tong.mp3`, entering a bài) and **Tút** (`tut.mp3`, bài accepted), which are pressed most; a "Bài kế" key that reads the next station name of the set and advances (plus Lùi and Đọc lại); a blue "Thông báo" zone from `content/sa-hinh-thong-bao.json` (Đậu, Trượt; Kết thúc is not a key because every set already ends with the `ket-thuc` station); and the red error keys from `content/sa-hinh-loi.json`. Sets are `content/standard-set.json` or the user's set in localStorage.
-- **Đường trường**: a soundboard of twelve road-call cues (`content/soundboard.json`), pressed by the passenger who calls the stations out while someone else drives -- not browsed as a menu. Eight of them are voice files rendered by `tools/render-soundboard.sh` into `content/audio/soundboard/`; Ting tong and Tút are machine sounds the script leaves alone; Xuất phát and Kết thúc play the sa hình station clips. **The sa hình station voice is the original** (owner, 2026-10-28): a Đường trường key that says the same thing reuses the sa hình file. Exception the owner is still testing: the sa hình station "Tăng số, tăng tốc độ" plays the Đường trường clip. Change one key at a time, only what the owner names. The script needs `vi-tts`; on Arch that is `~/.local/bin/vi-tts` (standalone piper in `~/.local/opt/piper`, voice in `~/.local/share/piper/voices`).
+- **Đường trường**: a soundboard of twelve road-call cues (`content/soundboard.json`), pressed by the passenger who calls the stations out while someone else drives -- not browsed as a menu. Eight of them are voice files rendered by `tools/render-soundboard.sh` into `content/audio/soundboard/`; Ting tong and Tút are machine sounds the script leaves alone; Xuất phát and Kết thúc play the sa hình station clips. A key that says the same thing as a sa hình station reuses the station file; the sa hình station "Tăng số, tăng tốc độ" plays the Đường trường clip. **One voice for every spoken clip** (owner, 2026-11-01): VieNeu-TTS v3 Turbo preset "Mai Anh", rendered by `tools/render-soundboard.sh` (stations + all keys; `--force` re-renders all) through `tools/render-voice.py` with the venv in `~/Projects/airi-voice` (`VIENEU_PY` to override). Change one key at a time, only what the owner names.
 - **Hướng dẫn thi đường trường** (`view-huong-dan-dt`, from the menu under Đường trường): static reading page for learners before the road test -- the four bài, what to do, and each error with its points. The in-car board stays at its 12 keys on purpose; the owner wants the error list read beforehand, not pressed.
 - **Lý thuyết** (theory): 600 official questions (`content/theory/questions.json`). Timed mock exams for license classes B / C1, plus untimed per-topic practice with bookmarks and a wrong-answer review list.
 
@@ -37,9 +37,9 @@ Deploy is Vercel: `vercel deploy --prod` from the repo root publishes https://sa
 
 - Question shape: `id` (`q001`–`q600`), `text`, `choices`, `answer` (index), `is_liet`, `chapter`, `image` (filename in `content/theory/images/` or `null`).
 - `chapter` is one of the 7 slugs in `CHAPTER_LABELS`. `is_liet: true` ⇔ `chapter: "tinh-huong-atgt"`, exactly 60 such questions. `generateExam` picks 1 liệt question and fills the rest from `HANG_CONFIG[...].groups` using non-liệt questions only.
-- Soundboard: an array of `{label, icon, audio, color}`; `audio` is a filename in `content/audio/` and `color` is one of `blue`, `yellow`, `red` (the road-sign tokens in `style.css`), not a free-form CSS colour.
+- Soundboard: an array of `{label, audio, color}`; `audio` is a filename in `content/audio/` and `color` is one of `blue`, `yellow`, `red` (the road-sign tokens in `style.css`), not a free-form CSS colour.
 - Stations: `id`, `name`, `audio`, `cue` (files in `content/audio/`). `standard-set.json` is an ordered list of station ids (repeats allowed).
-- Sa hình errors (`sa-hinh-loi.json`): `{label, icon, audio, say?}`. No points on the keys: the owner removed them as visual noise (2026-10-28). The list follows the hạng B in-yard rules (Thông tư 35/2024 Phụ lục XV mục C, carried into TT 12/2025/TT-BCA). `say` is the spoken text when `label` has digits piper would misread. Audio lives in `content/audio/soundboard/` and is rendered by the same script as the Đường trường keys.
+- Sa hình errors (`sa-hinh-loi.json`): `{label, audio, say?}`. No points on the keys: the owner removed them as visual noise (2026-10-28). The list follows the hạng B in-yard rules (Thông tư 35/2024 Phụ lục XV mục C, carried into TT 12/2025/TT-BCA). `say` is the spoken text when `label` has digits the TTS would misread. Audio lives in `content/audio/soundboard/` and is rendered by the same script as the Đường trường keys.
 
 ## Service worker / caching
 
@@ -49,12 +49,16 @@ Deploy is Vercel: `vercel deploy --prod` from the repo root publishes https://sa
 
 Design specs and implementation plans live in `docs/superpowers/specs/` and `docs/superpowers/plans/`.
 
+**Look now (2026-11-01, owner-directed):** warm light pastel, little black -- cream ground `--night: #f7efe3` (name kept), warm charcoal `--ink`, white 3D keys with a solid 4px lip (`--edge` per colour, `--key-edge` default) that sink on press, pastel zone tints, a white exam car with blue-grey glass. The tasteskill inspector warns `palette-cream` on purpose: the owner asked for it. The night-road notes below are history.
+
 **Look (2026-10-28, owner-directed):** the whole app is a night road -- dark tokens in `:root`
 (`--night`, `--card-bg`, light `--ink`; `-text` variants of blue/red for text on dark), the
-roof-light trio blue/yellow/red of a xe sát hạch for the three of anything (icon + text buttons,
+roof-light trio blue/yellow/red of a xe sát hạch for the three of anything (SVG icon + text buttons,
 `.set-btn`), Unbounded for titles. The menu is a top-down exam car split into Lý thuyết / Sa hình
 / Đường trường; Sa hình opens its own layer (`view-sa-hinh-menu`). This replaces the beige frame
-`#E3E1D6` recorded below as confirmed -- the owner chose the new direction.
+`#E3E1D6` recorded below as confirmed -- the owner chose the new direction. Polish pass 2026-11-01 (owner: keep the direction, make it cleaner): keys are borderless
+`--key` tone steps, two radii (10px keys, 14px blocks), no emoji on keys or buttons, zone
+labels in sentence case; Đậu/Trượt tinted green/red.
 
 `.impeccable/` is not scratch state: `critique/` holds the design audits (the 2026-10-21 one
 scored the app 17/40 and is the baseline for any UI work), and `config.json` records decisions
