@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#15181e" />
+  <meta name="theme-color" content="#f7efe3" />
   <title>Sát Hạch Trainer</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/icon-192.png" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Sát Hạch" />
   <link rel="stylesheet" href="fonts/fonts.css" />
   <link rel="stylesheet" href="style.css" />
@@ -24,6 +24,27 @@
     <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h12v10H2z M14 9h4.5L22 12.5V16h-8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="6" cy="17.5" r="2" fill="currentColor"/><circle cx="17.5" cy="17.5" r="2" fill="currentColor"/></symbol>
     <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M4 8h4a2 2 0 1 1 4 0h4v4a2 2 0 1 1 0 4v4H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
     <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3L22 20H2z" fill="#f2b705" stroke="#c81e1e" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 9v5" stroke="#10151f" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="17" r="1.3" fill="#10151f"/></symbol>
+    <!-- Chiếc xe sát hạch của menu, vẽ một lần trong toạ độ 300x600 (2026-11-01). Ba nút ở menu là
+         ba lát cắt của cùng hình này (viewBox khác nhau), nên các khối khớp nhau khi ráp lại. -->
+    <defs><g id="car-art">
+      <rect class="car-wheel" x="36" y="88" width="18" height="70" rx="7"/><rect class="car-wheel" x="246" y="88" width="18" height="70" rx="7"/>
+      <rect class="car-wheel" x="36" y="462" width="18" height="70" rx="7"/><rect class="car-wheel" x="246" y="462" width="18" height="70" rx="7"/>
+      <path class="car-mirror" d="M52 196 L26 202 Q19 210 26 218 L52 216 Z M248 196 L274 202 Q281 210 274 218 L248 216 Z"/>
+      <path class="car-body" d="M150 6 C206 6 244 20 249 62 L253 178 L253 440 L249 546 C244 584 206 594 150 594 C94 594 56 584 51 546 L47 440 L47 178 L51 62 C56 20 94 6 150 6 Z"/>
+      <path class="car-crease" d="M104 34 Q98 104 92 176 M196 34 Q202 104 208 176 M90 456 Q98 520 104 572 M210 456 Q202 520 196 572"/>
+      <path class="car-lamp" d="M62 54 Q76 28 116 18 M238 54 Q224 28 184 18"/>
+      <path class="car-indicator" d="M54 76 Q57 62 62 56 M246 76 Q243 62 238 56"/>
+      <path class="car-glass" d="M64 184 Q150 162 236 184 L222 252 Q150 242 78 252 Z"/>
+      <path class="car-glass" d="M58 200 L74 256 L72 380 L58 408 Z M242 200 L226 256 L228 380 L242 408 Z"/>
+      <path class="car-roof" d="M78 252 Q150 242 222 252 L226 384 Q150 394 74 384 Z"/>
+      <path class="car-glass" d="M74 388 Q150 398 226 388 L238 444 Q150 458 62 444 Z"/>
+      <path class="car-shine" d="M92 192 Q140 180 176 182"/>
+      <path class="car-tail" d="M60 548 Q80 576 118 584 M240 548 Q220 576 182 584"/>
+      <!-- Hộp đèn trên nóc: ba đèn xanh, vàng, đỏ và biển "SÁT HẠCH" như xe thật. -->
+      <g class="roof-lights"><circle cx="116" cy="276" r="9" fill="#3d8bff"/><circle cx="150" cy="276" r="9" fill="#f2b705"/><circle cx="184" cy="276" r="9" fill="#ff4d4d"/></g>
+      <rect class="roof-sign" x="94" y="290" width="112" height="28" rx="5"/>
+      <text class="roof-sign-text" x="150" y="309">SÁT HẠCH</text>
+    </g></defs>
   </svg>
   <!-- Đèn xuất phát: năm đèn đỏ sáng dần rồi tắt cùng lúc khi mở app ("lights out"), rồi menu
        hiện ra. Chỉ chạy một lần lúc tải trang; quay lại menu không chạy lại. -->
@@ -34,75 +55,48 @@
 
   <main>
     <section id="menu">
-      <!-- Menu là một chiếc ô tô nhìn từ trên xuống, tách làm ba khối như bản vẽ tách lớp: đầu xe
+      <!-- Menu là chiếc xe sát hạch nhìn từ trên xuống, tách làm ba khối như bản vẽ tách lớp: đầu xe
            (đèn pha) là Lý thuyết, khoang lái là Sa hình, đuôi xe (đèn hậu) là Đường trường. Lúc mở
            app ba khối bay vào ráp lại sau khi đèn xuất phát chuyển xanh. -->
       <div class="car">
         <button id="btn-ly-thuyet" class="car-part car-front" type="button">
-          <svg class="car-shape" viewBox="0 0 300 170" aria-hidden="true">
-            <rect class="car-wheel" x="26" y="98" width="16" height="48" rx="5"/><rect class="car-wheel" x="258" y="98" width="16" height="48" rx="5"/>
-            <path class="car-body" d="M40 170 L40 74 Q40 8 150 4 Q260 8 260 74 L260 170 Z"/>
-            <path class="car-lamp" d="M58 46 Q82 22 116 17 M242 46 Q218 22 184 17"/>
-            <path class="car-crease" d="M104 40 Q100 110 104 170 M196 40 Q200 110 196 170"/>
-          </svg>
+          <svg class="car-shape" viewBox="0 0 300 178" aria-hidden="true"><use href="#car-art"/></svg>
           <span class="chip chip-yellow"><svg aria-hidden="true"><use href="#i-book"/></svg>Lý thuyết</span>
         </button>
         <button id="btn-sa-hinh" class="car-part car-cabin" type="button">
-          <svg class="car-shape" viewBox="0 0 300 250" aria-hidden="true">
-            <path class="car-body" d="M40 0 L40 250 L260 250 L260 0 Z"/>
-            <path class="car-mirror" d="M40 34 L18 44 L22 58 L40 56 Z M260 34 L282 44 L278 58 L260 56 Z"/>
-            <path class="car-glass" d="M58 22 Q150 0 242 22 L228 72 Q150 60 72 72 Z"/>
-            <path class="car-roof" d="M72 72 Q150 60 228 72 L228 196 Q150 206 72 196 Z"/>
-            <path class="car-glass" d="M72 196 Q150 206 228 196 L238 232 Q150 246 62 232 Z"/>
-            <!-- Hộp đèn trên nóc: ba đèn xanh, vàng, đỏ và biển "XE SÁT HẠCH" như xe thật. -->
-            <rect class="roof-sign" x="82" y="84" width="136" height="30" rx="4"/>
-            <path d="M84 86h10v26H84z M206 86h10v26h-10z" fill="url(#sign-flag)"/>
-            <text class="roof-sign-text" x="150" y="104">XE SÁT HẠCH</text>
-            <g class="roof-lights"><circle cx="108" cy="78" r="9" fill="#3d8bff"/><circle cx="150" cy="78" r="9" fill="#f2b705"/><circle cx="192" cy="78" r="9" fill="#ff4d4d"/></g>
-            <defs><linearGradient id="sign-flag" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#c81e1e"/><stop offset=".33" stop-color="#c81e1e"/><stop offset=".33" stop-color="#f2b705"/><stop offset=".66" stop-color="#f2b705"/><stop offset=".66" stop-color="#1b4d8c"/><stop offset="1" stop-color="#1b4d8c"/>
-            </linearGradient></defs>
-          </svg>
+          <svg class="car-shape" viewBox="0 178 300 270" aria-hidden="true"><use href="#car-art"/></svg>
           <span class="chip chip-blue"><svg aria-hidden="true"><use href="#i-cone"/></svg>Sa hình</span>
         </button>
         <button id="btn-duong-truong" class="car-part car-rear" type="button">
-          <svg class="car-shape" viewBox="0 0 300 170" aria-hidden="true">
-            <rect class="car-wheel" x="26" y="24" width="16" height="48" rx="5"/><rect class="car-wheel" x="258" y="24" width="16" height="48" rx="5"/>
-            <path class="car-body" d="M40 0 L40 98 Q40 162 150 166 Q260 162 260 98 L260 0 Z"/>
-            <path class="car-tail" d="M58 130 Q84 150 116 154 M242 130 Q216 150 184 154"/>
-            <path class="car-crease" d="M104 0 Q100 60 106 130 M196 0 Q200 60 194 130"/>
-          </svg>
+          <svg class="car-shape" viewBox="0 448 300 152" aria-hidden="true"><use href="#car-art"/></svg>
           <span class="chip chip-red"><svg aria-hidden="true"><use href="#i-road"/></svg>Đường trường</span>
         </button>
       </div>
       <button id="btn-huong-dan-dt" class="btn-guide" type="button"><svg aria-hidden="true"><use href="#i-warn"/></svg>Quy định phần thi đường trường</button>
 
-      <!-- Thương hiệu sát đáy màn hình: logo giữa, tên + hotline góc trái, dev + mail góc phải. Logo "vô lăng mặt trời": ngôi sao 14 cánh giữa mặt trống
+      <!-- Thương hiệu sát đáy màn hình: logo giữa, dưới là hai link Zalo và Gmail (2026-11-01). Logo "vô lăng mặt trời": ngôi sao 14 cánh giữa mặt trống
            đồng Đông Sơn làm vô lăng, trục đỏ ở tâm, vòng chấm trống đồng bên ngoài. -->
       <footer class="brand">
         <svg class="brand-mark" viewBox="-50 -50 100 100" role="img" aria-label="Logo vô lăng mặt trời trống đồng">
-            <circle r="48" fill="var(--night)" stroke="#c9964f" stroke-width="3"/>
+            <circle r="48" fill="#5b3f26" stroke="#c9964f" stroke-width="3"/>
             <g fill="#c9964f"><circle cx="0.0" cy="-42.0" r="1.6"/><circle cx="9.3" cy="-40.9" r="1.6"/><circle cx="18.2" cy="-37.8" r="1.6"/><circle cx="26.2" cy="-32.8" r="1.6"/><circle cx="32.8" cy="-26.2" r="1.6"/><circle cx="37.8" cy="-18.2" r="1.6"/><circle cx="40.9" cy="-9.3" r="1.6"/><circle cx="42.0" cy="0.0" r="1.6"/><circle cx="40.9" cy="9.3" r="1.6"/><circle cx="37.8" cy="18.2" r="1.6"/><circle cx="32.8" cy="26.2" r="1.6"/><circle cx="26.2" cy="32.8" r="1.6"/><circle cx="18.2" cy="37.8" r="1.6"/><circle cx="9.3" cy="40.9" r="1.6"/><circle cx="0.0" cy="42.0" r="1.6"/><circle cx="-9.3" cy="40.9" r="1.6"/><circle cx="-18.2" cy="37.8" r="1.6"/><circle cx="-26.2" cy="32.8" r="1.6"/><circle cx="-32.8" cy="26.2" r="1.6"/><circle cx="-37.8" cy="18.2" r="1.6"/><circle cx="-40.9" cy="9.3" r="1.6"/><circle cx="-42.0" cy="0.0" r="1.6"/><circle cx="-40.9" cy="-9.3" r="1.6"/><circle cx="-37.8" cy="-18.2" r="1.6"/><circle cx="-32.8" cy="-26.2" r="1.6"/><circle cx="-26.2" cy="-32.8" r="1.6"/><circle cx="-18.2" cy="-37.8" r="1.6"/><circle cx="-9.3" cy="-40.9" r="1.6"/></g>
             <polygon points="0.0,-36.0 3.3,-14.6 15.6,-32.4 9.4,-11.7 28.1,-22.4 13.5,-6.5 35.1,-8.0 15.0,0.0 35.1,8.0 13.5,6.5 28.1,22.4 9.4,11.7 15.6,32.4 3.3,14.6 0.0,36.0 -3.3,14.6 -15.6,32.4 -9.4,11.7 -28.1,22.4 -13.5,6.5 -35.1,8.0 -15.0,0.0 -35.1,-8.0 -13.5,-6.5 -28.1,-22.4 -9.4,-11.7 -15.6,-32.4 -3.3,-14.6" fill="#f2c98a"/>
-            <circle r="11" fill="var(--night)" stroke="#f2c98a" stroke-width="3"/>
+            <circle r="11" fill="#5b3f26" stroke="#f2c98a" stroke-width="3"/>
             <circle r="4" fill="var(--red)"/>
           </svg>
-        <div class="brand-corners">
-          <p class="brand-left"><b>Dinh Vuong Nguyen</b>Hotline <a href="tel:0963281291">0963.281.291</a></p>
-          <p class="brand-right">dev: fiaboo<br><a href="mailto:dinhvuong090997@gmail.com">dinhvuong090997@gmail.com</a></p>
-        </div>
+        <p class="brand-links"><a href="https://zalo.me/0963281291" target="_blank" rel="noopener">Zalo</a><a href="mailto:dinhvuong090997@gmail.com">Gmail</a></p>
       </footer>
     </section>
 
     <!-- Lớp thứ hai của Sa hình: chọn bộ bài. Tách khỏi menu để trên xe chỉ còn ba chữ. -->
     <section id="view-sa-hinh-menu" hidden>
-      <h2 class="night-title">Sa hình</h2>
+      <h2>Sa hình</h2>
       <div class="set-list">
         <button id="btn-bo-chuan" class="set-btn set-blue" type="button"><svg aria-hidden="true"><use href="#i-car"/></svg>Hạng B</button>
         <button id="btn-bo-chuan-c1" class="set-btn set-yellow" type="button"><svg aria-hidden="true"><use href="#i-truck"/></svg>Hạng C1</button>
         <button id="btn-bo-tu-ghep" class="set-btn set-red" type="button"><svg aria-hidden="true"><use href="#i-puzzle"/></svg>Tự ghép</button>
       </div>
-      <button class="btn-back night-back" data-back="menu" type="button">← Quay lại</button>
+      <button class="btn-back" data-back="menu" type="button">← Quay lại</button>
     </section>
 
     <!-- Sa hình bấm tay: người ngồi cạnh phát từng tiếng đúng lúc xe tới, thay cho phát tự động
@@ -116,11 +110,11 @@
         <button id="sh-replay" class="btn-secondary" type="button">↻ Đọc lại</button>
       </div>
       <div class="sh-cues">
-        <button id="sh-ting-tong" class="sh-cue" type="button"><span aria-hidden="true">🔔</span> Ting tong<small>Vào bài</small></button>
-        <button id="sh-tut" class="sh-cue" type="button"><span aria-hidden="true">✅</span> Tút<small>Nhận bài</small></button>
+        <button id="sh-ting-tong" class="sh-cue" type="button">Ting tong<small>Vào bài</small></button>
+        <button id="sh-tut" class="sh-cue" type="button">Tút<small>Nhận bài</small></button>
         <!-- Tình huống nguy hiểm: máy chấm báo bất ngờ, học viên phải phanh dừng trong 3 giây và
              bật đèn khẩn cấp trong 5 giây. Người ngồi cạnh bấm lúc học viên không ngờ tới. -->
-        <button id="sh-khan-cap" class="sh-cue sh-alarm" type="button"><span aria-hidden="true">⚠️</span> Khẩn cấp</button>
+        <button id="sh-khan-cap" class="sh-cue sh-alarm" type="button"><svg aria-hidden="true"><use href="#i-warn"/></svg>Khẩn cấp</button>
       </div>
       <section class="sb-zone sb-zone-red">
         <h3>Báo lỗi</h3>
@@ -136,7 +130,7 @@
     <section id="view-duong-truong" hidden>
       <div id="soundboard"></div>
       <div class="action-row sb-controls">
-        <button id="stop-duong-truong" class="btn-primary" type="button">⏹ Dừng</button>
+        <button id="stop-duong-truong" class="btn-primary" type="button">Dừng phát</button>
         <button class="btn-back btn-back-boxed" type="button">← Quay lại</button>
       </div>
     </section>
@@ -177,8 +171,8 @@
         </div>
       </div>
       <div class="action-row">
-        <button id="save-bo-tu-ghep" class="btn-secondary" type="button">💾 Lưu</button>
-        <button id="play-bo-tu-ghep" class="btn-primary" type="button">▶ Mở bảng bấm</button>
+        <button id="save-bo-tu-ghep" class="btn-secondary" type="button">Lưu bộ bài</button>
+        <button id="play-bo-tu-ghep" class="btn-primary" type="button">Mở bảng bấm</button>
       </div>
       <button class="btn-back" data-back="sa-hinh-menu" type="button">← Quay lại</button>
     </section>
@@ -204,7 +198,7 @@
       <p id="theory-result-summary"></p>
       <div class="action-row">
         <button id="theory-retry" class="btn-primary" type="button">Thi lại</button>
-        <button id="theory-review-btn" class="btn-secondary" type="button">🔍 Xem lại bài làm</button>
+        <button id="theory-review-btn" class="btn-secondary" type="button">Xem lại bài làm</button>
       </div>
       <button class="btn-back" data-back="menu" type="button">← Quay lại</button>
     </section>

@@ -245,14 +245,10 @@ function renderSoundboard() {
   });
 }
 
-// Một phím âm thanh: biểu tượng + nhãn, bấm là phát.
+// Một phím âm thanh: chỉ nhãn (bỏ emoji 2026-11-01 -- màu khu đã chỉ loại phím), bấm là phát.
 function soundKey(key) {
   const b = button(key.label, () => playKey(b, `content/audio/${key.audio}`, key.label));
-  const icon = document.createElement('span');
-  icon.textContent = key.icon;
-  icon.setAttribute('aria-hidden', 'true');
-  b.prepend(icon, ' ');
-  b.className = 'tile sb-key';
+  b.className = 'sb-key';
   return b;
 }
 
