@@ -1,0 +1,223 @@
+{
+  "engine": "VieNeu-TTS v3 Turbo",
+  "reference_video": "https://www.youtube.com/watch?v=koPYGFOVGnY",
+  "reference_clips": [
+    "recorded/da-thi-dat.mp3"
+  ],
+  "tempo": 0.8,
+  "temperature": 0.8,
+  "clips": [
+    {
+      "label": "Xe chạm vạch",
+      "say": "Xe chạm vạch.",
+      "old_audio": "soundboard/de-vach.mp3",
+      "audio": "generated-errors/de-vach.mp3",
+      "group": 0,
+      "start": 0,
+      "end": 0.981386
+    },
+    {
+      "label": "Dừng xe chưa đến vị trí",
+      "say": "Dừng xe chưa đến vị trí.",
+      "old_audio": "soundboard/dung-chua-den-vach.mp3",
+      "audio": "generated-errors/dung-chua-den-vach.mp3",
+      "group": 0,
+      "start": 0.981386,
+      "end": 2.659396
+    },
+    {
+      "label": "Dừng xe quá vị trí",
+      "say": "Dừng xe quá vị trí.",
+      "old_audio": "soundboard/dung-qua-vach.mp3",
+      "audio": "generated-errors/dung-qua-vach.mp3",
+      "group": 0,
+      "start": 2.659396,
+      "end": 4.259354
+    },
+    {
+      "label": "Quá thời gian một bài",
+      "say": "Quá thời gian một bài.",
+      "old_audio": "soundboard/qua-thoi-gian-bai-thi.mp3",
+      "audio": "generated-errors/qua-thoi-gian-bai-thi.mp3",
+      "group": 4,
+      "start": 6.46899,
+      "end": 8.02
+    },
+    {
+      "label": "Xe chết máy",
+      "say": "Xe bị chết máy.",
+      "old_audio": "soundboard/xe-chet-may.mp3",
+      "audio": "generated-errors/xe-chet-may.mp3",
+      "group": 1,
+      "start": 0,
+      "end": 1.175948
+    },
+    {
+      "label": "Không bật xi nhan",
+      "say": "Không bật đèn báo rẽ.",
+      "old_audio": "soundboard/khong-bat-xi-nhan.mp3",
+      "audio": "generated-errors/khong-bat-xi-nhan.mp3",
+      "group": 1,
+      "start": 1.175948,
+      "end": 2.454583
+    },
+    {
+      "label": "Không thắt dây an toàn",
+      "say": "Không thắt dây an toàn.",
+      "old_audio": "soundboard/khong-that-day-an-toan.mp3",
+      "audio": "generated-errors/khong-that-day-an-toan.mp3",
+      "group": 1,
+      "start": 2.454583,
+      "end": 3.731198
+    },
+    {
+      "label": "Không đổi đúng số",
+      "say": "Không chuyển đúng số.",
+      "old_audio": "soundboard/khong-doi-dung-so.mp3",
+      "audio": "generated-errors/khong-doi-dung-so.mp3",
+      "group": 1,
+      "start": 3.731198,
+      "end": 4.995458
+    },
+    {
+      "label": "Quá 4000 vòng/phút",
+      "say": "Tốc độ động cơ quá bốn nghìn vòng một phút.",
+      "old_audio": "soundboard/qua-4000-vong.mp3",
+      "audio": "generated-errors/qua-4000-vong.mp3",
+      "group": 1,
+      "start": 4.995458,
+      "end": 7.36
+    },
+    {
+      "label": "Vượt đèn đỏ",
+      "say": "Vượt đèn đỏ.",
+      "old_audio": "soundboard/vuot-den-do.mp3",
+      "audio": "generated-errors/vuot-den-do.mp3",
+      "group": 2,
+      "start": 0,
+      "end": 0.949427
+    },
+    {
+      "label": "Quá tốc độ",
+      "say": "Vượt quá tốc độ quy định.",
+      "old_audio": "soundboard/qua-toc-do.mp3",
+      "audio": "generated-errors/qua-toc-do.mp3",
+      "group": 2,
+      "start": 0.949427,
+      "end": 2.316063
+    },
+    {
+      "label": "Tụt dốc quá 50 cm",
+      "say": "Xe bị tụt dốc quá năm mươi xen ti mét.",
+      "old_audio": "soundboard/tut-doc.mp3",
+      "audio": "generated-errors/tut-doc.mp3",
+      "group": 2,
+      "start": 2.316063,
+      "end": 4.55651
+    },
+    {
+      "label": "Bạn đã đi sai quy cách thi",
+      "say": "Bạn đã đi sai quy cách thi.",
+      "old_audio": "soundboard/di-sai-hinh.mp3",
+      "audio": "generated-errors/di-sai-hinh.mp3",
+      "group": 4,
+      "start": 4.220948,
+      "end": 6.46899
+    },
+    {
+      "label": "Vào số sai",
+      "say": "Vào sai số.",
+      "old_audio": "soundboard/vao-so-sai.mp3",
+      "audio": "generated-errors/vao-so-sai.mp3",
+      "group": 2,
+      "start": 4.55651,
+      "end": 5.6
+    },
+    {
+      "label": "Không hạ thắng tay",
+      "say": "Không hạ thắng tay.",
+      "old_audio": "soundboard/khong-ha-thang-tay.mp3",
+      "audio": "generated-errors/khong-ha-thang-tay.mp3",
+      "group": 3,
+      "start": 0,
+      "end": 1.10774
+    },
+    {
+      "label": "Không tăng số",
+      "say": "Không tăng số.",
+      "old_audio": "soundboard/khong-tang-so.mp3",
+      "audio": "generated-errors/khong-tang-so.mp3",
+      "group": 3,
+      "start": 1.10774,
+      "end": 2.19101
+    },
+    {
+      "label": "Không giảm số",
+      "say": "Không giảm số.",
+      "old_audio": "soundboard/khong-giam-so.mp3",
+      "audio": "generated-errors/khong-giam-so.mp3",
+      "group": 3,
+      "start": 2.19101,
+      "end": 3.17551
+    },
+    {
+      "label": "Trượt",
+      "say": "Bạn đã thi trượt.",
+      "old_audio": "soundboard/da-thi-truot.mp3",
+      "audio": "generated-errors/da-thi-truot.mp3",
+      "group": 3,
+      "start": 3.17551,
+      "end": 4.32
+    }
+  ],
+  "use_ref_codes": true,
+  "note": "Clear Mai Anh base with up to 15% reference timbre. Groups 0 and 2 use the clear base after pronunciation checks. This is not an exact clone. Group synthesis followed by cuts avoids short-utterance failures; tempo 0.8.",
+  "groups": [
+    [
+      0,
+      1,
+      2
+    ],
+    [
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    [
+      9,
+      10,
+      11,
+      13
+    ],
+    [
+      14,
+      15,
+      16,
+      17
+    ],
+    [
+      12,
+      3
+    ]
+  ],
+  "voice_method": "reference speaker embedding mixed with Mai Anh preset; normalized to preset norm",
+  "reference_weight": 0.15,
+  "preset_voice": "Mai Anh",
+  "group_reference_weights": {
+    "0": 0,
+    "2": 0,
+    "4": 0
+  },
+  "group_texts": {
+    "0": "Xe chạm vạch. Dừng xe chưa đến vị trí. Dừng xe quá vị trí. Bạn đã đi sai quy cách thi. Quá thời gian một bài.",
+    "4": "Xe chạm vạch. Dừng xe chưa đến vị trí. Dừng xe quá vị trí.\n\nBạn đã đi sai quy cách thi.\n\nQuá thời gian một bài."
+  },
+  "group_seeds": {
+    "4": 85
+  },
+  "tail_before_tempo": 0.25,
+  "tail_after_tempo": 0.4,
+  "cut_method": "Measured silence centers; keep the complete final utterance and pad before atempo to protect final phonemes."
+}

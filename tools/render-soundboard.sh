@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-# Render every spoken clip of the app in one voice: the sa hình station names
+# Render synthesized clips only; recorded/ contains source-video excerpts and
+# must never be overwritten by TTS, including when --force is used.
+# generated-errors/ is rebuilt separately with tools/render-error-voice.py.
+# Render the remaining spoken clips: the sa hình station names
 # (content/stations.json) and every spoken key of the Đường trường board, the sa hình error keys
 # and the sa hình announcements (soundboard.json, sa-hinh-loi.json, sa-hinh-thong-bao.json).
 #
@@ -29,7 +32,8 @@ mkdir -p content/audio/soundboard
 node -e '
 const out = [];
 for (const s of require("./content/stations.json"))
-  out.push([s.audio, s.name.replace(/\s*\(.*\)/, "")]);
+  if (!s.audio.startsWith("recorded/"))
+    out.push([s.audio, s.name.replace(/\s*\(.*\)/, "")]);
 for (const k of [
   ...require("./content/soundboard.json"),
   ...require("./content/sa-hinh-loi.json"),

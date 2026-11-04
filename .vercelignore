@@ -3,3 +3,5 @@ tools
 docs
 .impeccable
 *.md
+.claude
+skills-lock.json

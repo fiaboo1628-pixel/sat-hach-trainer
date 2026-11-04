@@ -12,6 +12,35 @@ Three modules:
 - **Hướng dẫn thi đường trường** (`view-huong-dan-dt`, from the menu under Đường trường): static reading page for learners before the road test -- the four bài, what to do, and each error with its points. The in-car board stays at its 12 keys on purpose; the owner wants the error list read beforehand, not pressed.
 - **Lý thuyết** (theory): 600 official questions (`content/theory/questions.json`). Timed mock exams for license classes B / C1, plus untimed per-topic practice with bookmarks and a wrong-answer review list.
 
+## Audio source update (2026-11-04)
+
+Owner requested source-video excerpts instead of TTS for matching cues. All 11
+Sa hình stations and the pass notice now use `content/audio/recorded/`; road-board
+Xuất phát/Kết thúc share those recordings. Other road commands and nonverbal
+sounds retain their previous files. Source timestamps:
+`docs/audio-recorded-source.json`. Do not regenerate `recorded/` using TTS;
+`tools/render-soundboard.sh` skips it even with `--force`. Older one-voice notes
+describe the previous version. Android has not been rebuilt.
+
+Error voice follow-up: Sa hình + road error keys and the fail notice use
+`generated-errors/`, synthesized with a clear Mai Anh base, up to 15% reference
+speaker anchor, and Mai Anh reference codes (groups 0/2/4 use the clear base), then slowed to 80% tempo. This is an
+approximation, not an exact clone. Synthesize in sentence groups and split using
+manifest cuts; short standalone cloning failed pronunciation checks.
+Manifest: `docs/audio-error-voice.json`; rebuild with
+`tools/render-error-voice.py` in the airi-voice environment. Generic TTS rebuilds
+must not overwrite these files. Owner specified “Xe chạm vạch”, “Dừng xe chưa đến
+vị trí”, “Dừng xe quá vị trí”, “Bạn đã đi sai quy cách thi”, “Quá thời gian một bài”,
+and removed “Lên vỉa hè”. Current cache: v43.
+
+Audio tail fix: cut at measured silence centers, not ASR word boundaries. Preserve
+`group_texts` / `group_seeds` overrides: two joined utterances were regenerated with
+paragraph breaks. Pad 250 ms before atempo, then 400 ms after it. The renderer
+rejects internal cuts with audible energy in the surrounding 40 ms.
+FFmpeg duration MUST be an input option (`-ss ... -t ... -i ...`), not an output
+limit: the latter truncated slowed speech and padding. Verify output duration
+after tempo processing and at least 350 ms quiet tail before publishing.
+
 ## Commands
 
 ```sh

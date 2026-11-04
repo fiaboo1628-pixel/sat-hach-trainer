@@ -1,7 +1,7 @@
 [
   {
     "label": "Xuất phát",
-    "audio": "xuat-phat.mp3",
+    "audio": "recorded/xuat-phat.mp3",
     "color": "blue"
   },
   {
@@ -26,37 +26,43 @@
   },
   {
     "label": "Vào số sai",
-    "audio": "soundboard/vao-so-sai.mp3",
-    "color": "red"
+    "audio": "generated-errors/vao-so-sai.mp3",
+    "color": "red",
+    "say": "Vào sai số"
   },
   {
     "label": "Không thắt dây an toàn",
-    "audio": "soundboard/khong-that-day-an-toan.mp3",
-    "color": "red"
+    "audio": "generated-errors/khong-that-day-an-toan.mp3",
+    "color": "red",
+    "say": "Không thắt dây an toàn"
   },
   {
     "label": "Không hạ thắng tay",
-    "audio": "soundboard/khong-ha-thang-tay.mp3",
-    "color": "red"
+    "audio": "generated-errors/khong-ha-thang-tay.mp3",
+    "color": "red",
+    "say": "Không hạ thắng tay"
   },
   {
     "label": "Không bật xi nhan",
-    "audio": "soundboard/khong-bat-xi-nhan.mp3",
-    "color": "red"
+    "audio": "generated-errors/khong-bat-xi-nhan.mp3",
+    "color": "red",
+    "say": "Không bật đèn báo rẽ"
   },
   {
     "label": "Không tăng số",
-    "audio": "soundboard/khong-tang-so.mp3",
-    "color": "red"
+    "audio": "generated-errors/khong-tang-so.mp3",
+    "color": "red",
+    "say": "Không tăng số"
   },
   {
     "label": "Không giảm số",
-    "audio": "soundboard/khong-giam-so.mp3",
-    "color": "red"
+    "audio": "generated-errors/khong-giam-so.mp3",
+    "color": "red",
+    "say": "Không giảm số"
   },
   {
     "label": "Kết thúc",
-    "audio": "ket-thuc.mp3",
+    "audio": "recorded/ket-thuc.mp3",
     "color": "blue"
   }
 ]

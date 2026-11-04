@@ -20,6 +20,60 @@ Mở địa chỉ server báo ra (vd `http://localhost:8080`).
 
 ## Audio
 
+### Âm thanh cắt từ video tham chiếu (2026-11-04)
+
+11 hiệu lệnh sa hình và thông báo thi đạt dùng bản ghi trong
+`content/audio/recorded/`, cắt từ video do chủ app cung cấp:
+https://www.youtube.com/watch?v=koPYGFOVGnY (từ đầu video).
+Mốc cắt, nguồn và nội dung đối chiếu nằm trong `docs/audio-recorded-source.json`.
+Đây là âm thanh của video tham chiếu, không phải bộ tiếng được xác nhận cho mọi
+trung tâm sát hạch; bản gốc có tiếng nền. Chỉ lọc tiếng ù dưới 90 Hz, fade mép rất
+ngắn và cân âm lượng khoảng -19 LUFS; không đổi tốc độ hoặc tổng hợp lại giọng.
+
+Xuất phát đọc “Bắt đầu thi”; các bài giữa giữ lời dẫn “Bài thi tiếp theo…”.
+Sa hình “Tăng số, tăng tốc độ” đọc tên bài “Thay đổi số trên đường bằng”; phím
+Đường trường tăng/giảm số giữ hiệu lệnh TTS riêng. Xuất phát/Kết thúc của Đường
+trường dùng chung đoạn bản ghi tương ứng với Sa hình.
+
+Các âm báo Ting tong/Tút/Khẩn cấp giữ bản cũ vì chưa có đoạn tương ứng được xác
+minh từ video. Các file TTS trước đây vẫn giữ trên đĩa.
+`tools/render-soundboard.sh`, kể cả `--force`, bỏ qua `recorded/` để tránh ghi đè.
+APK phải build lại để nhận âm thanh mới.
+
+### Câu báo lỗi mới (2026-11-04)
+
+`content/audio/generated-errors/` chứa 18 câu lỗi/thông báo trượt tổng hợp bằng
+VieNeu-TTS v3 Turbo với chất giọng gần mẫu video: dùng giọng rõ Mai Anh làm nền, phối tối đa 15% đặc trưng người nói từ mẫu.
+Các nhóm có từ khó dùng giọng nền để ưu tiên phát âm; giữ mã ngữ điệu Mai Anh. Đây không phải
+bản nhân giọng giống hoàn toàn. Giọng tham chiếu thuần đọc sai nhiều câu ngắn
+trong bước kiểm tra, nên tạo theo nhóm câu rồi cắt riêng. Sau tổng hợp giảm tốc
+độ còn 80%, giữ cao độ, thêm khoảng nghỉ đầu/cuối và cân khoảng -19 LUFS.
+
+Theo câu chữ chủ app chốt: “Xe chạm vạch”, “Dừng xe chưa đến vị trí”, “Dừng xe quá
+vị trí”, “Bạn đã đi sai quy cách thi”, “Quá thời gian một bài”; bỏ nút “Lên vỉa hè”.
+Số và đơn vị được ghi bằng chữ trong `say`; “xi nhan” đọc là “đèn báo rẽ” để rõ
+nghĩa và tránh đọc lệch. Câu đường trường tăng/giảm số, các
+đoạn bài thi ghi âm và thông báo thi đạt giữ nguyên.
+
+Nguồn, câu đọc, tốc độ và tham số: `docs/audio-error-voice.json`. Tạo lại bằng:
+
+```sh
+~/Projects/airi-voice/.venv/bin/python -I tools/render-error-voice.py
+```
+
+Sửa đuôi câu: các điểm cắt nằm trong khoảng lặng đo trực tiếp, không dựa vào mốc
+chữ nhận dạng. Hai câu bị dính được tổng hợp lại với ngắt đoạn. Thêm 250 ms im
+lặng trước khi giảm tốc và 400 ms sau xử lý để giữ nguyên âm cuối; script từ chối
+cắt nếu cửa sổ 40 ms quanh điểm cắt còn tiếng nói. FFmpeg `-t` là thời lượng đầu
+vào (đặt trước `-i`); giới hạn thời lượng đầu ra sẽ cắt mất phần giọng kéo dài và
+khoảng nghỉ. Mỗi bản xuất phải đủ thời lượng sau giảm tốc và có ít nhất 350 ms
+đuôi yên lặng trước khi được thay vào app.
+
+Cache của bản này: `sat-hach-trainer-v43`. `render-soundboard.sh --force` cũng
+không ghi đè `generated-errors/`; dùng script riêng ở trên.
+
+### Giọng TTS còn lại và lịch sử
+
 `content/audio/` gồm 3 loại:
 
 - **Giọng đọc (từ 2026-11-01): một giọng cho toàn app.** Cả 10 file tên bài sa hình và 22 phím

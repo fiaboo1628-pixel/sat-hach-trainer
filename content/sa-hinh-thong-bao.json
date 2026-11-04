@@ -1,4 +1,4 @@
 [
-  {"label": "Đậu", "say": "Bạn đã thi đậu phần thi sát hạch lái xe trong hình", "audio": "soundboard/da-thi-dau.mp3"},
-  {"label": "Trượt", "say": "Bạn đã thi trượt", "audio": "soundboard/da-thi-truot.mp3"}
+  {"label": "Đậu", "say": "Bạn đã thi đạt phần thi sát hạch kỹ năng lái xe trong hình", "audio": "recorded/da-thi-dat.mp3"},
+  {"label": "Trượt", "say": "Bạn đã thi trượt", "audio": "generated-errors/da-thi-truot.mp3"}
 ]

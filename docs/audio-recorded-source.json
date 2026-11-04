@@ -1,0 +1,91 @@
+{
+  "source_url": "https://www.youtube.com/watch?v=koPYGFOVGnY",
+  "source_title": "Chi tiết 11 bài thi sa hình sát hạch lái xe ôtô hạng B1, B2 - Thành Công Tiến Bộ Hải Vân An Cư",
+  "note": "User-supplied reference; expected_text is a matching aid, not a certified verbatim transcript. Original recording includes background noise. No new synthesized speech.",
+  "clips": [
+    {
+      "id": "xuat-phat",
+      "audio": "recorded/xuat-phat.mp3",
+      "start": 7.85,
+      "end": 8.98,
+      "expected_text": "Bắt đầu thi."
+    },
+    {
+      "id": "nhuong-nguoi-di-bo",
+      "audio": "recorded/nhuong-nguoi-di-bo.mp3",
+      "start": 16.42,
+      "end": 19.88,
+      "expected_text": "Bài thi tiếp theo, bài thi dừng xe nhường đường cho người đi bộ."
+    },
+    {
+      "id": "de-pa-len-doc",
+      "audio": "recorded/de-pa-len-doc.mp3",
+      "start": 29.82,
+      "end": 33.55,
+      "expected_text": "Bài thi tiếp theo, bài thi dừng và khởi hành xe ngang dốc."
+    },
+    {
+      "id": "hang-dinh-vuong-goc",
+      "audio": "recorded/hang-dinh-vuong-goc.mp3",
+      "start": 49.28,
+      "end": 53.45,
+      "expected_text": "Bài thi tiếp theo, bài thi qua vệt bánh xe và đường vòng vuông góc."
+    },
+    {
+      "id": "nga-tu-den-tin-hieu",
+      "audio": "recorded/nga-tu-den-tin-hieu.mp3",
+      "start": 102.12,
+      "end": 106.12,
+      "expected_text": "Bài thi tiếp theo, bài thi qua ngã tư có tín hiệu điều khiển giao thông."
+    },
+    {
+      "id": "duong-vong-quanh-co",
+      "audio": "recorded/duong-vong-quanh-co.mp3",
+      "start": 140.56,
+      "end": 143.5,
+      "expected_text": "Bài thi tiếp theo, bài thi đường vòng quanh co."
+    },
+    {
+      "id": "ghep-xe-doc",
+      "audio": "recorded/ghep-xe-doc.mp3",
+      "start": 190.0,
+      "end": 193.55,
+      "expected_text": "Bài thi tiếp theo, bài thi ghép xe dọc vào nơi đỗ."
+    },
+    {
+      "id": "giao-duong-sat",
+      "audio": "recorded/giao-duong-sat.mp3",
+      "start": 295.0,
+      "end": 299.05,
+      "expected_text": "Bài thi tiếp theo, bài thi tạm dừng ở chỗ có đường sắt chạy qua."
+    },
+    {
+      "id": "tang-toc-tang-so",
+      "audio": "recorded/tang-toc-tang-so.mp3",
+      "start": 334.9,
+      "end": 338.32,
+      "expected_text": "Bài thi tiếp theo, bài thi thay đổi số trên đường bằng."
+    },
+    {
+      "id": "ghep-xe-ngang",
+      "audio": "recorded/ghep-xe-ngang.mp3",
+      "start": 357.12,
+      "end": 360.58,
+      "expected_text": "Bài thi tiếp theo, bài thi ghép xe ngang vào nơi đỗ."
+    },
+    {
+      "id": "ket-thuc",
+      "audio": "recorded/ket-thuc.mp3",
+      "start": 424.5,
+      "end": 427.2,
+      "expected_text": "Bài thi tiếp theo, bài thi kết thúc."
+    },
+    {
+      "id": "da-thi-dat",
+      "audio": "recorded/da-thi-dat.mp3",
+      "start": 434.66,
+      "end": 438.42,
+      "expected_text": "Bạn đã thi đạt phần thi sát hạch kỹ năng lái xe trong hình."
+    }
+  ]
+}
