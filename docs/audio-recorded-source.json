@@ -1,7 +1,7 @@
 {
   "source_url": "https://www.youtube.com/watch?v=koPYGFOVGnY",
   "source_title": "Chi tiết 11 bài thi sa hình sát hạch lái xe ôtô hạng B1, B2 - Thành Công Tiến Bộ Hải Vân An Cư",
-  "note": "User-supplied reference; expected_text is a matching aid, not a certified verbatim transcript. Original recording includes background noise. No new synthesized speech.",
+  "note": "User-supplied reference; expected_text is a matching aid, not a certified verbatim transcript. Recorded speech separated from backing music using HTDemucs; residual noise or separation artifacts may remain. No synthesized speech.",
   "clips": [
     {
       "id": "xuat-phat",
@@ -87,5 +87,13 @@
       "end": 438.42,
       "expected_text": "Bạn đã thi đạt phần thi sát hạch kỹ năng lái xe trong hình."
     }
-  ]
+  ],
+  "processing": {
+    "tool": "demucs 4.1.0",
+    "model": "htdemucs",
+    "stem": "vocals",
+    "context_seconds": 1,
+    "quiet_tail_seconds": 0.4,
+    "rebuild": "tools/separate-recorded-audio.py"
+  }
 }

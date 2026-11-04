@@ -31,7 +31,13 @@ Manifest: `docs/audio-error-voice.json`; rebuild with
 `tools/render-error-voice.py` in the airi-voice environment. Generic TTS rebuilds
 must not overwrite these files. Owner specified “Xe chạm vạch”, “Dừng xe chưa đến
 vị trí”, “Dừng xe quá vị trí”, “Bạn đã đi sai quy cách thi”, “Quá thời gian một bài”,
-and removed “Lên vỉa hè”. Current cache: v43.
+and removed “Lên vỉa hè”. Current cache: v44.
+
+Recorded cues now use HTDemucs vocal separation to reduce source backing music.
+Rebuild with tools/separate-recorded-audio.py and the original source MP3.
+It uses 1 second of source context per side, then trims and adds a 400 ms quiet tail.
+The older cut-recorded-audio.py produces mixed audio; do not use it to overwrite
+the separated production cues. Separation can leave residual noise/artifacts.
 
 Audio tail fix: cut at measured silence centers, not ASR word boundaries. Preserve
 `group_texts` / `group_seeds` overrides: two joined utterances were regenerated with
