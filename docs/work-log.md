@@ -9,3 +9,11 @@
 - Removed the temporary separation environment, intermediate stems, input WAVs, verification scripts and deployment-check downloads (960 MiB).
 - Kept the original source MP3, five final synthesis WAV batches and the combined v43 preview in sibling folder `../sat-hach-audio-preview/` for future audio edits. Model download caches remain reusable.
 - Android APK was not rebuilt in this update.
+
+## Việc để làm sau — Android
+
+- [ ] Build lại APK Android từ bản web mới nhất (hiện tại cache v44), đưa đủ 18 câu báo lỗi đã sửa và 12 câu thông báo đã tách nhạc vào bản cài.
+- [ ] Kiểm tra trên Android: cập nhật từ bản cũ, phát âm thanh offline, tốc độ đọc và chữ cuối câu; xác nhận không còn nút “Lên vỉa hè”.
+- [ ] Ghi phiên bản APK, kết quả kiểm tra và vị trí file cài vào work log khi hoàn tất.
+
+Người dùng yêu cầu ngày 2026-11-05: ghi lại để làm lúc rảnh; chưa build hoặc phát hành Android trong lần này.
