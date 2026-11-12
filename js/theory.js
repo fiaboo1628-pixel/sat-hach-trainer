@@ -18,15 +18,32 @@ function shuffle(arr) {
   return copy;
 }
 
+export function questionsForLicense(questions, config) {
+  if (!config.pool) return questions;
+  return questions.flatMap((question) => {
+    const number = Number(question.id.slice(1));
+    if (!config.pool.has(number)) return [];
+    const isLiet = config.lietPool.has(number);
+    if (isLiet === question.is_liet) return [question];
+
+    // In the full bank, critical questions are grouped separately. The smaller
+    // banks treat some of them as ordinary questions in their original chapter.
+    const chapter = number <= 180 ? 'quy-tac' : 'ky-thuat';
+    return [{ ...question, is_liet: isLiet, chapter }];
+  });
+}
+
 export function generateExam(questions, config) {
-  const lietPool = questions.filter((q) => q.is_liet);
+  const eligible = questionsForLicense(questions, config);
+  const lietPool = eligible.filter((q) => q.is_liet);
   if (lietPool.length < 1) {
     throw new Error('Không có câu điểm liệt nào trong ngân hàng câu hỏi.');
   }
   const picked = pickRandom(lietPool, 1);
 
   for (const [chapter, quota] of Object.entries(config.groups)) {
-    const pool = questions.filter((q) => !q.is_liet && q.chapter === chapter);
+    const chapters = chapter.split('+');
+    const pool = eligible.filter((q) => !q.is_liet && chapters.includes(q.chapter));
     if (pool.length < quota) {
       throw new Error(`Không đủ câu nhóm "${chapter}" (cần ${quota}, có ${pool.length}).`);
     }

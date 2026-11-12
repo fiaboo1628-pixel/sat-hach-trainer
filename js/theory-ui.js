@@ -1,4 +1,4 @@
-import { generateExam, gradeExam } from './theory.js';
+import { generateExam, gradeExam, questionsForLicense } from './theory.js';
 import { HANG_CONFIG, CHAPTER_LABELS, CHAPTER_ORDER } from './theory-config.js';
 import { createProgressStore } from './theory-progress.js';
 
@@ -61,6 +61,10 @@ function renderAnsweredCard(q, { userAnswer, onChoose, readOnly }) {
 
 export function initTheory(questions, { showView, setStatus }) {
   const els = {
+    license: document.getElementById('theory-license'),
+    licenseSummary: document.getElementById('theory-license-summary'),
+    examTitle: document.getElementById('theory-exam-title'),
+    practiceMenuTitle: document.getElementById('theory-practice-menu-title'),
     timer: document.getElementById('theory-timer'),
     questions: document.getElementById('theory-questions'),
     resultSummary: document.getElementById('theory-result-summary'),
@@ -137,6 +141,7 @@ export function initTheory(questions, { showView, setStatus }) {
       return;
     }
     state.hangKey = hangKey;
+    els.examTitle.textContent = `Thi thử hạng ${hangKey}`;
     state.exam = exam;
     state.answers = {};
     state.deadline = Date.now() + config.minutes * 60000;
@@ -154,7 +159,7 @@ export function initTheory(questions, { showView, setStatus }) {
       ? '<span class="badge badge-pass">ĐẬU</span>'
       : '<span class="badge badge-fail">RỚT</span>';
     els.resultSummary.innerHTML =
-      `Đúng ${result.correct}/${result.total}` +
+      `Hạng ${state.hangKey} · Đúng ${result.correct}/${result.total} · Cần ${config.passScore} điểm` +
       (result.lietWrong ? ' — sai câu điểm liệt' : '') +
       ` — ${badge}`;
     showView('theory-result');
@@ -178,35 +183,39 @@ export function initTheory(questions, { showView, setStatus }) {
     { key: '__wrong', label: 'Câu đã từng làm sai', cls: 'tile-yellow', pick: () => progress.getWrongIds() },
   ];
 
-  function questionsForTopic(topicKey) {
+  function questionsForTopic(topicKey, bank) {
     if (topicKey === '__saved' || topicKey === '__wrong') {
       const ids = new Set(PSEUDO_TOPICS.find((t) => t.key === topicKey).pick());
-      return questions.filter((q) => ids.has(q.id));
+      return bank.filter((q) => ids.has(q.id));
     }
-    return questions.filter((q) => q.chapter === topicKey);
+    return bank.filter((q) => q.chapter === topicKey);
   }
 
   function openPracticeMenu() {
+    const license = els.license.value;
+    const bank = questionsForLicense(questions, HANG_CONFIG[license]);
+    els.practiceMenuTitle.textContent = `Ôn tập hạng ${license}`;
     els.practiceTopics.innerHTML = '';
     const addTile = (key, label, cls) => {
-      const count = questionsForTopic(key).length;
+      const list = questionsForTopic(key, bank);
+      const count = list.length;
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = `tile ${cls}`;
       btn.textContent = `${label} (${count})`;
       btn.disabled = count === 0;
-      btn.addEventListener('click', () => openPracticeTopic(key, label));
+      btn.addEventListener('click', () => openPracticeTopic(list, label));
       els.practiceTopics.appendChild(btn);
     };
     CHAPTER_ORDER.forEach((key) =>
-      addTile(key, CHAPTER_LABELS[key], key === 'tinh-huong-atgt' ? 'tile-red' : 'tile-blue'),
+      addTile(key, key === 'tinh-huong-atgt' ? 'Câu điểm liệt' : CHAPTER_LABELS[key],
+        key === 'tinh-huong-atgt' ? 'tile-red' : 'tile-blue'),
     );
     PSEUDO_TOPICS.forEach((t) => addTile(t.key, t.label, t.cls));
     showView('theory-practice-menu');
   }
 
-  function openPracticeTopic(topicKey, label) {
-    const list = questionsForTopic(topicKey);
+  function openPracticeTopic(list, label) {
     els.practiceTitle.textContent = label;
     els.practiceQuestions.innerHTML = '';
     const answered = {};
@@ -227,8 +236,28 @@ export function initTheory(questions, { showView, setStatus }) {
     showView('theory-practice');
   }
 
-  document.getElementById('btn-hang-b').addEventListener('click', () => startExam('B'));
-  document.getElementById('btn-hang-c1').addEventListener('click', () => startExam('C1'));
+  function updateLicenseSummary() {
+    const config = HANG_CONFIG[els.license.value];
+    const bankSize = config.pool?.size ?? questions.length;
+    els.licenseSummary.textContent =
+      `${config.count} câu · ${config.minutes} phút · Đạt từ ${config.passScore}/${config.count}
+Ngân hàng ${bankSize} câu · Mỗi đề có 1 câu điểm liệt`;
+  }
+
+  for (const [label, keys] of [
+    ['Mô tô', ['A1', 'A', 'B1']],
+    ['Ô tô', ['B', 'C1', 'C', 'D1', 'D2', 'D']],
+    ['Ô tô kéo rơ moóc', ['BE', 'C1E', 'CE', 'D1E', 'D2E', 'DE']],
+  ]) {
+    const group = document.createElement('optgroup');
+    group.label = label;
+    for (const key of keys) group.appendChild(new Option(`Hạng ${key}`, key));
+    els.license.appendChild(group);
+  }
+  els.license.value = 'B';
+  els.license.addEventListener('change', updateLicenseSummary);
+  updateLicenseSummary();
+  document.getElementById('btn-theory-exam').addEventListener('click', () => startExam(els.license.value));
   document.getElementById('btn-theory-practice').addEventListener('click', openPracticeMenu);
   // Own listener (not the generic .btn-back in app.js) because coming back
   // from a topic must re-render the menu — counts (câu đã lưu/đã sai) can

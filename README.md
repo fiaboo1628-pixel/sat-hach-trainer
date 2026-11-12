@@ -20,6 +20,18 @@ Mở địa chỉ server báo ra (vd `http://localhost:8080`).
 
 ## Audio
 
+### Bảng Đường trường (2026-11-12)
+
+Xuất phát và Kết thúc dùng bản ghi chia sẻ với Sa hình. Hai báo lỗi **Xe chết máy**
+và **Quá 4000 vòng/phút** dùng lại file báo lỗi hiện có. Ting tong và Tút nằm trong
+mục Âm báo mô phỏng.
+Chín clip lỗi bổ sung (`generated-errors/duong-truong-*.mp3`) dùng preset Mai Anh
+của VieNeu-TTS v3 Turbo 3.8.4, reference codes của preset, tốc độ 80% và đích
+−19 LUFS, mono 48 kHz. Câu đọc nằm trong trường `say` của `content/soundboard.json`.
+Các câu được dựng riêng bằng preset gốc, tương tự nhóm báo lỗi dùng giọng Mai Anh
+thuần trong `docs/audio-error-voice.json`.
+
+
 ### Âm thanh cắt từ video tham chiếu (2026-11-04)
 
 11 hiệu lệnh sa hình và thông báo thi đạt dùng bản ghi trong
