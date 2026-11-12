@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   generateExam,
   gradeExam,
+  questionsForLicense,
   validateQuestionIds,
   validateAnswerIndices,
   validateLietChapterConsistency,
@@ -122,24 +123,42 @@ test('content/theory/questions.json không còn rác trích PDF trong đáp án 
   assert.deepEqual(bad, []);
 });
 
+test('câu 302 chọn biển 1 và biển 2 theo đáp án gạch chân của Cục CSGT', () => {
+  const question = questions.find((q) => q.id === 'q302');
+  assert.equal(question.choices[question.answer], 'Biển 1 và biển 2.');
+});
+
 test('content/theory/questions.json is_liet khớp chapter "tinh-huong-atgt" (2 chiều)', () => {
   assert.deepEqual(validateLietChapterConsistency(questions), []);
 });
 
-test('content/theory/questions.json đủ câu điểm liệt và đủ quota từng nhóm cho cả 2 hạng', () => {
-  const liet = questions.filter((q) => q.is_liet).length;
-  assert.equal(liet, 60, 'phải đúng 60 câu điểm liệt theo Phụ lục 3, Công văn 2262/CSGT-P5');
-  for (const hang of Object.values(HANG_CONFIG)) {
-    for (const [chapter, quota] of Object.entries(hang.groups)) {
-      const pool = questions.filter((q) => !q.is_liet && q.chapter === chapter).length;
-      assert.ok(pool >= quota, `nhóm "${chapter}" cần ít nhất ${quota} câu, có ${pool}`);
-    }
+test('ngân hàng có đủ 600 câu, 60 câu điểm liệt và đúng bộ con theo hạng', () => {
+  assert.equal(questions.length, 600);
+  assert.equal(questions.filter((q) => q.is_liet).length, 60);
+  for (const [key, size, critical] of [['A1', 250, 20], ['A', 250, 20], ['B1', 300, 30]]) {
+    const bank = questionsForLicense(questions, HANG_CONFIG[key]);
+    assert.equal(bank.length, size, key);
+    assert.equal(bank.filter((q) => q.is_liet).length, critical, key);
+    assert.deepEqual(validateLietChapterConsistency(bank), [], key);
+    assert.equal(bank.find((q) => q.id === 'q032').is_liet, false, key);
+    assert.equal(bank.find((q) => q.id === 'q032').chapter, 'quy-tac', key);
   }
 });
 
-test('generateExam sinh được đề hợp lệ cho cả 2 hạng từ data thật', () => {
-  for (const key of Object.keys(HANG_CONFIG)) {
-    const exam = generateExam(questions, HANG_CONFIG[key]);
-    assert.equal(exam.length, HANG_CONFIG[key].count);
+test('sinh đề cho cả 15 hạng đúng ngân hàng, cơ cấu và số câu điểm liệt', () => {
+  assert.equal(Object.keys(HANG_CONFIG).length, 15);
+  for (const [key, config] of Object.entries(HANG_CONFIG)) {
+    const bank = new Map(questionsForLicense(questions, config).map((q) => [q.id, q]));
+    for (let attempt = 0; attempt < 10; attempt++) {
+      const exam = generateExam(questions, config);
+      assert.equal(exam.length, config.count, key);
+      assert.equal(new Set(exam.map((q) => q.id)).size, config.count, key);
+      assert.equal(exam.filter((q) => q.is_liet).length, 1, key);
+      for (const q of exam) assert.deepEqual(q, bank.get(q.id), key);
+      for (const [chapters, count] of Object.entries(config.groups)) {
+        const quota = exam.filter((q) => !q.is_liet && chapters.split('+').includes(q.chapter));
+        assert.equal(quota.length, count, `${key}: ${chapters}`);
+      }
+    }
   }
 });

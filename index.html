@@ -24,8 +24,7 @@
     <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h12v10H2z M14 9h4.5L22 12.5V16h-8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="6" cy="17.5" r="2" fill="currentColor"/><circle cx="17.5" cy="17.5" r="2" fill="currentColor"/></symbol>
     <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M4 8h4a2 2 0 1 1 4 0h4v4a2 2 0 1 1 0 4v4H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
     <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3L22 20H2z" fill="#f2b705" stroke="#c81e1e" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 9v5" stroke="#10151f" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="17" r="1.3" fill="#10151f"/></symbol>
-    <!-- Chiếc xe sát hạch của menu, vẽ một lần trong toạ độ 300x600 (2026-11-01). Ba nút ở menu là
-         ba lát cắt của cùng hình này (viewBox khác nhau), nên các khối khớp nhau khi ráp lại. -->
+    <!-- Minh hoạ xe sát hạch dùng ở trang chủ. -->
     <defs><g id="car-art">
       <rect class="car-wheel" x="36" y="88" width="18" height="70" rx="7"/><rect class="car-wheel" x="246" y="88" width="18" height="70" rx="7"/>
       <rect class="car-wheel" x="36" y="462" width="18" height="70" rx="7"/><rect class="car-wheel" x="246" y="462" width="18" height="70" rx="7"/>
@@ -46,33 +45,49 @@
       <text class="roof-sign-text" x="150" y="309">SÁT HẠCH</text>
     </g></defs>
   </svg>
-  <!-- Đèn xuất phát: năm đèn đỏ sáng dần rồi tắt cùng lúc khi mở app ("lights out"), rồi menu
-       hiện ra. Chỉ chạy một lần lúc tải trang; quay lại menu không chạy lại. -->
-  <header>
-    <div class="start-lights" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-    <h1>Sát Hạch Trainer</h1>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <span class="site-mark" aria-hidden="true"><svg><use href="#i-road"/></svg></span>
+      <h1>Sát Hạch Trainer</h1>
+    </div>
   </header>
 
   <main>
-    <section id="menu">
-      <!-- Menu là chiếc xe sát hạch nhìn từ trên xuống, tách làm ba khối như bản vẽ tách lớp: đầu xe
-           (đèn pha) là Lý thuyết, khoang lái là Sa hình, đuôi xe (đèn hậu) là Đường trường. Lúc mở
-           app ba khối bay vào ráp lại sau khi đèn xuất phát chuyển xanh. -->
-      <div class="car">
-        <button id="btn-ly-thuyet" class="car-part car-front" type="button">
-          <svg class="car-shape" viewBox="0 0 300 178" aria-hidden="true"><use href="#car-art"/></svg>
-          <span class="chip chip-yellow"><svg aria-hidden="true"><use href="#i-book"/></svg>Lý thuyết</span>
-        </button>
-        <button id="btn-sa-hinh" class="car-part car-cabin" type="button">
-          <svg class="car-shape" viewBox="0 178 300 270" aria-hidden="true"><use href="#car-art"/></svg>
-          <span class="chip chip-blue"><svg aria-hidden="true"><use href="#i-cone"/></svg>Sa hình</span>
-        </button>
-        <button id="btn-duong-truong" class="car-part car-rear" type="button">
-          <svg class="car-shape" viewBox="0 448 300 152" aria-hidden="true"><use href="#car-art"/></svg>
-          <span class="chip chip-red"><svg aria-hidden="true"><use href="#i-road"/></svg>Đường trường</span>
-        </button>
+    <section id="menu" aria-label="Trang chủ">
+      <div class="home-layout">
+        <div class="home-hero">
+          <div class="hero-copy">
+            <h2>Bộ mô phỏng<br/>sát hạch</h2>
+            <p>Phát hiệu lệnh theo từng bài để học viên làm quen trước buổi thi.</p>
+          </div>
+          <div class="hero-track" aria-hidden="true">
+            <svg class="hero-car" viewBox="0 0 300 600"><use href="#car-art"/></svg>
+          </div>
+        </div>
+        <div class="home-choices">
+          <h2>Bảng điều khiển</h2>
+          <button id="btn-sa-hinh" class="mode-card mode-yard" type="button">
+            <span class="mode-icon"><svg aria-hidden="true"><use href="#i-cone"/></svg></span>
+            <span class="mode-copy"><strong>Sa hình</strong><small>Lộ trình mẫu hạng B, C1 hoặc tự ghép</small></span>
+            <span class="mode-arrow" aria-hidden="true">›</span>
+          </button>
+          <button id="btn-duong-truong" class="mode-card mode-road" type="button">
+            <span class="mode-icon"><svg aria-hidden="true"><use href="#i-road"/></svg></span>
+            <span class="mode-copy"><strong>Đường trường</strong><small>Phát lệnh, tín hiệu và báo lỗi</small></span>
+            <span class="mode-arrow" aria-hidden="true">›</span>
+          </button>
+
+          <h2 class="learner-title">Học viên tự ôn</h2>
+          <button id="btn-ly-thuyet" class="mode-card mode-theory" type="button">
+            <span class="mode-icon"><svg aria-hidden="true"><use href="#i-book"/></svg></span>
+            <span class="mode-copy"><strong>Lý thuyết</strong><small>Ôn tập và thi thử theo hạng bằng</small></span>
+            <span class="mode-arrow" aria-hidden="true">›</span>
+          </button>
+          <button id="btn-huong-dan-dt" class="btn-guide" type="button">
+            Quy định phần thi đường trường <span aria-hidden="true">›</span>
+          </button>
+        </div>
       </div>
-      <button id="btn-huong-dan-dt" class="btn-guide" type="button"><svg aria-hidden="true"><use href="#i-warn"/></svg>Quy định phần thi đường trường</button>
 
       <!-- Thương hiệu sát đáy màn hình: logo giữa, dưới là hai link Zalo và Gmail (2026-11-01). Logo "vô lăng mặt trời": ngôi sao 14 cánh giữa mặt trống
            đồng Đông Sơn làm vô lăng, trục đỏ ở tâm, vòng chấm trống đồng bên ngoài. -->
@@ -88,9 +103,10 @@
       </footer>
     </section>
 
-    <!-- Lớp thứ hai của Sa hình: chọn bộ bài. Tách khỏi menu để trên xe chỉ còn ba chữ. -->
+    <!-- Chọn bộ bài Sa hình. -->
     <section id="view-sa-hinh-menu" hidden>
       <h2>Sa hình</h2>
+      <p class="screen-intro">Hạng B có 11 bài, hạng C1 có 10 bài. Hai lộ trình mẫu có lượt qua ngã tư lặp lại. Chọn Tự ghép để sắp xếp theo sân bạn tập.</p>
       <div class="set-list">
         <button id="btn-bo-chuan" class="set-btn set-blue" type="button"><svg aria-hidden="true"><use href="#i-car"/></svg>Hạng B</button>
         <button id="btn-bo-chuan-c1" class="set-btn set-yellow" type="button"><svg aria-hidden="true"><use href="#i-truck"/></svg>Hạng C1</button>
@@ -99,40 +115,54 @@
       <button class="btn-back" data-back="menu" type="button">← Quay lại</button>
     </section>
 
-    <!-- Sa hình bấm tay: người ngồi cạnh phát từng tiếng đúng lúc xe tới, thay cho phát tự động
-         theo giờ cố định (xe thật không đi đúng nhịp đó). Thứ tự do chủ app chọn (2026-10-28):
-         Quay lại, Bài kế, Ting tong / Tút, Báo lỗi, Đậu / Trượt. -->
-    <section id="view-bo-chuan" hidden>
-      <button class="btn-back btn-back-boxed sh-quit" data-back="sa-hinh-menu" type="button">← Quay lại</button>
-      <button id="sh-next" class="sh-next" type="button"></button>
-      <div class="action-row sh-step">
-        <button id="sh-back" class="btn-secondary" type="button">◀ Lùi</button>
-        <button id="sh-replay" class="btn-secondary" type="button">↻ Đọc lại</button>
+    <section id="view-bo-chuan" class="operator-view" hidden>
+      <div class="operator-top">
+        <h2 id="sh-board-title">Sa hình</h2>
+        <button class="btn-back btn-back-boxed sh-quit" data-back="sa-hinh-menu" type="button">← Quay lại</button>
       </div>
-      <div class="sh-cues">
+      <div class="operator-console">
+        <div class="operator-readout">
+          <span class="operator-label">Âm thanh</span>
+          <p id="sh-audio-state" role="status">Sẵn sàng phát</p>
+          <span class="operator-label">Bài vừa phát</span>
+          <p id="sh-current">Chưa phát bài nào</p>
+        </div>
+        <button id="sh-next" class="sh-next" type="button"></button>
+        <div class="action-row sh-step">
+          <button id="sh-back" class="btn-secondary" type="button">← Lùi bài</button>
+          <button id="sh-replay" class="btn-secondary" type="button">Đọc lại</button>
+          <button id="stop-sa-hinh" class="btn-secondary operator-stop" type="button">Dừng phát</button>
+        </div>
+      </div>
+      <div class="sh-cues" aria-label="Tín hiệu">
         <button id="sh-ting-tong" class="sh-cue" type="button">Ting tong<small>Vào bài</small></button>
         <button id="sh-tut" class="sh-cue" type="button">Tút<small>Nhận bài</small></button>
-        <!-- Tình huống nguy hiểm: máy chấm báo bất ngờ, học viên phải phanh dừng trong 3 giây và
-             bật đèn khẩn cấp trong 5 giây. Người ngồi cạnh bấm lúc học viên không ngờ tới. -->
-        <button id="sh-khan-cap" class="sh-cue sh-alarm" type="button"><svg aria-hidden="true"><use href="#i-warn"/></svg>Khẩn cấp</button>
       </div>
-      <section class="sb-zone sb-zone-red">
-        <h3>Báo lỗi</h3>
+      <section class="sb-zone sb-zone-red operator-errors">
+        <h3>Báo lỗi và tình huống</h3>
+        <button id="sh-khan-cap" class="sh-cue sh-alarm" type="button"><svg aria-hidden="true"><use href="#i-warn"/></svg>Khẩn cấp</button>
         <div id="sh-errors" class="sb-grid"></div>
       </section>
-      <!-- Đậu / Trượt ở đáy: bấm một lần khi xong bài thi. -->
-      <div id="sh-notices" class="sb-grid sh-notices"></div>
+      <section class="operator-outcome">
+        <h3>Thông báo kết quả</h3>
+        <div id="sh-notices" class="sb-grid sh-notices"></div>
+      </section>
+      <details class="operator-sequence">
+        <summary>Thứ tự phát hiệu lệnh</summary>
+        <ol id="sh-sequence"></ol>
+      </details>
     </section>
 
-    <!-- Không có <h2> ở đây: ba khu tự nhãn, và hàng tiêu đề là chỗ duy nhất mua lại được
-         cho 12 phím trên một màn 375x667. Quay lại nằm dưới cùng, xa khu báo lỗi, vì người
-         bấm là người ngồi cạnh đang tìm phím gấp. -->
-    <section id="view-duong-truong" hidden>
-      <div id="soundboard"></div>
-      <div class="action-row sb-controls">
-        <button id="stop-duong-truong" class="btn-primary" type="button">Dừng phát</button>
+    <section id="view-duong-truong" class="operator-view" hidden>
+      <div class="operator-top">
+        <h2>Đường trường</h2>
         <button class="btn-back btn-back-boxed" type="button">← Quay lại</button>
       </div>
+      <div class="road-monitor">
+        <p id="road-audio-state" role="status">Sẵn sàng phát</p>
+        <button id="stop-duong-truong" class="btn-secondary operator-stop" type="button">Dừng phát</button>
+      </div>
+      <div id="soundboard"></div>
     </section>
 
     <!-- Hướng dẫn thi đường trường: để học viên đọc trước, không phải để bấm trong xe. Nội dung
@@ -179,14 +209,19 @@
 
     <section id="view-theory-menu" hidden>
       <h2>Lý thuyết</h2>
-      <button id="btn-hang-b" class="set-btn set-blue" type="button"><svg aria-hidden="true"><use href="#i-car"/></svg><span>Thi thử Hạng B<small>30 câu, 20 phút</small></span></button>
-      <button id="btn-hang-c1" class="set-btn set-yellow" type="button"><svg aria-hidden="true"><use href="#i-truck"/></svg><span>Thi thử Hạng C1<small>35 câu, 22 phút</small></span></button>
+      <p class="screen-intro">Làm đề có tính giờ hoặc ôn từng chủ đề.</p>
+      <div class="theory-license">
+        <label for="theory-license">Hạng bằng lái</label>
+        <select id="theory-license"></select>
+        <p id="theory-license-summary" aria-live="polite"></p>
+      </div>
+      <button id="btn-theory-exam" class="set-btn set-blue" type="button"><svg aria-hidden="true"><use href="#i-car"/></svg><span>Thi thử</span></button>
       <button id="btn-theory-practice" class="set-btn set-red" type="button"><svg aria-hidden="true"><use href="#i-book"/></svg><span>Ôn tập theo chủ đề</span></button>
       <button class="btn-back" data-back="menu" type="button">← Quay lại</button>
     </section>
 
     <section id="view-theory-exam" hidden>
-      <h2>Đang làm bài</h2>
+      <h2 id="theory-exam-title">Đang làm bài</h2>
       <p id="theory-timer"></p>
       <ol id="theory-questions"></ol>
       <button id="theory-submit" class="btn-primary" type="button">Nộp bài</button>
@@ -210,7 +245,7 @@
     </section>
 
     <section id="view-theory-practice-menu" hidden>
-      <h2>Ôn tập theo chủ đề</h2>
+      <h2 id="theory-practice-menu-title">Ôn tập theo chủ đề</h2>
       <div id="practice-topics"></div>
       <button class="btn-back" data-back="theory-menu" type="button">← Quay lại</button>
     </section>

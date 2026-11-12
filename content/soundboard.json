@@ -5,16 +5,6 @@
     "color": "blue"
   },
   {
-    "label": "Ting tong",
-    "audio": "ting-tong.mp3",
-    "color": "yellow"
-  },
-  {
-    "label": "Tút",
-    "audio": "tut.mp3",
-    "color": "yellow"
-  },
-  {
     "label": "Tăng số, tăng tốc độ",
     "audio": "soundboard/tang-so-tang-toc-do.mp3",
     "color": "blue"
@@ -25,10 +15,9 @@
     "color": "blue"
   },
   {
-    "label": "Vào số sai",
-    "audio": "generated-errors/vao-so-sai.mp3",
-    "color": "red",
-    "say": "Vào sai số"
+    "label": "Kết thúc",
+    "audio": "recorded/ket-thuc.mp3",
+    "color": "blue"
   },
   {
     "label": "Không thắt dây an toàn",
@@ -37,16 +26,16 @@
     "say": "Không thắt dây an toàn"
   },
   {
-    "label": "Không hạ thắng tay",
-    "audio": "generated-errors/khong-ha-thang-tay.mp3",
-    "color": "red",
-    "say": "Không hạ thắng tay"
-  },
-  {
     "label": "Không bật xi nhan",
     "audio": "generated-errors/khong-bat-xi-nhan.mp3",
     "color": "red",
     "say": "Không bật đèn báo rẽ"
+  },
+  {
+    "label": "Không hạ thắng tay",
+    "audio": "generated-errors/khong-ha-thang-tay.mp3",
+    "color": "red",
+    "say": "Không hạ thắng tay"
   },
   {
     "label": "Không tăng số",
@@ -61,8 +50,85 @@
     "say": "Không giảm số"
   },
   {
-    "label": "Kết thúc",
-    "audio": "recorded/ket-thuc.mp3",
-    "color": "blue"
+    "label": "Vào số sai",
+    "audio": "generated-errors/vao-so-sai.mp3",
+    "color": "red",
+    "say": "Vào sai số"
+  },
+  {
+    "label": "Xe chết máy",
+    "audio": "generated-errors/xe-chet-may.mp3",
+    "say": "Xe bị chết máy",
+    "color": "red"
+  },
+  {
+    "label": "Quá 4000 vòng/phút",
+    "say": "Tốc độ động cơ quá bốn nghìn vòng một phút",
+    "audio": "generated-errors/qua-4000-vong.mp3",
+    "color": "red"
+  },
+  {
+    "label": "Quá 30 giây chưa xuất phát",
+    "audio": "generated-errors/duong-truong-qua-gio-xuat-phat.mp3",
+    "say": "Quá ba mươi giây chưa qua vạch xuất phát.",
+    "color": "stop"
+  },
+  {
+    "label": "Xe rung giật mạnh",
+    "audio": "generated-errors/duong-truong-rung-giat.mp3",
+    "say": "Xe bị rung giật mạnh.",
+    "color": "red"
+  },
+  {
+    "label": "Vi phạm quy tắc giao thông",
+    "audio": "generated-errors/duong-truong-vi-pham-giao-thong.mp3",
+    "say": "Vi phạm quy tắc giao thông đường bộ.",
+    "color": "red"
+  },
+  {
+    "label": "Số 3 trở lên dưới 20 km/h",
+    "audio": "generated-errors/duong-truong-so-cao-toc-do-thap.mp3",
+    "say": "Sử dụng từ số ba trở lên khi tốc độ dưới hai mươi ki lô mét một giờ.",
+    "color": "red"
+  },
+  {
+    "label": "Chưa về N hoặc P khi dừng",
+    "audio": "generated-errors/duong-truong-chua-ve-n-p.mp3",
+    "say": "Chưa về số không hoặc số đỗ khi xe đã dừng hẳn.",
+    "color": "red"
+  },
+  {
+    "label": "Chưa kéo phanh tay khi dừng",
+    "audio": "generated-errors/duong-truong-chua-keo-phanh-tay.mp3",
+    "say": "Chưa kéo phanh tay khi xe đã dừng hẳn.",
+    "color": "red"
+  },
+  {
+    "label": "Không làm theo hiệu lệnh",
+    "audio": "generated-errors/duong-truong-khong-theo-hieu-lenh.mp3",
+    "say": "Không thực hiện theo hiệu lệnh của sát hạch viên.",
+    "color": "stop"
+  },
+  {
+    "label": "Xử lý tình huống gây tai nạn",
+    "audio": "generated-errors/duong-truong-xu-ly-gay-tai-nan.mp3",
+    "say": "Xử lý tình huống không hợp lý gây tai nạn.",
+    "color": "stop"
+  },
+  {
+    "label": "Choạng lái quá làn khi đổi số",
+    "audio": "generated-errors/duong-truong-choang-lai.mp3",
+    "say": "Xe bị choạng lái quá làn đường khi tăng hoặc giảm số.",
+    "color": "stop"
+  },
+  {
+    "label": "Ting tong",
+    "audio": "ting-tong.mp3",
+    "color": "yellow"
+  },
+  {
+    "label": "Tút",
+    "audio": "tut.mp3",
+    "color": "yellow"
   }
 ]

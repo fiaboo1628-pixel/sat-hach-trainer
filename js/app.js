@@ -7,6 +7,11 @@ const els = {
   listStations: document.getElementById('list-stations'),
   listSelected: document.getElementById('list-selected'),
   soundboard: document.getElementById('soundboard'),
+  shTitle: document.getElementById('sh-board-title'),
+  shCurrent: document.getElementById('sh-current'),
+  shSequence: document.getElementById('sh-sequence'),
+  shAudioState: document.getElementById('sh-audio-state'),
+  roadAudioState: document.getElementById('road-audio-state'),
   shNext: document.getElementById('sh-next'),
   shErrors: document.getElementById('sh-errors'),
   shNotices: document.getElementById('sh-notices'),
@@ -26,6 +31,7 @@ let selected = loadSelected();
 // Bảng bấm sa hình: các bài của bộ đang mở, và chỉ số bài sẽ đọc khi bấm "Bài kế".
 let board = [];
 let nextIdx = 0;
+let lastStationIndex = null;
 // Việc phải làm khi tiếng đang phát dừng (hết tự nhiên hay bị phím khác cắt ngang).
 let onPlaybackDone = null;
 
@@ -176,6 +182,11 @@ function removeSelected(index) {
 }
 
 // Cắt tiếng đang phát (nếu có) và bỏ dấu "đang phát" trên phím của nó.
+function updateAudioState(message) {
+  els.shAudioState.textContent = message;
+  els.roadAudioState.textContent = message;
+}
+
 function stopPlayback(message) {
   els.player.onended = null;
   els.player.onloadedmetadata = null;
@@ -187,7 +198,7 @@ function stopPlayback(message) {
   const done = onPlaybackDone;
   onPlaybackDone = null;
   done?.();
-  if (message) setStatus(message);
+  updateAudioState(message || 'Sẵn sàng phát');
 }
 
 const VOICE_PLAYBACK_RATE = 0.85; // giọng đọc tên bài sa hình chậm hơn cho dễ nghe/phản ứng kịp
@@ -197,6 +208,7 @@ function playKey(b, src, label, rate = 1, onDone = null) {
   stopPlayback();
   onPlaybackDone = onDone;
   b.classList.add('playing');
+  updateAudioState(`Đang phát: ${label}`);
   // --played lái vạch chạy trong .playing::after: trạng thái đang phát phải đọc được
   // mà không dựa vào màu, vì có phím vốn đã là màu vàng.
   b.style.setProperty('--played', '0');
@@ -212,16 +224,19 @@ function playKey(b, src, label, rate = 1, onDone = null) {
   };
   els.player.src = src;
   els.player.playbackRate = rate;
-  els.player.play().catch(() => stopPlayback(`Lỗi phát "${label}".`));
+  els.player.play().catch((error) => {
+    if (error.name !== 'AbortError') stopPlayback(`Lỗi phát: ${label}`);
+  });
 }
 
-// Ba khu của Đường trường. `color` trong soundboard.json đã mã hoá sẵn nhóm — lệnh, tín hiệu,
+// Các nhóm phím Đường trường. `color` trong soundboard.json đã mã hoá sẵn nhóm — lệnh, tín hiệu,
 // báo lỗi — nên đây là đọc ra thứ có trong data, không phải đặt thêm phân loại mới. Người bấm
 // là người ngồi cạnh, đang tìm một phím dưới áp lực: tách khu để không hô nhầm một lỗi.
 const SOUNDBOARD_ZONES = [
-  { color: 'blue', label: 'Lệnh' },
-  { color: 'yellow', label: 'Tín hiệu' },
+  { color: 'blue', label: 'Hiệu lệnh sát hạch' },
   { color: 'red', label: 'Báo lỗi' },
+  { color: 'stop', label: 'Lỗi đình chỉ' },
+  { color: 'yellow', label: 'Âm báo mô phỏng' },
 ];
 
 // Đường trường: each key plays its clip right away, cutting off whatever was playing.
@@ -230,9 +245,10 @@ function renderSoundboard() {
     const keys = soundboard.filter((key) => key.color === zone.color);
     if (!keys.length) return;
 
-    const section = document.createElement('section');
+    const auxiliary = zone.color === 'yellow';
+    const section = document.createElement(auxiliary ? 'details' : 'section');
     section.className = `sb-zone sb-zone-${zone.color}`;
-    const heading = document.createElement('h3');
+    const heading = document.createElement(auxiliary ? 'summary' : 'h3');
     heading.textContent = zone.label;
     section.append(heading);
 
@@ -264,13 +280,23 @@ function renderBoardNext() {
   const small = document.createElement('small');
   const big = document.createElement('span');
   if (station) {
-    small.textContent = `Bài kế ${nextIdx + 1}/${board.length}`;
+    small.textContent = `Lượt phát kế ${nextIdx + 1}/${board.length}`;
     big.textContent = `▶ ${station.name}`;
   } else {
-    small.textContent = `Đã đọc hết ${board.length} bài`;
+    small.textContent = `Đã đọc hết ${board.length} lượt`;
     big.textContent = '↺ Về bài đầu';
   }
   els.shNext.append(small, big);
+  els.shCurrent.textContent = lastStationIndex === null
+    ? 'Chưa phát bài nào'
+    : `${lastStationIndex + 1}. ${board[lastStationIndex].name}`;
+  for (const [index, item] of Array.from(els.shSequence.children).entries()) {
+    if (index === nextIdx) item.setAttribute('aria-current', 'step');
+    else item.removeAttribute('aria-current');
+  }
+  document.getElementById('sh-replay').disabled = lastStationIndex === null;
+  document.getElementById('sh-back').disabled = nextIdx === 0;
+
 }
 
 // Lúc đang đọc, phím hiện đúng bài đang đọc; đọc xong (hoặc bị phím khác cắt) mới chuyển sang
@@ -278,16 +304,18 @@ function renderBoardNext() {
 function readStation(i) {
   const station = board[i];
   if (!station) return;
+  stopPlayback();
+  lastStationIndex = i;
   nextIdx = i + 1;
   const small = document.createElement('small');
   const big = document.createElement('span');
-  small.textContent = `Đang đọc ${i + 1}/${board.length}`;
+  small.textContent = `Đang đọc lượt ${i + 1}/${board.length}`;
   big.textContent = station.name;
   els.shNext.replaceChildren(small, big);
   playKey(els.shNext, `content/audio/${station.audio}`, station.name, VOICE_PLAYBACK_RATE, renderBoardNext);
 }
 
-async function openStandardSet(ids) {
+async function openStandardSet(ids, label) {
   if (ids.length === 0) {
     setStatus('Chưa chọn bài nào.');
     return;
@@ -299,6 +327,14 @@ async function openStandardSet(ids) {
     return;
   }
   nextIdx = 0;
+  lastStationIndex = null;
+  els.shTitle.textContent = `Sa hình · ${label}`;
+  els.shSequence.replaceChildren(...board.map((station) => {
+    const item = document.createElement('li');
+    item.textContent = station.name;
+    return item;
+  }));
+  els.shSequence.parentElement.open = false;
   renderBoardNext();
   showView('bo-chuan');
   // Bảng bấm cũng dùng trong xe, như Đường trường: giữ màn hình sáng.
@@ -323,10 +359,10 @@ async function main() {
   renderList(els.listSelected, selected, { removable: true });
   theoryHandle = initTheory(theoryQuestions, { showView, setStatus });
 
-  document.getElementById('btn-bo-chuan').addEventListener('click', () => openStandardSet(standardSet));
+  document.getElementById('btn-bo-chuan').addEventListener('click', () => openStandardSet(standardSet, 'Hạng B · Lộ trình mẫu'));
   // Sa hình hạng C1 không có bài ghép xe ngang.
   document.getElementById('btn-bo-chuan-c1').addEventListener('click', () =>
-    openStandardSet(standardSet.filter((id) => id !== 'ghep-xe-ngang')),
+    openStandardSet(standardSet.filter((id) => id !== 'ghep-xe-ngang'), 'Hạng C1 · Lộ trình mẫu'),
   );
   document.getElementById('btn-duong-truong').addEventListener('click', async () => {
     showView('duong-truong');
@@ -334,7 +370,9 @@ async function main() {
     // shortcut: mất khóa nếu chuyển app rồi quay lại, cần thì bắt visibilitychange để xin lại.
     wakeLock = await navigator.wakeLock?.request('screen').catch(() => null);
   });
-  document.getElementById('stop-duong-truong').addEventListener('click', () => stopPlayback());
+  for (const id of ['stop-duong-truong', 'stop-sa-hinh']) {
+    document.getElementById(id).addEventListener('click', () => stopPlayback());
+  }
   document.getElementById('btn-sa-hinh').addEventListener('click', () => showView('sa-hinh-menu'));
   document.getElementById('btn-bo-tu-ghep').addEventListener('click', () => showView('bo-tu-ghep'));
   document.getElementById('btn-huong-dan-dt').addEventListener('click', () => showView('huong-dan-dt'));
@@ -351,13 +389,20 @@ async function main() {
 
   els.shNext.addEventListener('click', () => {
     if (nextIdx >= board.length) {
+      stopPlayback();
       nextIdx = 0;
+      lastStationIndex = null;
       renderBoardNext();
       return;
     }
     readStation(nextIdx);
   });
-  document.getElementById('sh-replay').addEventListener('click', () => readStation(Math.max(nextIdx - 1, 0)));
+  document.getElementById('sh-replay').addEventListener('click', () => {
+    if (lastStationIndex === null) return;
+    const index = nextIdx;
+    readStation(lastStationIndex);
+    nextIdx = index;
+  });
   document.getElementById('sh-back').addEventListener('click', () => {
     stopPlayback();
     nextIdx = Math.max(nextIdx - 1, 0);
@@ -371,13 +416,9 @@ async function main() {
   cue('sh-tut', 'tut.mp3', 'Tút');
   cue('sh-khan-cap', 'khan-cap.mp3', 'Khẩn cấp');
   document.getElementById('save-bo-tu-ghep').addEventListener('click', saveSelected);
-  document.getElementById('play-bo-tu-ghep').addEventListener('click', () => openStandardSet(selected));
+  document.getElementById('play-bo-tu-ghep').addEventListener('click', () => openStandardSet(selected, 'Tự ghép'));
 
   showView('menu');
-  // Đèn xuất phát chạy một lần lúc mở app.
-  document.body.classList.add('lights-run');
-  // Gỡ đi khi chạy xong: menu bị ẩn/hiện lại thì animation CSS chạy lại từ đầu.
-  setTimeout(() => document.body.classList.replace('lights-run', 'lights-go'), 3500);
   registerServiceWorker();
 }
 
