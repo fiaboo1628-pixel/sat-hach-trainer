@@ -1248,3 +1248,45 @@ html:has(#view-duong-truong:not([hidden])) { overscroll-behavior-y: contain; }
 .rd-form { grid-template-columns: minmax(0, 1fr); }
 .rd-field input, .rd-field select { width: 100%; min-width: 0; max-width: 100%; box-sizing: border-box; }
 .rd-applied, .rd-watch, .guide-lead { overflow-wrap: anywhere; }
+
+/* ---------- Tự thích ứng màn hình (2026-11-24) ----------
+   Điện thoại dọc: một cột như cũ. Màn rộng (điện thoại xoay ngang, máy tính bảng, máy tính):
+   bàn chấm đường trường và bảng sa hình chia hai cột — trái là điểm và hiệu lệnh, phải là lỗi —
+   để lỗi luôn nằm cạnh hiệu lệnh. Trang đọc rộng tối đa 720px cho dòng chữ dễ đọc. */
+.op-col { display: grid; gap: 0.6rem; align-content: start; }
+.op-col > * { margin-block: 0; }
+.op-col-side { margin-top: 0.6rem; }
+
+@media (min-width: 760px) {
+  main { max-width: 720px; }
+}
+
+@media (min-width: 640px) {
+  body:has(.operator-view:not([hidden])) main,
+  body:has(.operator-view:not([hidden])) .site-header-inner { max-width: 1100px; }
+  .operator-view:not([hidden]) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    grid-template-rows: auto 1fr;
+    gap: 0 1rem;
+    align-items: start;
+  }
+  .operator-view > .operator-top { grid-column: 1 / -1; }
+  .operator-view .op-col-side { margin-top: 0; }
+  /* Cột trái đứng yên khi cuộn danh sách lỗi dài ở cột phải. */
+  .operator-view .op-col-main { position: sticky; top: 0.6rem; }
+  .operator-view .rd-status { position: static; }
+}
+
+/* Điện thoại xoay ngang (rộng nhưng thấp): bỏ đầu trang, mỗi cột tự cuộn trong chiều cao màn hình. */
+@media (min-width: 640px) and (max-height: 560px) {
+  body:has(.operator-view:not([hidden])) .site-header { display: none; }
+  body:has(.operator-view:not([hidden])) main { padding-block: 0.5rem; }
+  .operator-view:not([hidden]) { height: calc(100dvh - 1rem); align-items: stretch; }
+  .operator-view .operator-top { padding-bottom: 0.4rem; }
+  .operator-view .op-col { min-height: 0; overflow-y: auto; overscroll-behavior: contain; position: static; padding-bottom: 0.4rem; }
+  .operator-view .rd-cmds-many { grid-template-columns: repeat(4, 1fr); }
+  .operator-view .rd-cmds-many .rd-cmd { min-height: 2.5rem; }
+  .operator-view .rd-err .sb-key { min-height: 3rem; }
+}
+#status:empty { display: none; }

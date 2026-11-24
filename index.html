@@ -110,6 +110,7 @@
         <h2 id="sh-board-title">Sa hình</h2>
         <button class="btn-back btn-back-boxed sh-quit" data-back="sa-hinh-menu" type="button">← Quay lại</button>
       </div>
+      <div class="op-col op-col-main">
       <div class="operator-console">
         <div class="operator-readout">
           <span class="operator-label">Âm thanh</span>
@@ -130,6 +131,8 @@
         <button id="sh-ting-tong" class="sh-cue" type="button">Ting tong<small>Vào bài</small></button>
         <button id="sh-tut" class="sh-cue" type="button">Tút<small>Nhận bài</small></button>
       </div>
+      </div>
+      <div class="op-col op-col-side">
       <section class="sb-zone sb-zone-red operator-errors">
         <h3>Báo lỗi và tình huống</h3>
         <button id="sh-khan-cap" class="sh-cue sh-alarm" type="button"><svg aria-hidden="true"><use href="#i-warn"/></svg>Khẩn cấp</button>
@@ -147,6 +150,7 @@
         <summary>Thứ tự phát hiệu lệnh</summary>
         <ol id="sh-sequence"></ol>
       </details>
+      </div>
     </section>
 
     <!-- Đường trường: chuẩn bị buổi thi -> bàn chấm điểm -> phiếu kết quả. Luật lấy từ
@@ -188,6 +192,7 @@
         <h2 id="rd-title">Chấm thi đường trường</h2>
         <button id="rd-leave" class="btn-back btn-back-boxed" type="button" data-back="duong-truong-setup">← Thoát</button>
       </div>
+      <div class="op-col op-col-main">
       <div class="rd-status" role="status">
         <p class="rd-score"><span id="rd-score">100</span><small>điểm</small></p>
         <div class="rd-status-text">
@@ -205,6 +210,8 @@
         <div id="rd-commands" class="sb-grid"></div>
       </section>
       <p id="rd-watch" class="rd-watch"></p>
+      </div>
+      <div class="op-col op-col-side">
       <section class="sb-zone sb-zone-red rd-errors">
         <h3>Lỗi của bài đang thi</h3>
         <div id="rd-errors" class="sb-grid"></div>
@@ -212,6 +219,7 @@
       <div class="rd-bottom">
         <button id="rd-undo" class="btn-secondary" type="button" disabled>Hoàn tác</button>
         <button id="rd-finish" class="btn-secondary" type="button">Kết thúc buổi</button>
+      </div>
       </div>
     </section>
 
