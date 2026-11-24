@@ -1,15 +1,15 @@
 [
-  {"label": "Xe chạm vạch", "audio": "generated-errors/de-vach.mp3", "say": "Xe chạm vạch"},
-  {"label": "Dừng xe chưa đến vị trí", "audio": "generated-errors/dung-chua-den-vach.mp3", "say": "Dừng xe chưa đến vị trí"},
-  {"label": "Dừng xe quá vị trí", "audio": "generated-errors/dung-qua-vach.mp3", "say": "Dừng xe quá vị trí"},
-  {"label": "Quá thời gian 1 bài", "audio": "generated-errors/qua-thoi-gian-bai-thi.mp3", "say": "Quá thời gian một bài"},
-  {"label": "Xe chết máy", "audio": "generated-errors/xe-chet-may.mp3", "say": "Xe bị chết máy"},
-  {"label": "Không bật xi nhan", "audio": "generated-errors/khong-bat-xi-nhan.mp3", "say": "Không bật đèn báo rẽ"},
-  {"label": "Không thắt dây an toàn", "audio": "generated-errors/khong-that-day-an-toan.mp3", "say": "Không thắt dây an toàn"},
-  {"label": "Không đổi đúng số", "audio": "generated-errors/khong-doi-dung-so.mp3", "say": "Không chuyển đúng số"},
-  {"label": "Quá 4000 vòng/phút", "say": "Tốc độ động cơ quá bốn nghìn vòng một phút", "audio": "generated-errors/qua-4000-vong.mp3"},
-  {"label": "Vượt đèn đỏ", "audio": "generated-errors/vuot-den-do.mp3", "say": "Vượt đèn đỏ"},
-  {"label": "Quá tốc độ", "audio": "generated-errors/qua-toc-do.mp3", "say": "Vượt quá tốc độ quy định"},
-  {"label": "Tụt dốc quá 50 cm", "say": "Xe bị tụt dốc quá năm mươi xen ti mét", "audio": "generated-errors/tut-doc.mp3"},
-  {"label": "Bạn đã đi sai quy cách thi", "audio": "generated-errors/di-sai-hinh.mp3", "say": "Bạn đã đi sai quy cách thi"}
+  {"label": "Xe chạm vạch", "audio": "generated-errors/de-vach.mp3", "say": "Xe chạm vạch", "points": 5},
+  {"label": "Dừng xe chưa đến vị trí", "audio": "generated-errors/dung-chua-den-vach.mp3", "say": "Dừng xe chưa đến vị trí", "points": 5},
+  {"label": "Dừng xe quá vị trí", "audio": "generated-errors/dung-qua-vach.mp3", "say": "Dừng xe quá vị trí", "points": 5},
+  {"label": "Quá thời gian 1 bài", "audio": "generated-errors/qua-thoi-gian-bai-thi.mp3", "say": "Quá thời gian một bài", "points": 5},
+  {"label": "Xe chết máy", "audio": "generated-errors/xe-chet-may.mp3", "say": "Xe bị chết máy", "points": 5},
+  {"label": "Không bật xi nhan", "audio": "generated-errors/khong-bat-xi-nhan.mp3", "say": "Không bật đèn báo rẽ", "points": 5},
+  {"label": "Không thắt dây an toàn", "audio": "generated-errors/khong-that-day-an-toan.mp3", "say": "Không thắt dây an toàn", "points": 5},
+  {"label": "Không đổi đúng số", "audio": "generated-errors/khong-doi-dung-so.mp3", "say": "Không chuyển đúng số", "points": 5},
+  {"label": "Quá 4000 vòng/phút", "audio": "generated-errors/qua-4000-vong.mp3", "say": "Tốc độ động cơ quá bốn nghìn vòng một phút", "points": 5},
+  {"label": "Vượt đèn đỏ", "audio": "generated-errors/vuot-den-do.mp3", "say": "Vượt đèn đỏ", "points": 10},
+  {"label": "Quá tốc độ", "audio": "generated-errors/qua-toc-do.mp3", "say": "Vượt quá tốc độ quy định", "points": 1},
+  {"label": "Tụt dốc quá 50 cm", "audio": "generated-errors/tut-doc.mp3", "say": "Xe bị tụt dốc quá năm mươi xen ti mét", "suspend": true},
+  {"label": "Bạn đã đi sai quy cách thi", "audio": "generated-errors/di-sai-hinh.mp3", "say": "Bạn đã đi sai quy cách thi", "suspend": true}
 ]

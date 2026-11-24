@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sat-hach-trainer-v58';
+const CACHE_NAME = 'sat-hach-trainer-v59';
 const APP_SHELL = [
   './',
   './index.html',
@@ -29,6 +29,7 @@ const APP_SHELL = [
   './js/road-scoring.js',
   './js/road-history.js',
   './js/road-ui.js',
+  './js/sa-hinh-score.js',
   './manifest.webmanifest',
   './content/stations.json',
   './content/standard-set.json',

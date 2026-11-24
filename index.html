@@ -127,6 +127,8 @@
           <p id="sh-audio-state" role="status">Sẵn sàng phát</p>
           <span class="operator-label">Bài vừa phát</span>
           <p id="sh-current">Chưa phát bài nào</p>
+          <span class="operator-label">Điểm</span>
+          <p class="sh-score-line"><strong id="sh-score">100</strong> <span id="sh-score-state">Đang thi</span></p>
         </div>
         <button id="sh-next" class="sh-next" type="button"></button>
         <div class="action-row sh-step">
@@ -143,6 +145,10 @@
         <h3>Báo lỗi và tình huống</h3>
         <button id="sh-khan-cap" class="sh-cue sh-alarm" type="button"><svg aria-hidden="true"><use href="#i-warn"/></svg>Khẩn cấp</button>
         <div id="sh-errors" class="sb-grid"></div>
+        <div class="sh-score-actions">
+          <button id="sh-undo" class="btn-secondary" type="button" disabled>Hoàn tác lỗi</button>
+          <button id="sh-reset" class="btn-secondary" type="button">Làm lại từ 100</button>
+        </div>
       </section>
       <section class="operator-outcome">
         <h3>Thông báo kết quả</h3>

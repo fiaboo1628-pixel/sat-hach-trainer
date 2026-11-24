@@ -1,6 +1,7 @@
 import { buildPlaylist } from './playlist.js';
 import { initTheory } from './theory-ui.js';
 import { initRoad } from './road-ui.js';
+import { saHinhScore } from './sa-hinh-score.js';
 
 const STORAGE_KEY = 'bo-tu-ghep';
 
@@ -31,6 +32,8 @@ let selected = loadSelected();
 let board = [];
 let nextIdx = 0;
 let lastStationIndex = null;
+// Các phím lỗi sa hình đã bấm trong lượt này (để tính điểm và hoàn tác).
+let shPressed = [];
 // Việc phải làm khi tiếng đang phát dừng (hết tự nhiên hay bị phím khác cắt ngang).
 let onPlaybackDone = null;
 
@@ -262,8 +265,31 @@ function soundKey(key) {
   return b;
 }
 
+const SH_STATE_TEXT = { running: 'Đang thi', failed: 'Không đạt (dưới 80)', suspended: 'Đình chỉ sát hạch' };
+
+function renderSaHinhScore() {
+  const { score, status } = saHinhScore(shPressed);
+  document.getElementById('sh-score').textContent = score;
+  const state = document.getElementById('sh-score-state');
+  state.textContent = SH_STATE_TEXT[status];
+  state.dataset.state = status;
+  const last = shPressed.at(-1);
+  const undo = document.getElementById('sh-undo');
+  undo.disabled = !last;
+  undo.textContent = last ? `Hoàn tác: ${last.label}` : 'Hoàn tác lỗi';
+  // Đình chỉ: chỉ còn hoàn tác hoặc làm lại, không ghi thêm lỗi.
+  els.shErrors.querySelectorAll('button').forEach((b) => (b.disabled = status === 'suspended'));
+}
+
 function renderSaHinhErrors() {
-  saHinhErrors.forEach((key) => els.shErrors.appendChild(soundKey(key)));
+  saHinhErrors.forEach((key) => {
+    const b = soundKey(key);
+    b.addEventListener('click', () => {
+      shPressed = [...shPressed, key];
+      renderSaHinhScore();
+    });
+    els.shErrors.appendChild(b);
+  });
   saHinhNotices.forEach((key) => els.shNotices.appendChild(soundKey(key)));
 }
 
@@ -310,6 +336,8 @@ function readStation(i) {
 }
 
 async function openStandardSet(ids, label) {
+  shPressed = [];
+  renderSaHinhScore();
   if (ids.length === 0) {
     setStatus('Chưa chọn bài nào.');
     return;
@@ -403,6 +431,20 @@ async function main() {
   cue('sh-ting-tong', 'ting-tong.mp3', 'Ting tong');
   cue('sh-tut', 'tut.mp3', 'Tút');
   cue('sh-khan-cap', 'khan-cap.mp3', 'Khẩn cấp');
+  // Bấm đúp trên xe: lần chạm thứ hai trong 1 giây không gỡ thêm lỗi.
+  let shLastUndo = 0;
+  document.getElementById('sh-undo').addEventListener('click', () => {
+    if (Date.now() - shLastUndo < 1000) return;
+    shLastUndo = Date.now();
+    stopPlayback();
+    shPressed = shPressed.slice(0, -1);
+    renderSaHinhScore();
+  });
+  document.getElementById('sh-reset').addEventListener('click', () => {
+    if (shPressed.length && !window.confirm('Làm lại từ 100 điểm? Các lỗi đã bấm sẽ bị xoá.')) return;
+    shPressed = [];
+    renderSaHinhScore();
+  });
   document.getElementById('save-bo-tu-ghep').addEventListener('click', saveSelected);
   document.getElementById('play-bo-tu-ghep').addEventListener('click', () => openStandardSet(selected, 'Tự ghép'));
 
