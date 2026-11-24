@@ -83,7 +83,7 @@ function ask(message, actions) {
   });
 }
 
-export function renderSheet(container, result, rules) {
+export function renderSheet(container, result) {
   container.replaceChildren();
   const verdict = result.status === 'suspended' ? 'ĐÌNH CHỈ SÁT HẠCH' : result.passed ? 'ĐẠT' : 'KHÔNG ĐẠT';
   container.append(
@@ -117,7 +117,7 @@ export function renderSheet(container, result, rules) {
     });
   });
   table.append(body);
-  container.append(table, el('p', 'rd-muted', `Căn cứ: ${shortDoc(rules.document)}, ${rules.scope.split(':')[0]}.`), el('p', 'rd-muted', DISCLAIMER));
+  container.append(table, el('p', 'rd-muted', DISCLAIMER));
 }
 
 // Trang "Quy định thi đường trường": hai thẻ, mỗi thẻ một bộ luật, sinh từ chính dữ liệu chấm điểm.
@@ -213,7 +213,7 @@ export function initRoad({ ruleSets, showView, play, stop, storage }) {
     override.value === 'auto' ? pickRuleSet(ruleSets, $('rd-date').value, localDate()) : ruleSets.find((r) => r.id === override.value);
   const updateApplied = () => {
     const r = chosenRules();
-    $('rd-rules-applied').textContent = `Áp dụng ${shortDoc(r.document)}, ${validity(r)}. Tối thiểu ${r.minDistanceKm} km, ${r.exercises.length} bài.`;
+    $('rd-rules-applied').textContent = `Áp dụng ${shortDoc(r.document)}`;
   };
   $('rd-date').value = localDate();
   $('rd-date').addEventListener('change', updateApplied);
@@ -288,7 +288,7 @@ export function initRoad({ ruleSets, showView, play, stop, storage }) {
     const result = buildResult(rules, session);
     history.add(result);
     saved = true;
-    renderSheet($('rd-sheet'), result, rules);
+    renderSheet($('rd-sheet'), result);
     $('rd-sheet-undo').hidden = status(rules, session) !== 'suspended';
     wakeLock?.release();
     wakeLock = null;
@@ -316,12 +316,6 @@ export function initRoad({ ruleSets, showView, play, stop, storage }) {
     dispatch({ type: 'command', exerciseId: ex.id });
   }
 
-  function showInfo(e) {
-    const lines = [e.official, `Mức trừ: ${e.suspend ? 'Đình chỉ sát hạch' : `${e.points} điểm`}${e.perOccurrence ? ', mỗi lần' : ''}`, DETECT_TEXT[e.detectedBy], e.citation];
-    if (e.note) lines.push(e.note);
-    ask(lines.join('\n'), [{ label: 'Đóng', value: null, primary: true }]);
-  }
-
   function render() {
     const st = status(rules, session);
     const ex = currentExercise(rules, session);
@@ -330,8 +324,6 @@ export function initRoad({ ruleSets, showView, play, stop, storage }) {
     $('rd-state').textContent = STATUS_TEXT[st];
     $('rd-state').dataset.state = st;
     $('rd-exercise').textContent = ex ? ex.name : 'Kiểm tra trước khi lên xe, rồi ra lệnh xuất phát';
-    const watchFor = ex ?? rules.exercises.find((e) => e.position === 'first');
-    $('rd-watch').textContent = `Cần để ý: ${watchFor.watch}`;
 
     const locked = st === 'suspended' || st === 'finished';
     const lastDone = ex?.position === 'last';
@@ -342,7 +334,6 @@ export function initRoad({ ruleSets, showView, play, stop, storage }) {
       const b = el('button', 'sb-key rd-cmd');
       b.type = 'button';
       b.append(el('span', null, e.label));
-      if (e.conditional) b.append(el('small', null, 'có điều kiện'));
       const allowed = !locked && !lastDone && (st === 'idle' ? e.position === 'first' : e.position !== 'first');
       b.disabled = !allowed;
       if (ex?.id === e.id) b.setAttribute('aria-current', 'step');
@@ -357,16 +348,12 @@ export function initRoad({ ruleSets, showView, play, stop, storage }) {
       const b = el('button', 'sb-key');
       b.type = 'button';
       b.disabled = locked;
-      // Ít chữ trên bàn chấm (chủ app, 2026-11-24): chỉ tên lỗi. Mức trừ và nguồn bắt lỗi xem ở nút i;
-      // lỗi đình chỉ vẫn tách riêng bằng màu đỏ đậm.
+      // Ít chữ trên bàn chấm (chủ app, 2026-11-24): chỉ tên lỗi; nguyên văn, mức trừ và trích dẫn chỉ ở
+      // trang Quy định. Lỗi đình chỉ vẫn tách riêng bằng màu đỏ đậm.
       b.append(el('span', 'rd-err-label', errorLabel(e, session.gearbox)));
       b.setAttribute('aria-label', `${errorLabel(e, session.gearbox)}, ${e.suspend ? 'đình chỉ' : `trừ ${e.points} điểm`}`);
       b.addEventListener('click', () => dispatch({ type: 'error', errorId: e.id }));
-      const info = el('button', 'rd-info', 'i');
-      info.type = 'button';
-      info.setAttribute('aria-label', `Quy định: ${e.label}`);
-      info.addEventListener('click', () => showInfo(e));
-      wrap.append(b, info);
+      wrap.append(b);
       errs.append(wrap);
     });
 
@@ -464,7 +451,7 @@ export function initRoad({ ruleSets, showView, play, stop, storage }) {
       const open = el('button', 'btn-secondary', `${dateTime(r.createdAt)} · ${shortDoc(r.document)} · ${r.score} điểm · ${r.status === 'suspended' ? 'Đình chỉ' : r.passed ? 'Đạt' : 'Không đạt'}`);
       open.type = 'button';
       open.addEventListener('click', () => {
-        renderSheet($('rd-sheet'), r, ruleSets.find((x) => x.id === r.rulesId) ?? ruleSets[0]);
+        renderSheet($('rd-sheet'), r);
         $('rd-sheet-undo').hidden = true;
         showView('duong-truong-ket-qua');
       });
