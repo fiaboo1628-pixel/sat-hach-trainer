@@ -205,7 +205,7 @@ export function initRoad({ ruleSets, showView, play, stop, storage }) {
   // ---------- Màn chuẩn bị ----------
   const override = $('rd-rules-override');
   ruleSets.forEach((r) => {
-    const o = el('option', null, `${r.document} (${validity(r)})`);
+    const o = el('option', null, `${shortDoc(r.document)} (${validity(r).replace('hiệu lực ', '').replace(' hết', '')})`);
     o.value = r.id;
     override.append(o);
   });
@@ -213,7 +213,7 @@ export function initRoad({ ruleSets, showView, play, stop, storage }) {
     override.value === 'auto' ? pickRuleSet(ruleSets, $('rd-date').value, localDate()) : ruleSets.find((r) => r.id === override.value);
   const updateApplied = () => {
     const r = chosenRules();
-    $('rd-rules-applied').textContent = `Áp dụng ${r.document} (${validity(r)}), tối thiểu ${r.minDistanceKm} km, ${r.exercises.length} bài.`;
+    $('rd-rules-applied').textContent = `Áp dụng ${shortDoc(r.document)}, ${validity(r)}. Tối thiểu ${r.minDistanceKm} km, ${r.exercises.length} bài.`;
   };
   $('rd-date').value = localDate();
   $('rd-date').addEventListener('change', updateApplied);
