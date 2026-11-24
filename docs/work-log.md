@@ -17,3 +17,10 @@
 - [ ] Ghi phiên bản APK, kết quả kiểm tra và vị trí file cài vào work log khi hoàn tất.
 
 Người dùng yêu cầu ngày 2026-11-05: ghi lại để làm lúc rảnh; chưa build hoặc phát hành Android trong lần này.
+
+## 2026-11-24 — Đường trường: dữ liệu luật (Task 1)
+
+- `content/rules/duong-truong-tt12.json` (4 bài, 18 lỗi) và `content/rules/duong-truong-tt108.json` (12 bài, 125 lỗi).
+- Đối chiếu tự động: cả 143 câu `official` và mọi tên bài xuất hiện nguyên văn trong `docs/research/nguon/tt12-2025.txt` / `tt108-2026.txt` (so khớp sau khi gộp khoảng trắng, không phân biệt hoa thường).
+- Đối chiếu mức trừ: `points`, `suspend`, `perOccurrence` của cả 143 lỗi khớp với mức trừ ghi trong chính câu nguyên văn ("trừ NN điểm", "bị đình chỉ sát hạch", "mỗi lần", "cứ 03 giây"). 0 lệch.
+- `detectedBy`: TT 12 theo C.II.1.3.d (5 lỗi sát hạch viên bấm, còn lại máy); TT 108 theo QCVN 15:2026 §2.3.5.2.3–4, lỗi không có trong danh sách nào là "examiner-inferred".
