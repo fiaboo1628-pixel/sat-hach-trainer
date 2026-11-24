@@ -218,7 +218,6 @@
         <button id="rd-undo" class="btn-secondary" type="button" disabled>Hoàn tác</button>
         <button id="rd-finish" class="btn-secondary" type="button">Kết thúc buổi</button>
       </div>
-      <p id="rd-toast" class="rd-toast" role="alert" hidden></p>
     </section>
 
     <section id="view-duong-truong-ket-qua" hidden>
@@ -243,6 +242,8 @@
       <p id="rd-dialog-text"></p>
       <div id="rd-dialog-actions" class="rd-dialog-actions"></div>
     </dialog>
+    <!-- Ngoài mọi section: vẫn hiện khi đã chuyển sang phiếu kết quả (vd. clip thông báo cuối lỗi). -->
+    <p id="rd-toast" class="rd-toast" role="alert" hidden></p>
 
     <!-- Quy định thi đường trường: sinh từ content/rules/*.json (renderRulesGuide trong
          js/road-ui.js), nên luôn khớp với bàn chấm điểm. -->

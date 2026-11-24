@@ -4,6 +4,8 @@
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 export const START_LIMIT_MS = 30000;
+// Hai lần bấm cùng một lệnh trong khoảng này là bấm đúp trên xe, không phải lượt bài mới.
+export const REPEAT_COMMAND_MS = 1500;
 
 export function pickRuleSet(ruleSets, examDate, today) {
   const date = DATE.test(examDate || '') ? examDate : today;
@@ -51,8 +53,10 @@ export function availableErrors(rules, session) {
 
 export function startDeadline(session) {
   if (session.events.some((e) => e.type === 'start-crossed')) return null;
-  const first = commands(session)[0];
-  return first ? first.at + START_LIMIT_MS : null;
+  const cmds = commands(session);
+  // Đã ra lệnh bài thứ hai thì xe chắc chắn đã qua vạch xuất phát.
+  if (cmds.length !== 1) return null;
+  return cmds[0].at + START_LIMIT_MS;
 }
 
 const rejected = (session, reason) => ({ session, effects: [{ type: 'rejected', reason }] });
@@ -65,7 +69,13 @@ export function reduce(rules, session, action, now) {
   if (action.type === 'undo') {
     const idx = session.events.map((e) => e.type).lastIndexOf('error');
     if (idx < 0) return rejected(session, 'Chưa có lỗi để hoàn tác');
-    return { session: { ...session, events: session.events.filter((_, i) => i !== idx) }, effects: [] };
+    // errorAt: lỗi mà người bấm thấy trên nút Hoàn tác; bấm đúp không gỡ thêm lỗi trước đó.
+    if (action.errorAt !== undefined && session.events[idx].at !== action.errorAt) return rejected(session, 'Đã hoàn tác lỗi này');
+    let next = { ...session, events: session.events.filter((_, i) => i !== idx) };
+    // Gỡ lỗi khi đã quá hạn 30 giây: coi như xe đã qua vạch, để đồng hồ không đình chỉ lại ngay.
+    const deadline = startDeadline(next);
+    if (deadline !== null && now >= deadline) next = withEvent(next, { type: 'start-crossed', at: now });
+    return { session: next, effects: [] };
   }
   if (st === 'suspended') return rejected(session, 'Thí sinh đã bị đình chỉ sát hạch');
 
@@ -76,6 +86,8 @@ export function reduce(rules, session, action, now) {
     if (st === 'idle' && ex.position !== 'first') return rejected(session, 'Chưa ra lệnh xuất phát');
     if (st !== 'idle' && ex.position === 'first') return rejected(session, 'Đã xuất phát rồi');
     if (last?.position === 'last') return rejected(session, 'Đã ra lệnh kết thúc');
+    const lastCmd = commands(session).at(-1);
+    if (lastCmd?.exerciseId === ex.id && now - lastCmd.at < REPEAT_COMMAND_MS) return rejected(session, 'Vừa ra lệnh bài này');
     const turn = st === 'idle' ? 1 : currentTurn(session) + 1;
     const next = withEvent(session, { type: 'command', exerciseId: ex.id, turn, at: now });
     return { session: next, effects: [{ type: 'play', audio: ex.commandAudio }] };

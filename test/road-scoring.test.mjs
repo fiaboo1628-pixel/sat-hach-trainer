@@ -90,7 +90,8 @@ test('bài đầu không ra lệnh lại', () => {
 });
 
 test('bài tự do lặp được, mỗi lần là lượt mới', () => {
-  const { s } = run(R, [cmd('a'), cmd('b'), cmd('b')]);
+  let s = run(R, [cmd('a'), cmd('b')]).s;
+  s = reduce(R, s, cmd('b'), 60000).session;
   const turns = s.events.filter((e) => e.type === 'command').map((e) => e.turn);
   assert.deepEqual(turns, [1, 2, 3]);
   assert.equal(currentExercise(R, s).id, 'b');
@@ -204,4 +205,36 @@ test('reduce không sửa session đầu vào', () => {
 test('chạy được trên bộ luật thật TT 108', () => {
   const s = run(tt108, [cmd('bai-1'), { type: 'start-crossed' }, cmd('bai-4'), err('b4-chet-may'), err('b4-chet-may'), cmd('bai-5'), err('b5-chet-may'), err('b5-chet-may')]).s;
   assert.equal(score(tt108, s), 85);
+});
+
+test('hoàn tác lỗi quá 30 giây thì không còn hạn giờ xuất phát', () => {
+  let s = run(R, [cmd('a')]).s; // lệnh lúc 2000, hạn 32000
+  s = reduce(R, s, err('a-dc'), 32000).session;
+  assert.equal(status(R, s), 'suspended');
+  s = reduce(R, s, { type: 'undo' }, 40000).session;
+  assert.equal(status(R, s), 'running');
+  assert.equal(startDeadline(s), null);
+});
+
+test('ra lệnh bài thứ hai nghĩa là xe đã qua vạch: hết hạn giờ', () => {
+  const s = run(R, [cmd('a'), cmd('b')]).s;
+  assert.equal(startDeadline(s), null);
+});
+
+test('bấm lệnh cùng bài hai lần liền trong 1,5 giây chỉ tính một lượt', () => {
+  let s = run(R, [cmd('a')]).s;
+  s = reduce(R, s, cmd('b'), 10000).session;
+  const again = reduce(R, s, cmd('b'), 11000);
+  assert.equal(again.effects[0].type, 'rejected');
+  assert.equal(again.session.events.length, s.events.length);
+  assert.equal(reduce(R, s, cmd('b'), 11600).effects[0].type, 'play');
+});
+
+test('hoàn tác chỉ gỡ đúng lỗi được chỉ định, bấm đúp không gỡ hai lỗi', () => {
+  let s = run(R, [cmd('a'), err('a-5'), cmd('b'), err('b-10')]).s;
+  const lastAt = s.events.filter((e) => e.type === 'error').at(-1).at;
+  s = reduce(R, s, { type: 'undo', errorAt: lastAt }, 9000).session;
+  const second = reduce(R, s, { type: 'undo', errorAt: lastAt }, 9100);
+  assert.equal(second.effects[0].type, 'rejected');
+  assert.equal(score(R, second.session), 95);
 });

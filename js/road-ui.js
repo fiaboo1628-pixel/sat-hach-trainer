@@ -68,6 +68,8 @@ function ask(message, actions) {
     });
     dialog.oncancel = () => resolve(actions.at(-1).value);
     dialog.showModal();
+    // Nút an toàn (primary) nhận focus, để Enter hay một cú chạm thừa không chọn nhầm việc xoá/thoát.
+    row.querySelector('.btn-primary')?.focus();
   });
 }
 
@@ -312,7 +314,7 @@ export function initRoad({ ruleSets, showView, play, stop, storage }) {
 
   $('rd-sheet-undo').addEventListener('click', () => {
     stop();
-    session = reduce(rules, session, { type: 'undo' }, Date.now()).session;
+    session = reduce(rules, session, { type: 'undo', errorAt: lastErrorAt() }, Date.now()).session;
     history.remove(session.createdAt);
     saved = false;
     showView('duong-truong');
@@ -410,9 +412,14 @@ export function initRoad({ ruleSets, showView, play, stop, storage }) {
   setInterval(tick, 500);
 
   $('rd-crossed').addEventListener('click', () => dispatch({ type: 'start-crossed' }));
+  const lastErrorAt = () => session.events.filter((e) => e.type === 'error').at(-1)?.at;
+  // Bấm đúp trên xe: lần chạm thứ hai trong 1 giây không gỡ thêm lỗi trước đó.
+  let lastUndo = 0;
   $('rd-undo').addEventListener('click', () => {
+    if (Date.now() - lastUndo < 1000) return;
+    lastUndo = Date.now();
     stop();
-    dispatch({ type: 'undo' });
+    dispatch({ type: 'undo', errorAt: lastErrorAt() });
   });
   $('rd-finish').addEventListener('click', async () => {
     const ex = currentExercise(rules, session);
@@ -428,6 +435,10 @@ export function initRoad({ ruleSets, showView, play, stop, storage }) {
 
   // ---------- Rời bàn chấm giữa buổi ----------
   const leaveGuard = () => consoleVisible() && session && !saved && session.events.length > 0;
+  // Tải lại trang hay đóng tab giữa buổi: trình duyệt tự hỏi lại, vì buổi thi chỉ nằm trong bộ nhớ.
+  window.addEventListener('beforeunload', (event) => {
+    if (leaveGuard()) event.preventDefault();
+  });
   $('rd-leave').addEventListener(
     'click',
     async (event) => {

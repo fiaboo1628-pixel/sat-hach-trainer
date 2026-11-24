@@ -1236,3 +1236,5 @@ h2 {
 .rd-guide-panel h3 { margin: 1.1rem 0 0.4rem; }
 .brand-about { display: block; margin: 0.4rem auto 0; font-size: 0.85rem; }
 .rd-about-links { justify-content: flex-start; }
+/* Trên bàn chấm điểm, kéo xuống không được tải lại trang (mất buổi thi đang chấm). */
+html:has(#view-duong-truong:not([hidden])) { overscroll-behavior-y: contain; }
