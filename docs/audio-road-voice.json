@@ -1,0 +1,773 @@
+{
+  "engine": "VieNeu-TTS v3 Turbo",
+  "preset_voice": "Mai Anh",
+  "tempo": 0.85,
+  "loudness": "-19 LUFS",
+  "renderer": "tools/render-road-voice.sh",
+  "clips": [
+    {
+      "audio": "road/lenh-xuat-phat.mp3",
+      "say": "Xuất phát."
+    },
+    {
+      "audio": "road/lenh-tang-so-tang-toc-do.mp3",
+      "say": "Tăng số, tăng tốc độ."
+    },
+    {
+      "audio": "road/lenh-giam-so-giam-toc-do.mp3",
+      "say": "Giảm số, giảm tốc độ."
+    },
+    {
+      "audio": "road/lenh-ket-thuc.mp3",
+      "say": "Kết thúc."
+    },
+    {
+      "audio": "road/khong-that-day-an-toan.mp3",
+      "say": "Không thắt dây an toàn."
+    },
+    {
+      "audio": "road/khong-bat-xi-nhan-trai-xuat-phat.mp3",
+      "say": "Không bật đèn xi nhan trái khi xuất phát."
+    },
+    {
+      "audio": "road/khong-nha-het-phanh-tay.mp3",
+      "say": "Không nhả hết phanh tay khi khởi hành."
+    },
+    {
+      "audio": "road/khong-tang-len-so-3.mp3",
+      "say": "Trong khoảng mười lăm mét không tăng từ số một lên số ba."
+    },
+    {
+      "audio": "road/qua-30-giay-chua-xuat-phat.mp3",
+      "say": "Quá ba mươi giây chưa khởi hành xe qua vị trí xuất phát."
+    },
+    {
+      "audio": "road/khong-tang-so-tang-toc.mp3",
+      "say": "Trong khoảng một trăm mét không tăng được số, tốc độ."
+    },
+    {
+      "audio": "road/khong-giam-so-giam-toc.mp3",
+      "say": "Trong khoảng một trăm mét không giảm được số, tốc độ."
+    },
+    {
+      "audio": "road/khong-bat-xi-nhan-phai.mp3",
+      "say": "Không bật đèn xi nhan phải."
+    },
+    {
+      "audio": "road/chua-ve-so-khong.mp3",
+      "say": "Khi xe dừng hẳn, không về được số không hoặc số P."
+    },
+    {
+      "audio": "road/khong-keo-phanh-tay.mp3",
+      "say": "Không kéo phanh tay khi xe dừng hẳn."
+    },
+    {
+      "audio": "road/xe-rung-giat-manh.mp3",
+      "say": "Xe bị rung giật mạnh."
+    },
+    {
+      "audio": "road/xe-chet-may.mp3",
+      "say": "Xe bị chết máy."
+    },
+    {
+      "audio": "road/qua-4000-vong.mp3",
+      "say": "Tốc độ động cơ quá bốn nghìn vòng một phút."
+    },
+    {
+      "audio": "road/so-cao-toc-do-thap.mp3",
+      "say": "Sử dụng từ tay số ba trở lên khi tốc độ dưới hai mươi ki lô mét một giờ."
+    },
+    {
+      "audio": "road/vi-pham-quy-tac-giao-thong.mp3",
+      "say": "Vi phạm quy tắc giao thông đường bộ."
+    },
+    {
+      "audio": "road/khong-theo-hieu-lenh.mp3",
+      "say": "Không thực hiện theo hiệu lệnh của sát hạch viên."
+    },
+    {
+      "audio": "road/xu-ly-gay-tai-nan.mp3",
+      "say": "Xử lý tình huống không hợp lý gây tai nạn."
+    },
+    {
+      "audio": "road/choang-lai-qua-lan.mp3",
+      "say": "Khi tăng hoặc giảm số, xe bị choạng lái quá làn đường quy định."
+    },
+    {
+      "audio": "road/thong-bao-dinh-chi.mp3",
+      "say": "Thí sinh bị đình chỉ sát hạch."
+    },
+    {
+      "audio": "road/thong-bao-khong-dat.mp3",
+      "say": "Thí sinh không đạt bài sát hạch."
+    },
+    {
+      "audio": "road/thong-bao-dat.mp3",
+      "say": "Thí sinh đã đạt bài sát hạch."
+    },
+    {
+      "audio": "road/thong-bao-qua-30-giay.mp3",
+      "say": "Quá ba mươi giây chưa khởi hành xe qua vị trí xuất phát."
+    },
+    {
+      "audio": "road/lenh-vuot-xe.mp3",
+      "say": "Tăng tốc vượt xe."
+    },
+    {
+      "audio": "road/lenh-chuyen-lan.mp3",
+      "say": "Tăng tốc, chuyển làn."
+    },
+    {
+      "audio": "road/lenh-re-trai.mp3",
+      "say": "Chuyển hướng rẽ trái."
+    },
+    {
+      "audio": "road/lenh-re-phai.mp3",
+      "say": "Chuyển hướng rẽ phải."
+    },
+    {
+      "audio": "road/lenh-quay-dau.mp3",
+      "say": "Chuyển hướng quay đầu."
+    },
+    {
+      "audio": "road/lenh-tranh-xe-nguoc-chieu.mp3",
+      "say": "Tránh xe đi ngược chiều."
+    },
+    {
+      "audio": "road/lenh-nhuong-nguoi-di-bo.mp3",
+      "say": "Nhường đường cho người đi bộ."
+    },
+    {
+      "audio": "road/lenh-dung-xe-nguy-hiem.mp3",
+      "say": "Dừng xe khi gặp tình huống nguy hiểm."
+    },
+    {
+      "audio": "road/lenh-nhap-duong-chinh.mp3",
+      "say": "Từ đường nhánh ra đường chính."
+    },
+    {
+      "audio": "road/lenh-den-tin-hieu.mp3",
+      "say": "Chấp hành tín hiệu đèn giao thông."
+    },
+    {
+      "audio": "road/khong-kiem-tra-xung-quanh.mp3",
+      "say": "Không kiểm tra xung quanh xe."
+    },
+    {
+      "audio": "road/khong-kiem-tra-thiet-bi.mp3",
+      "say": "Không kiểm tra đèn, còi, phanh, lái, gạt mưa và gương chiếu hậu."
+    },
+    {
+      "audio": "road/tu-the-ngoi-khong-phu-hop.mp3",
+      "say": "Điều chỉnh tư thế ngồi không phù hợp."
+    },
+    {
+      "audio": "road/khong-nha-phanh-do.mp3",
+      "say": "Không nhả hoặc nhả không hết phanh đỗ khi khởi hành."
+    },
+    {
+      "audio": "road/khong-tang-so-15m.mp3",
+      "say": "Trong khoảng mười lăm mét không tăng số."
+    },
+    {
+      "audio": "road/khong-kiem-tra-an-toan.mp3",
+      "say": "Không thực hiện việc kiểm tra an toàn trước khi xuất phát."
+    },
+    {
+      "audio": "road/khong-bao-hieu-vuot.mp3",
+      "say": "Không báo hiệu nhấp nháy bằng đèn chiếu sáng phía trước hoặc còi."
+    },
+    {
+      "audio": "road/khong-giu-khoang-cach.mp3",
+      "say": "Không bảo đảm khoảng cách an toàn."
+    },
+    {
+      "audio": "road/vuot-khi-chua-cho-phep.mp3",
+      "say": "Vượt xe khi chưa nhận được tín hiệu cho phép của xe phía trước."
+    },
+    {
+      "audio": "road/khong-quan-sat-guong.mp3",
+      "say": "Không quan sát an toàn qua gương chiếu hậu."
+    },
+    {
+      "audio": "road/tay-so-khong-phu-hop.mp3",
+      "say": "Sử dụng tay số không phù hợp với tốc độ."
+    },
+    {
+      "audio": "road/khong-xi-nhan-trai-khi-vuot.mp3",
+      "say": "Không bật đèn xi nhan trái khi vượt."
+    },
+    {
+      "audio": "road/choang-lai-khi-vuot.mp3",
+      "say": "Khi vượt, xe bị choạng lái quá làn đường quy định."
+    },
+    {
+      "audio": "road/khong-quan-sat-an-toan.mp3",
+      "say": "Không quan sát đảm bảo an toàn."
+    },
+    {
+      "audio": "road/khong-tin-hieu-chuyen-lan.mp3",
+      "say": "Không có tín hiệu trước khi chuyển làn."
+    },
+    {
+      "audio": "road/chuyen-hai-lan.mp3",
+      "say": "Chuyển hai làn cùng một lúc."
+    },
+    {
+      "audio": "road/chuyen-lan-noi-cam.mp3",
+      "say": "Chuyển làn tại nơi không cho phép."
+    },
+    {
+      "audio": "road/khong-giam-toc-truoc-khi-re.mp3",
+      "say": "Không giảm tốc độ về mức an toàn trước khi chuyển hướng."
+    },
+    {
+      "audio": "road/khong-chuyen-dan-lan.mp3",
+      "say": "Không chuyển dần làn đường sang hướng cần chuyển."
+    },
+    {
+      "audio": "road/khong-bat-xi-nhan-trai-khi-re.mp3",
+      "say": "Không bật xi nhan trái."
+    },
+    {
+      "audio": "road/chuyen-huong-dot-ngot.mp3",
+      "say": "Chuyển hướng đột ngột."
+    },
+    {
+      "audio": "road/khong-quan-sat-khi-re.mp3",
+      "say": "Không quan sát hai bên và gương chiếu hậu khi chuyển hướng."
+    },
+    {
+      "audio": "road/khong-nhuong-nguoi-di-bo.mp3",
+      "say": "Không nhường đường cho người đi bộ, xe lăn của người khuyết tật."
+    },
+    {
+      "audio": "road/khong-nhuong-xe-nguoc-chieu.mp3",
+      "say": "Không nhường đường cho xe đi chiều ngược lại."
+    },
+    {
+      "audio": "road/lan-lan-nguoc-chieu.mp3",
+      "say": "Chuyển hướng xe lấn sang làn xe ngược chiều."
+    },
+    {
+      "audio": "road/khong-tra-lai.mp3",
+      "say": "Sau khi chuyển hướng không trả lái, đưa xe về làn đường quy định."
+    },
+    {
+      "audio": "road/khong-bat-xi-nhan-phai-khi-re.mp3",
+      "say": "Không bật xi nhan phải."
+    },
+    {
+      "audio": "road/khong-giam-toc-an-toan.mp3",
+      "say": "Không giảm tốc độ về mức an toàn."
+    },
+    {
+      "audio": "road/khong-xi-nhan-quay-dau.mp3",
+      "say": "Không bật xi nhan về hướng quay đầu."
+    },
+    {
+      "audio": "road/khong-quan-sat-quay-dau.mp3",
+      "say": "Không quan sát hai bên và gương chiếu hậu khi quay đầu."
+    },
+    {
+      "audio": "road/khong-nhuong-di-bo.mp3",
+      "say": "Không nhường đường cho người đi bộ."
+    },
+    {
+      "audio": "road/gay-tro-ngai.mp3",
+      "say": "Gây trở ngại và nguy hiểm cho người và các phương tiện khác."
+    },
+    {
+      "audio": "road/khong-tra-lai-quay-dau.mp3",
+      "say": "Sau khi quay xe không trả lái, đưa xe về làn đường quy định."
+    },
+    {
+      "audio": "road/khong-giam-toc-chan-phanh.mp3",
+      "say": "Không giảm tốc độ hoặc không chuyển từ chân ga sang chân phanh."
+    },
+    {
+      "audio": "road/khong-nhuong-den-xanh.mp3",
+      "say": "Không nhường đường cho người đi bộ đang ở lòng đường khi đèn xanh."
+    },
+    {
+      "audio": "road/khong-nhuong-den-vang.mp3",
+      "say": "Không nhường đường cho người đi bộ khi đèn vàng nhấp nháy."
+    },
+    {
+      "audio": "road/khong-nhuong-khi-re.mp3",
+      "say": "Không nhường đường cho người đi bộ khi chuyển hướng."
+    },
+    {
+      "audio": "road/khong-nhuong-vach-di-bo.mp3",
+      "say": "Không nhường đường tại nơi dành cho người đi bộ qua đường."
+    },
+    {
+      "audio": "road/khong-xi-nhan-phai-truoc-khi-dung.mp3",
+      "say": "Không bật đèn xi nhan phải trước khi dừng xe."
+    },
+    {
+      "audio": "road/dung-xe-chua-giam-het-so.mp3",
+      "say": "Dừng xe nhưng không giảm hết số."
+    },
+    {
+      "audio": "road/phanh-rung-giat.mp3",
+      "say": "Thao tác phanh dừng xe bị rung giật mạnh."
+    },
+    {
+      "audio": "road/khong-dung-phanh-do.mp3",
+      "say": "Khi dừng xe, không sử dụng phanh đỗ."
+    },
+    {
+      "audio": "road/vao-le-choang-lai.mp3",
+      "say": "Chuyển hướng vào lề nhưng xe bị choạng lái."
+    },
+    {
+      "audio": "road/khong-dung-xe.mp3",
+      "say": "Không dừng xe."
+    },
+    {
+      "audio": "road/khong-dat-canh-bao.mp3",
+      "say": "Không đặt cảnh báo."
+    },
+    {
+      "audio": "road/khong-xi-nhan-nhap-duong.mp3",
+      "say": "Không bật xi nhan khi nhập từ đường nhánh ra đường chính."
+    },
+    {
+      "audio": "road/khong-giam-toc-do.mp3",
+      "say": "Không giảm tốc độ."
+    },
+    {
+      "audio": "road/khong-nhuong-duong-uu-tien.mp3",
+      "say": "Không nhường đường cho xe trên đường ưu tiên."
+    },
+    {
+      "audio": "road/dung-qua-vach.mp3",
+      "say": "Dừng xe quá vạch dừng quy định."
+    },
+    {
+      "audio": "road/khong-xi-nhan-khi-re.mp3",
+      "say": "Không bật đèn xi nhan khi rẽ trái hoặc rẽ phải."
+    },
+    {
+      "audio": "road/vuot-den-do.mp3",
+      "say": "Đi qua ngã tư khi đèn tín hiệu màu đỏ."
+    },
+    {
+      "audio": "road/khong-giam-so-giam-toc-ket-thuc.mp3",
+      "say": "Không giảm số, giảm tốc độ."
+    },
+    {
+      "audio": "road/dung-cach-le-xa.mp3",
+      "say": "Dừng xe cách lề đường quá không phẩy hai lăm mét."
+    },
+    {
+      "audio": "road/khong-bat-xi-nhan.mp3",
+      "say": "Không bật xi nhan."
+    },
+    {
+      "audio": "road/diem-0.mp3",
+      "say": "không điểm."
+    },
+    {
+      "audio": "road/diem-1.mp3",
+      "say": "một điểm."
+    },
+    {
+      "audio": "road/diem-2.mp3",
+      "say": "hai điểm."
+    },
+    {
+      "audio": "road/diem-3.mp3",
+      "say": "ba điểm."
+    },
+    {
+      "audio": "road/diem-4.mp3",
+      "say": "bốn điểm."
+    },
+    {
+      "audio": "road/diem-5.mp3",
+      "say": "năm điểm."
+    },
+    {
+      "audio": "road/diem-6.mp3",
+      "say": "sáu điểm."
+    },
+    {
+      "audio": "road/diem-7.mp3",
+      "say": "bảy điểm."
+    },
+    {
+      "audio": "road/diem-8.mp3",
+      "say": "tám điểm."
+    },
+    {
+      "audio": "road/diem-9.mp3",
+      "say": "chín điểm."
+    },
+    {
+      "audio": "road/diem-10.mp3",
+      "say": "mười điểm."
+    },
+    {
+      "audio": "road/diem-11.mp3",
+      "say": "mười một điểm."
+    },
+    {
+      "audio": "road/diem-12.mp3",
+      "say": "mười hai điểm."
+    },
+    {
+      "audio": "road/diem-13.mp3",
+      "say": "mười ba điểm."
+    },
+    {
+      "audio": "road/diem-14.mp3",
+      "say": "mười bốn điểm."
+    },
+    {
+      "audio": "road/diem-15.mp3",
+      "say": "mười lăm điểm."
+    },
+    {
+      "audio": "road/diem-16.mp3",
+      "say": "mười sáu điểm."
+    },
+    {
+      "audio": "road/diem-17.mp3",
+      "say": "mười bảy điểm."
+    },
+    {
+      "audio": "road/diem-18.mp3",
+      "say": "mười tám điểm."
+    },
+    {
+      "audio": "road/diem-19.mp3",
+      "say": "mười chín điểm."
+    },
+    {
+      "audio": "road/diem-20.mp3",
+      "say": "hai mươi điểm."
+    },
+    {
+      "audio": "road/diem-21.mp3",
+      "say": "hai mươi mốt điểm."
+    },
+    {
+      "audio": "road/diem-22.mp3",
+      "say": "hai mươi hai điểm."
+    },
+    {
+      "audio": "road/diem-23.mp3",
+      "say": "hai mươi ba điểm."
+    },
+    {
+      "audio": "road/diem-24.mp3",
+      "say": "hai mươi tư điểm."
+    },
+    {
+      "audio": "road/diem-25.mp3",
+      "say": "hai mươi lăm điểm."
+    },
+    {
+      "audio": "road/diem-26.mp3",
+      "say": "hai mươi sáu điểm."
+    },
+    {
+      "audio": "road/diem-27.mp3",
+      "say": "hai mươi bảy điểm."
+    },
+    {
+      "audio": "road/diem-28.mp3",
+      "say": "hai mươi tám điểm."
+    },
+    {
+      "audio": "road/diem-29.mp3",
+      "say": "hai mươi chín điểm."
+    },
+    {
+      "audio": "road/diem-30.mp3",
+      "say": "ba mươi điểm."
+    },
+    {
+      "audio": "road/diem-31.mp3",
+      "say": "ba mươi mốt điểm."
+    },
+    {
+      "audio": "road/diem-32.mp3",
+      "say": "ba mươi hai điểm."
+    },
+    {
+      "audio": "road/diem-33.mp3",
+      "say": "ba mươi ba điểm."
+    },
+    {
+      "audio": "road/diem-34.mp3",
+      "say": "ba mươi tư điểm."
+    },
+    {
+      "audio": "road/diem-35.mp3",
+      "say": "ba mươi lăm điểm."
+    },
+    {
+      "audio": "road/diem-36.mp3",
+      "say": "ba mươi sáu điểm."
+    },
+    {
+      "audio": "road/diem-37.mp3",
+      "say": "ba mươi bảy điểm."
+    },
+    {
+      "audio": "road/diem-38.mp3",
+      "say": "ba mươi tám điểm."
+    },
+    {
+      "audio": "road/diem-39.mp3",
+      "say": "ba mươi chín điểm."
+    },
+    {
+      "audio": "road/diem-40.mp3",
+      "say": "bốn mươi điểm."
+    },
+    {
+      "audio": "road/diem-41.mp3",
+      "say": "bốn mươi mốt điểm."
+    },
+    {
+      "audio": "road/diem-42.mp3",
+      "say": "bốn mươi hai điểm."
+    },
+    {
+      "audio": "road/diem-43.mp3",
+      "say": "bốn mươi ba điểm."
+    },
+    {
+      "audio": "road/diem-44.mp3",
+      "say": "bốn mươi tư điểm."
+    },
+    {
+      "audio": "road/diem-45.mp3",
+      "say": "bốn mươi lăm điểm."
+    },
+    {
+      "audio": "road/diem-46.mp3",
+      "say": "bốn mươi sáu điểm."
+    },
+    {
+      "audio": "road/diem-47.mp3",
+      "say": "bốn mươi bảy điểm."
+    },
+    {
+      "audio": "road/diem-48.mp3",
+      "say": "bốn mươi tám điểm."
+    },
+    {
+      "audio": "road/diem-49.mp3",
+      "say": "bốn mươi chín điểm."
+    },
+    {
+      "audio": "road/diem-50.mp3",
+      "say": "năm mươi điểm."
+    },
+    {
+      "audio": "road/diem-51.mp3",
+      "say": "năm mươi mốt điểm."
+    },
+    {
+      "audio": "road/diem-52.mp3",
+      "say": "năm mươi hai điểm."
+    },
+    {
+      "audio": "road/diem-53.mp3",
+      "say": "năm mươi ba điểm."
+    },
+    {
+      "audio": "road/diem-54.mp3",
+      "say": "năm mươi tư điểm."
+    },
+    {
+      "audio": "road/diem-55.mp3",
+      "say": "năm mươi lăm điểm."
+    },
+    {
+      "audio": "road/diem-56.mp3",
+      "say": "năm mươi sáu điểm."
+    },
+    {
+      "audio": "road/diem-57.mp3",
+      "say": "năm mươi bảy điểm."
+    },
+    {
+      "audio": "road/diem-58.mp3",
+      "say": "năm mươi tám điểm."
+    },
+    {
+      "audio": "road/diem-59.mp3",
+      "say": "năm mươi chín điểm."
+    },
+    {
+      "audio": "road/diem-60.mp3",
+      "say": "sáu mươi điểm."
+    },
+    {
+      "audio": "road/diem-61.mp3",
+      "say": "sáu mươi mốt điểm."
+    },
+    {
+      "audio": "road/diem-62.mp3",
+      "say": "sáu mươi hai điểm."
+    },
+    {
+      "audio": "road/diem-63.mp3",
+      "say": "sáu mươi ba điểm."
+    },
+    {
+      "audio": "road/diem-64.mp3",
+      "say": "sáu mươi tư điểm."
+    },
+    {
+      "audio": "road/diem-65.mp3",
+      "say": "sáu mươi lăm điểm."
+    },
+    {
+      "audio": "road/diem-66.mp3",
+      "say": "sáu mươi sáu điểm."
+    },
+    {
+      "audio": "road/diem-67.mp3",
+      "say": "sáu mươi bảy điểm."
+    },
+    {
+      "audio": "road/diem-68.mp3",
+      "say": "sáu mươi tám điểm."
+    },
+    {
+      "audio": "road/diem-69.mp3",
+      "say": "sáu mươi chín điểm."
+    },
+    {
+      "audio": "road/diem-70.mp3",
+      "say": "bảy mươi điểm."
+    },
+    {
+      "audio": "road/diem-71.mp3",
+      "say": "bảy mươi mốt điểm."
+    },
+    {
+      "audio": "road/diem-72.mp3",
+      "say": "bảy mươi hai điểm."
+    },
+    {
+      "audio": "road/diem-73.mp3",
+      "say": "bảy mươi ba điểm."
+    },
+    {
+      "audio": "road/diem-74.mp3",
+      "say": "bảy mươi tư điểm."
+    },
+    {
+      "audio": "road/diem-75.mp3",
+      "say": "bảy mươi lăm điểm."
+    },
+    {
+      "audio": "road/diem-76.mp3",
+      "say": "bảy mươi sáu điểm."
+    },
+    {
+      "audio": "road/diem-77.mp3",
+      "say": "bảy mươi bảy điểm."
+    },
+    {
+      "audio": "road/diem-78.mp3",
+      "say": "bảy mươi tám điểm."
+    },
+    {
+      "audio": "road/diem-79.mp3",
+      "say": "bảy mươi chín điểm."
+    },
+    {
+      "audio": "road/diem-80.mp3",
+      "say": "tám mươi điểm."
+    },
+    {
+      "audio": "road/diem-81.mp3",
+      "say": "tám mươi mốt điểm."
+    },
+    {
+      "audio": "road/diem-82.mp3",
+      "say": "tám mươi hai điểm."
+    },
+    {
+      "audio": "road/diem-83.mp3",
+      "say": "tám mươi ba điểm."
+    },
+    {
+      "audio": "road/diem-84.mp3",
+      "say": "tám mươi tư điểm."
+    },
+    {
+      "audio": "road/diem-85.mp3",
+      "say": "tám mươi lăm điểm."
+    },
+    {
+      "audio": "road/diem-86.mp3",
+      "say": "tám mươi sáu điểm."
+    },
+    {
+      "audio": "road/diem-87.mp3",
+      "say": "tám mươi bảy điểm."
+    },
+    {
+      "audio": "road/diem-88.mp3",
+      "say": "tám mươi tám điểm."
+    },
+    {
+      "audio": "road/diem-89.mp3",
+      "say": "tám mươi chín điểm."
+    },
+    {
+      "audio": "road/diem-90.mp3",
+      "say": "chín mươi điểm."
+    },
+    {
+      "audio": "road/diem-91.mp3",
+      "say": "chín mươi mốt điểm."
+    },
+    {
+      "audio": "road/diem-92.mp3",
+      "say": "chín mươi hai điểm."
+    },
+    {
+      "audio": "road/diem-93.mp3",
+      "say": "chín mươi ba điểm."
+    },
+    {
+      "audio": "road/diem-94.mp3",
+      "say": "chín mươi tư điểm."
+    },
+    {
+      "audio": "road/diem-95.mp3",
+      "say": "chín mươi lăm điểm."
+    },
+    {
+      "audio": "road/diem-96.mp3",
+      "say": "chín mươi sáu điểm."
+    },
+    {
+      "audio": "road/diem-97.mp3",
+      "say": "chín mươi bảy điểm."
+    },
+    {
+      "audio": "road/diem-98.mp3",
+      "say": "chín mươi tám điểm."
+    },
+    {
+      "audio": "road/diem-99.mp3",
+      "say": "chín mươi chín điểm."
+    },
+    {
+      "audio": "road/diem-100.mp3",
+      "say": "một trăm điểm."
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sat-hach-trainer-v51';
+const CACHE_NAME = 'sat-hach-trainer-v59';
 const APP_SHELL = [
   './',
   './index.html',
@@ -26,10 +26,15 @@ const APP_SHELL = [
   './js/theory-pools.js',
   './js/theory-ui.js',
   './js/theory-progress.js',
+  './js/road-scoring.js',
+  './js/road-history.js',
+  './js/road-ui.js',
+  './js/sa-hinh-score.js',
   './manifest.webmanifest',
   './content/stations.json',
   './content/standard-set.json',
-  './content/soundboard.json',
+  './content/rules/duong-truong-tt12.json',
+  './content/rules/duong-truong-tt108.json',
   './content/sa-hinh-loi.json',
   './content/sa-hinh-thong-bao.json',
   './content/theory/questions.json',
@@ -44,12 +49,20 @@ self.addEventListener('install', (event) => {
       const cache = await caches.open(CACHE_NAME);
       await cache.addAll(APP_SHELL);
       const stations = await (await fetch('./content/stations.json')).json();
-      const soundboard = await (await fetch('./content/soundboard.json')).json();
+      const roadRules = await Promise.all(
+        ['tt12', 'tt108'].map(async (n) => (await fetch(`./content/rules/duong-truong-${n}.json`)).json()),
+      );
       const errors = await (await fetch('./content/sa-hinh-loi.json')).json();
       const notices = await (await fetch('./content/sa-hinh-thong-bao.json')).json();
       const audioFiles = new Set([
         ...stations.flatMap((s) => [s.audio, s.cue]),
-        ...soundboard.map((k) => k.audio),
+        ...roadRules.flatMap((r) => [
+          ...r.exercises.map((e) => e.commandAudio),
+          ...r.errors.map((e) => e.audio),
+          ...Object.values(r.notices),
+        ]),
+        // Đọc điểm cuối buổi đường trường: road/diem-0.mp3 … road/diem-100.mp3.
+        ...Array.from({ length: 101 }, (_, n) => `road/diem-${n}.mp3`),
         ...errors.map((k) => k.audio),
         ...notices.map((k) => k.audio),
         'tut.mp3', // phím Tút của bảng sa hình

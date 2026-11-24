@@ -18,6 +18,19 @@ Mở địa chỉ server báo ra (vd `http://localhost:8080`).
 
     node --test test/
 
+## Đường trường: chấm điểm theo quy định (2026-11-24)
+
+Bàn chấm điểm cho người ngồi ghế phụ, hai bộ quy định chọn theo ngày thi:
+- **TT 12/2025/TT-BCA, Phụ lục IV mục C.II** (4 bài, ≥ 2 km), áp dụng đến hết 28/02/2027
+  (Điều 41 khoản 6 TT 108/2026).
+- **TT 108/2026/TT-BCA, Phụ lục III mục B.4** (12 bài, ≥ 5 km), áp dụng từ 01/3/2027; lỗi nào
+  thiết bị tự bắt theo **QCVN 15:2026/BCA §2.3.5**.
+
+Dữ liệu: `content/rules/duong-truong-tt12.json`, `duong-truong-tt108.json`. Mọi câu lỗi là nguyên
+văn văn bản (đã đối chiếu tự động, xem `docs/work-log.md` ngày 2026-11-24). Văn bản gốc lưu ở
+`docs/research/nguon/`, phân tích và các điểm chưa rõ ở `docs/research/2026-11-24-tt108-phu-luc-iii.md`.
+Chỗ văn bản chưa rõ, app ghi "Chưa có hướng dẫn chính thức" kèm cách đang chấm.
+
 ## Audio
 
 ### Bảng Đường trường (2026-11-12)

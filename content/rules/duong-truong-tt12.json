@@ -1,0 +1,322 @@
+{
+  "id": "tt12-2025",
+  "document": "Thông tư 12/2025/TT-BCA",
+  "scope": "Phụ lục IV, mục C.II: sát hạch thực hành lái xe trên đường",
+  "turnRuleNote": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài.",
+  "citationBase": "Thông tư 12/2025/TT-BCA, Phụ lục IV, mục C.II (giữ hiệu lực đến hết 28/02/2027 theo Điều 41 khoản 6 Thông tư 108/2026/TT-BCA)",
+  "validFrom": null,
+  "validTo": "2027-02-28",
+  "startScore": 100,
+  "passMark": 80,
+  "minDistanceKm": 2,
+  "exercises": [
+    {
+      "id": "xuat-phat",
+      "name": "Xuất phát",
+      "label": "Xuất phát",
+      "position": "first",
+      "conditional": false,
+      "commandAudio": "road/lenh-xuat-phat.mp3",
+      "commandSay": "Xuất phát.",
+      "watch": "Thắt dây an toàn. Có lệnh thì bật xi nhan trái, nhả hết phanh tay, qua vạch trong 30 giây, trong 15 m lên số 3.",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.a",
+      "errors": [
+        "xp-day-an-toan",
+        "xp-xi-nhan-trai",
+        "xp-phanh-tay",
+        "xp-15m-so-3",
+        "xp-qua-30-giay"
+      ]
+    },
+    {
+      "id": "tang-so",
+      "name": "Tăng số, tăng tốc độ",
+      "label": "Tăng số, tăng tốc độ",
+      "position": "any",
+      "conditional": false,
+      "commandAudio": "road/lenh-tang-so-tang-toc-do.mp3",
+      "commandSay": "Tăng số, tăng tốc độ.",
+      "watch": "Trong 100 m tăng lên 1 số và tăng tốc độ thêm ít nhất 5 km/h.",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.b",
+      "errors": [
+        "ts-100m"
+      ]
+    },
+    {
+      "id": "giam-so",
+      "name": "Giảm số, giảm tốc độ",
+      "label": "Giảm số, giảm tốc độ",
+      "position": "any",
+      "conditional": false,
+      "commandAudio": "road/lenh-giam-so-giam-toc-do.mp3",
+      "commandSay": "Giảm số, giảm tốc độ.",
+      "watch": "Trong 100 m giảm xuống 1 số và giảm tốc độ ít nhất 5 km/h.",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.c",
+      "errors": [
+        "gs-100m"
+      ]
+    },
+    {
+      "id": "ket-thuc",
+      "name": "Kết thúc",
+      "label": "Kết thúc",
+      "position": "last",
+      "conditional": false,
+      "commandAudio": "road/lenh-ket-thuc.mp3",
+      "commandSay": "Kết thúc.",
+      "watch": "Trong 5 m bật xi nhan phải, dừng sát lề phải, về số không (xe tự động: P), kéo phanh tay.",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.d",
+      "errors": [
+        "kt-xi-nhan-phai",
+        "kt-ve-so",
+        "kt-phanh-tay"
+      ]
+    }
+  ],
+  "commonErrors": [
+    "rung-giat",
+    "chet-may",
+    "qua-4000",
+    "so-3-duoi-20",
+    "vi-pham-qtgt",
+    "hieu-lenh",
+    "tai-nan",
+    "choang-lai"
+  ],
+  "errors": [
+    {
+      "id": "xp-day-an-toan",
+      "label": "Không thắt dây an toàn",
+      "official": "Không thắt dây an toàn, bị trừ 05 điểm",
+      "points": 5,
+      "suspend": false,
+      "perOccurrence": false,
+      "detectedBy": "device",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.a, lỗi 1",
+      "audio": "road/khong-that-day-an-toan.mp3",
+      "say": "Không thắt dây an toàn."
+    },
+    {
+      "id": "xp-xi-nhan-trai",
+      "label": "Không bật xi nhan trái khi xuất phát",
+      "official": "Không bật đèn xi nhan trái khi xuất phát, bị trừ 05 điểm",
+      "points": 5,
+      "suspend": false,
+      "perOccurrence": false,
+      "detectedBy": "device",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.a, lỗi 2",
+      "audio": "road/khong-bat-xi-nhan-trai-xuat-phat.mp3",
+      "say": "Không bật đèn xi nhan trái khi xuất phát."
+    },
+    {
+      "id": "xp-phanh-tay",
+      "label": "Không nhả hết phanh tay",
+      "official": "Không nhả hết phanh tay khi khởi hành, bị trừ 05 điểm",
+      "points": 5,
+      "suspend": false,
+      "perOccurrence": false,
+      "detectedBy": "device",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.a, lỗi 3",
+      "audio": "road/khong-nha-het-phanh-tay.mp3",
+      "say": "Không nhả hết phanh tay khi khởi hành."
+    },
+    {
+      "id": "xp-15m-so-3",
+      "label": "15 m chưa lên số 3",
+      "official": "Trong khoảng 15 m không tăng từ số 1 lên số 3, bị trừ 05 điểm",
+      "points": 5,
+      "suspend": false,
+      "perOccurrence": false,
+      "detectedBy": "device",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.a, lỗi 4",
+      "audio": "road/khong-tang-len-so-3.mp3",
+      "say": "Trong khoảng mười lăm mét không tăng từ số một lên số ba.",
+      "note": "Chưa có hướng dẫn chính thức: văn bản viết cho xe số sàn, chưa nói cách chấm xe số tự động và xe điện.",
+      "noteFor": "auto",
+      "manualGearboxOnly": true
+    },
+    {
+      "id": "xp-qua-30-giay",
+      "label": "Quá 30 giây chưa xuất phát",
+      "official": "Quá 30 giây kể từ khi có lệnh xuất phát, chưa khởi hành xe qua vị trí xuất phát, bị đình chỉ sát hạch",
+      "points": null,
+      "suspend": true,
+      "perOccurrence": false,
+      "detectedBy": "device",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.a, lỗi 5",
+      "audio": "road/qua-30-giay-chua-xuat-phat.mp3",
+      "say": "Quá ba mươi giây chưa khởi hành xe qua vị trí xuất phát."
+    },
+    {
+      "id": "ts-100m",
+      "label": "100 m chưa tăng số, tốc độ",
+      "official": "Trong khoảng 100 m không tăng được số, tốc độ bị trừ 05 điểm",
+      "points": 5,
+      "suspend": false,
+      "perOccurrence": false,
+      "detectedBy": "device",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.b, lỗi 1",
+      "audio": "road/khong-tang-so-tang-toc.mp3",
+      "say": "Trong khoảng một trăm mét không tăng được số, tốc độ.",
+      "note": "Chưa có hướng dẫn chính thức: văn bản viết cho xe số sàn, chưa nói cách chấm xe số tự động và xe điện.",
+      "noteFor": "auto",
+      "manualGearboxOnly": true
+    },
+    {
+      "id": "gs-100m",
+      "label": "100 m chưa giảm số, tốc độ",
+      "official": "Trong khoảng 100 m không giảm được số, tốc độ, bị trừ 05 điểm",
+      "points": 5,
+      "suspend": false,
+      "perOccurrence": false,
+      "detectedBy": "device",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.c, lỗi 1",
+      "audio": "road/khong-giam-so-giam-toc.mp3",
+      "say": "Trong khoảng một trăm mét không giảm được số, tốc độ.",
+      "note": "Chưa có hướng dẫn chính thức: văn bản viết cho xe số sàn, chưa nói cách chấm xe số tự động và xe điện.",
+      "noteFor": "auto",
+      "manualGearboxOnly": true
+    },
+    {
+      "id": "kt-xi-nhan-phai",
+      "label": "Không bật xi nhan phải",
+      "official": "Không bật đèn xi nhan phải, bị trừ 05 điểm",
+      "points": 5,
+      "suspend": false,
+      "perOccurrence": false,
+      "detectedBy": "device",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.d, lỗi 1",
+      "audio": "road/khong-bat-xi-nhan-phai.mp3",
+      "say": "Không bật đèn xi nhan phải."
+    },
+    {
+      "id": "kt-ve-so",
+      "label": "Dừng xe chưa về số không / P",
+      "official": "Khi xe dừng hẳn, không về được số \"không\" (đối với xe số sàn), số \"P\" (đối với xe chuyển số tự động (bao gồm cả xe ô tô điện)), bị trừ 05 điểm",
+      "points": 5,
+      "suspend": false,
+      "perOccurrence": false,
+      "detectedBy": "device",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.d, lỗi 2",
+      "audio": "road/chua-ve-so-khong.mp3",
+      "say": "Khi xe dừng hẳn, không về được số không hoặc số P."
+    },
+    {
+      "id": "kt-phanh-tay",
+      "label": "Không kéo phanh tay khi dừng",
+      "official": "Không kéo phanh tay khi xe dừng hẳn, bị trừ 05 điểm",
+      "points": 5,
+      "suspend": false,
+      "perOccurrence": false,
+      "detectedBy": "device",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.d, lỗi 3",
+      "audio": "road/khong-keo-phanh-tay.mp3",
+      "say": "Không kéo phanh tay khi xe dừng hẳn."
+    },
+    {
+      "id": "rung-giat",
+      "label": "Xe rung giật mạnh",
+      "official": "Xe bị rung giật mạnh, bị trừ 05 điểm",
+      "points": 5,
+      "suspend": false,
+      "perOccurrence": false,
+      "detectedBy": "examiner",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2, mọi bài",
+      "audio": "road/xe-rung-giat-manh.mp3",
+      "say": "Xe bị rung giật mạnh."
+    },
+    {
+      "id": "chet-may",
+      "label": "Xe chết máy",
+      "official": "Lái xe bị chết máy, mỗi lần bị trừ 05 điểm",
+      "points": 5,
+      "suspend": false,
+      "perOccurrence": true,
+      "detectedBy": "device",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2, mọi bài",
+      "audio": "road/xe-chet-may.mp3",
+      "say": "Xe bị chết máy."
+    },
+    {
+      "id": "qua-4000",
+      "label": "Quá 4000 vòng/phút",
+      "official": "Để tốc độ động cơ quá 4000 vòng/phút, mỗi lần bị trừ 05 điểm",
+      "points": 5,
+      "suspend": false,
+      "perOccurrence": true,
+      "detectedBy": "device",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2, mọi bài",
+      "audio": "road/qua-4000-vong.mp3",
+      "say": "Tốc độ động cơ quá bốn nghìn vòng một phút."
+    },
+    {
+      "id": "so-3-duoi-20",
+      "label": "Số 3 trở lên khi dưới 20 km/h (mỗi 3 giây)",
+      "official": "Sử dụng từ tay số 3 trở lên khi tốc độ xe chạy dưới 20 km/h, cứ 03 giây trừ 02 điểm",
+      "points": 2,
+      "suspend": false,
+      "perOccurrence": true,
+      "detectedBy": "device",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2, mọi bài",
+      "audio": "road/so-cao-toc-do-thap.mp3",
+      "say": "Sử dụng từ tay số ba trở lên khi tốc độ dưới hai mươi ki lô mét một giờ.",
+      "note": "Bấm một lần cho mỗi 3 giây vi phạm. Chưa có hướng dẫn chính thức: văn bản viết cho xe số sàn, chưa nói cách chấm xe số tự động và xe điện.",
+      "noteFor": "auto",
+      "manualGearboxOnly": true
+    },
+    {
+      "id": "vi-pham-qtgt",
+      "label": "Vi phạm quy tắc giao thông",
+      "official": "Vi phạm quy tắc giao thông đường bộ, bị trừ 10 điểm",
+      "points": 10,
+      "suspend": false,
+      "perOccurrence": false,
+      "detectedBy": "examiner",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2, mọi bài",
+      "audio": "road/vi-pham-quy-tac-giao-thong.mp3",
+      "say": "Vi phạm quy tắc giao thông đường bộ."
+    },
+    {
+      "id": "hieu-lenh",
+      "label": "Không theo hiệu lệnh sát hạch viên",
+      "official": "Không thực hiện theo hiệu lệnh của sát hạch viên, bị đình chỉ sát hạch",
+      "points": null,
+      "suspend": true,
+      "perOccurrence": false,
+      "detectedBy": "examiner",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2, mọi bài",
+      "audio": "road/khong-theo-hieu-lenh.mp3",
+      "say": "Không thực hiện theo hiệu lệnh của sát hạch viên."
+    },
+    {
+      "id": "tai-nan",
+      "label": "Xử lý tình huống gây tai nạn",
+      "official": "Xử lý tình huống không hợp lý gây tai nạn, bị đình chỉ sát hạch",
+      "points": null,
+      "suspend": true,
+      "perOccurrence": false,
+      "detectedBy": "examiner",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2, mọi bài",
+      "audio": "road/xu-ly-gay-tai-nan.mp3",
+      "say": "Xử lý tình huống không hợp lý gây tai nạn."
+    },
+    {
+      "id": "choang-lai",
+      "label": "Choạng lái quá làn khi đổi số",
+      "official": "Khi tăng hoặc giảm số, xe bị choạng lái quá làn đường quy định, bị đình chỉ sát hạch",
+      "points": null,
+      "suspend": true,
+      "perOccurrence": false,
+      "detectedBy": "examiner",
+      "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2, mọi bài",
+      "audio": "road/choang-lai-qua-lan.mp3",
+      "say": "Khi tăng hoặc giảm số, xe bị choạng lái quá làn đường quy định."
+    }
+  ],
+  "notices": {
+    "suspended": "road/thong-bao-dinh-chi.mp3",
+    "failed": "road/thong-bao-khong-dat.mp3",
+    "passed": "road/thong-bao-dat.mp3",
+    "startTimeout": "road/thong-bao-qua-30-giay.mp3"
+  }
+}
