@@ -87,7 +87,6 @@ const VIEWS = [
   'duong-truong-ket-qua',
   'duong-truong-lich-su',
   'huong-dan-dt',
-  'gioi-thieu',
   'theory-menu',
   'theory-exam',
   'theory-result',
@@ -391,7 +390,6 @@ async function main() {
   document.getElementById('btn-sa-hinh').addEventListener('click', () => showView('sa-hinh-menu'));
   document.getElementById('btn-bo-tu-ghep').addEventListener('click', () => showView('bo-tu-ghep'));
   document.getElementById('btn-huong-dan-dt').addEventListener('click', () => showView('huong-dan-dt'));
-  document.getElementById('btn-gioi-thieu').addEventListener('click', () => showView('gioi-thieu'));
   document.getElementById('btn-ly-thuyet').addEventListener('click', () => showView('theory-menu'));
   document.querySelectorAll('.btn-back').forEach((b) =>
     b.addEventListener('click', () => {

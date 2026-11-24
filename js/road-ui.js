@@ -163,41 +163,16 @@ export function renderRulesGuide(container, ruleSets, today) {
     panels.forEach((p, i) => (p.hidden = i !== index));
     [...tabs.children].forEach((t, i) => t.setAttribute('aria-selected', String(i === index)));
   };
-  container.append(tabs, ...panels);
+  container.append(
+    tabs,
+    ...panels,
+    el('p', 'rd-muted', `${DISCLAIMER} Ứng dụng không thu thập dữ liệu; mọi thứ lưu trên máy của bạn. Cập nhật theo văn bản ngày 2026-11-24.`),
+  );
   select(ruleSets.indexOf(current));
-}
-
-export function renderAbout(container, ruleSets) {
-  container.replaceChildren();
-  container.append(
-    el('p', 'guide-lead', 'Sát Hạch Trainer giúp học viên tập sa hình, đường trường và lý thuyết như thi thật. Ứng dụng dùng miễn phí.'),
-    el('h3', null, 'Quy định đang dùng cho đường trường'),
-  );
-  const list = el('ul', 'guide-steps');
-  ruleSets.forEach((r) => list.append(el('li', null, `${r.citationBase}.`)));
-  list.append(el('li', null, 'QCVN 15:2026/BCA §2.3.5: lỗi nào thiết bị trên xe tự bắt, lỗi nào sát hạch viên bấm.'));
-  container.append(
-    list,
-    el('p', 'rd-muted', 'Cập nhật theo văn bản ngày 2026-11-24. Chỗ văn bản chưa rõ được ghi "Chưa có hướng dẫn chính thức" và giải thích cách app đang chấm.'),
-    el('h3', null, 'Lưu ý'),
-    el('p', null, DISCLAIMER),
-    el('p', null, 'Ứng dụng không thu thập dữ liệu; mọi thứ lưu trên máy của bạn.'),
-    el('h3', null, 'Góp ý, báo lỗi'),
-  );
-  const links = el('p', 'brand-links rd-about-links');
-  const zalo = el('a', null, 'Zalo');
-  zalo.href = 'https://zalo.me/0963281291';
-  zalo.target = '_blank';
-  zalo.rel = 'noopener';
-  const mail = el('a', null, 'Gmail');
-  mail.href = 'mailto:dinhvuong090997@gmail.com';
-  links.append(zalo, mail);
-  container.append(links);
 }
 
 export function initRoad({ ruleSets, showView, play, stop, storage }) {
   renderRulesGuide($('rd-guide'), ruleSets, localDate());
-  renderAbout($('rd-about'), ruleSets);
   const history = createHistoryStore(storage);
   let rules = null;
   let session = null;

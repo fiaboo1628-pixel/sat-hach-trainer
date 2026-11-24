@@ -718,12 +718,6 @@ body:has(#menu:not([hidden])) .site-header-inner {
   text-decoration: none;
 }
 
-.brand-mark {
-  display: block;
-  width: 2.8rem;
-  height: 2.8rem;
-  margin: 0 auto 0.4rem;
-}
 
 .brand-links {
   display: flex;
@@ -1234,8 +1228,7 @@ h2 {
 .rd-tabs button { margin: 0; flex: 1; }
 .rd-tabs button[aria-selected="true"] { background: var(--blue); color: #fff; --edge: var(--blue-edge); }
 .rd-guide-panel h3 { margin: 1.1rem 0 0.4rem; }
-.brand-about { display: block; margin: 0.4rem auto 0; font-size: 0.85rem; }
-.rd-about-links { justify-content: flex-start; }
+.brand-guide { display: block; margin: 0.6rem auto 0; }
 /* Trên bàn chấm điểm, kéo xuống không được tải lại trang (mất buổi thi đang chấm). */
 html:has(#view-duong-truong:not([hidden])) { overscroll-behavior-y: contain; }
 /* Dòng lỗi gọn: chỉ tên lỗi, chạm để mở nguyên văn và trích dẫn. */
