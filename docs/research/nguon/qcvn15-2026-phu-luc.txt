@@ -1,0 +1,706 @@
+                                                       QCVN 15:2026/BCA
+                                Phụ lục
+      MÔ TẢ YÊU CẦU KỸ THUẬT VÀ TRAO ĐỔI DỮ LIỆU GIỮA
+      CÁC HỆ THỐNG PHỤC VỤ GIÁM SÁT SÁT HẠCH LÁI XE
+
+ 1. Mô hình kết nối và nguyên tắc truyền nhận dữ liệu
+
+ 1.1. Các thành phần tham gia kết nối
+
+STT       Thành phần                        Vai trò chính
+
+                            Quản lý hệ thống giám sát sát hạch cấp
+                            trung ương; cấp quyền, công bố thông tin kết
+         Cục Cảnh sát
+ 1                          nối, tiếp nhận dữ liệu giám sát, ghi nhận
+          giao thông
+                            trạng thái truyền nhận và phục vụ công tác
+                            tổng hợp, báo cáo.
+
+                          Quản lý máy chủ giám sát sát hạch tại trung
+                          tâm; tiếp nhận dữ liệu đầu vào kỳ sát hạch;
+       Trung tâm sát hạch
+ 2                        truyền dữ liệu điểm danh, quá trình sát hạch,
+          lái xe (TTSH)
+                          kết quả sát hạch và dữ liệu đối soát về Cục
+                          Cảnh sát giao thông.
+
+                        Tiếp nhận dữ liệu kỳ sát hạch, danh sách
+      Phần mềm sát hạch học viên, danh sách hội đồng; ghi nhận dữ
+ 3
+           lý thuyết    liệu điểm danh, quá trình và kết quả sát hạch
+                        lý thuyết.
+
+                        Tiếp nhận dữ liệu kỳ sát hạch, danh sách
+      Phần mềm sát hạch
+ 4                      học viên, danh sách hội đồng; ghi nhận dữ
+          trong hình
+                        liệu quá trình và kết quả sát hạch trong hình.
+
+                        Tiếp nhận dữ liệu kỳ sát hạch, danh sách
+      Phần mềm sát hạch học viên, danh sách hội đồng; ghi nhận dữ
+ 5
+         trên đường     liệu quá trình, kết quả sát hạch trên đường
+                        và dữ liệu hành trình/GPS theo quy định.
+
+     1.2. Nguyên tắc truyền nhận dữ liệu
+    Dữ liệu truyền nhận giữa các hệ thống phải sử dụng API theo cơ chế
+yêu cầu và phản hồi, định dạng dữ liệu JSON, mã hóa ký tự Unicode UTF-8.
+     Việc kết nối, truyền nhận dữ liệu phải thực hiện qua giao thức truyền
+siêu văn bản bảo mật (HyperText Transfer Protocol Secure - HTTPS) và
+kênh truyền bảo mật được Cục Cảnh sát giao thông chấp thuận.
+QCVN 15:2026/BCA
+      Các hệ thống phải kiểm tra trạng thái xác thực, đồng bộ thời gian,
+trạng thái tiếp nhận của hệ thống đích và tính hợp lệ của dữ liệu trước
+khi truyền.
+     Mỗi giao dịch truyền dữ liệu phải có mã giao dịch hoặc cơ chế định
+danh tương đương để phục vụ kiểm soát trùng lặp, truyền lại, truy vết và
+đối soát.
+     Dữ liệu phải được truyền kịp thời theo từng mốc nghiệp vụ; trường
+hợp truyền theo lô phải kiểm soát kích thước, số lượng bản ghi và trạng
+thái xử lý từng bản ghi trong lô.
+    Không được tự ý chỉnh sửa, can thiệp hoặc làm sai lệch dữ liệu
+trước, trong và sau quá trình truyền nhận.
+
+    2. Yêu cầu chung về kỹ thuật kết nối và an ninh dữ liệu
+
+    2.1. Thông số kỹ thuật chung
+
+   Thông số                               Yêu cầu
+
+                    Hỗ trợ tích hợp, trao đổi dữ liệu giữa các hệ thống
+  Mô hình API
+                    qua API; dữ liệu truyền nhận dưới dạng JSON.
+
+                    Do Cục Cảnh sát giao thông công bố hoặc cung cấp
+Thông tin máy chủ
+                    cho các đơn vị được phép kết nối.
+
+                 Sử dụng giao thức HTTPS; kết nối truyền dữ liệu phải
+                 được mã hóa và xác thực bằng giao thức bảo mật
+Giao thức truyền
+                 đường truyền (Transport Layer Security – TLS) theo
+                 quy định của Bộ Công an về bảo đảm an ninh mạng.
+
+                    Dữ liệu truyền gửi đến hệ thống phải được đóng gói
+ Định dạng dữ       theo định dạng JSON. Trong phần tiêu đề (Header)
+   liệu gửi đi      của bản tin yêu cầu phải khai báo trường Content-
+                    Type với giá trị "application/json".
+
+                    Dữ liệu phản hồi từ hệ thống phải sử dụng định
+ Định dạng dữ       dạng JSON; trường chấp nhận (Accept) trong phần
+ liệu nhận về       Header của bản tin yêu cầu phải có giá trị
+                    "application/json".
+
+Tiêu chuẩn dữ liệu Hệ thống hỗ trợ dữ liệu chuẩn Unicode (UTF-8) (4).
+
+                    Sử dụng chuẩn thời gian UTC+7; các mốc thời gian
+  Tiêu chuẩn
+                    trong tài liệu API chi tiết phải thống nhất định dạng
+   thời gian
+                    hiển thị và múi giờ.
+
+                                    2
+                                                       QCVN 15:2026/BCA
+
+   Thông số                              Yêu cầu
+
+                    Thời gian chậm tối đa cho việc truyền dữ liệu là 30
+Độ trễ cho phép     phút, trừ trường hợp có quy định khác theo từng
+                    loại dữ liệu nghiệp vụ.
+
+                    1 MB
+Kích thước tối đa Đây là kích thước tối đa của một ảnh mà Cục Cảnh
+  của một ảnh     sát giao thông ghi nhận; ảnh có kích thước hợp lệ
+                  và được mã hoá Base64.
+
+Hết thời gian chờ Do cần thời gian kết nối và xử lý, thời gian timeout
+    (Timeout)     khuyến nghị khi gửi yêu cầu là khoảng 60 - 90 giây;
+  khuyến nghị     dữ liệu lớn cần chia nhỏ theo lô phù hợp.
+
+    Dữ liệu phản hồi về có định dạng chung như sau:
+
+   Tên trường                              Mô tả
+ Mã kết quả xử lý Mã lỗi (Giá trị 1 nếu yêu cầu (request) thành công)
+                    Thông tin chi tiết về lỗi (“Thành công” hoặc không có
+  Thông tin xử lý
+                    nếu request thành công)
+                    Dữ liệu trả về (tùy thuộc vào từng API mà có các dữ
+   Dữ liệu trả về
+                    liệu trả về khác nhau)
+Thông tin bổ sung Thông tin bổ sung (nếu có)
+                    Trường dữ liệu chứa thông tin về lỗi phát sinh trong
+                    quá trình xử lý, truyền nhận hoặc đồng bộ dữ liệu
+                    (nếu có), bao gồm mã lỗi và mô tả nguyên nhân lỗi,
+   Thông tin lỗi
+                    TTSH có trách nhiệm theo dõi, khai thác thông tin tại
+                    trường dữ liệu này để phục vụ công tác giám sát,
+                    phát hiện và xử lý sự cố.
+                     Trường dữ liệu chứa thông tin mô tả chi tiết về lỗi
+                     phát sinh (nếu có), bao gồm nguyên nhân lỗi và các
+  Mô tả chi tiết lỗi
+                     thông tin liên quan phục vụ việc xác định, xử lý và
+                     khắc phục sự cố của hệ thống.
+    2.2. Yêu cầu bảo mật kết nối
+    a) Bảo mật kênh truyền bằng HTTPS
+     Các máy chủ của TTSH tham gia quá trình truyền, phần mềm giám
+sát sát hạch Cục Cảnh sát giao thông phải sử dụng giao thức HTTPS
+nhằm bảo đảm mã hóa dữ liệu trong quá trình truyền nhận, xác thực
+
+                                    3
+QCVN 15:2026/BCA
+máy chủ và giảm thiểu nguy cơ lộ lọt, can thiệp hoặc thay đổi dữ liệu
+trên đường truyền.
+     b) Bảo mật bằng VPN IPSec (site - to - site)
+    - Mỗi một TTSH phải đăng ký danh sách IP có cơ chế kiểm soát truy
+cập qua VPN site - to - site với IP tĩnh tại Việt Nam với Cục Cảnh sát
+giao thông. Các IP không được đăng ký sẽ không truyền được dữ liệu.
+   - Khi có sự thay đổi, bổ sung IP thì TTSH phải thông báo cho Cục
+Cảnh sát giao thông.
+     c) Bảo mật JWT
+    Để đăng nhập và truyền dữ liệu được với phần mềm giám sát sát
+hạch Cục Cảnh sát giao thông, phương thức bảo mật là JWT (JSON
+Web Token).
+    - Người dùng đăng nhập với tên đăng nhập và mật khẩu của tài
+khoản truyền dữ liệu qua hàm đăng nhập (hướng dẫn ở mục 6.1).
+      - Máy chủ sẽ nhận được yêu cầu của người dùng, đồng thời kiểm
+tra thông tin tên đăng nhập và mật khẩu.
+    - Máy chủ sau khi kiểm tra thông tin người dùng, nếu đúng sẽ trả
+một JWT về cho người dùng, nếu không quay lại bước 1.
+    - Người dùng sẽ sử dụng mã JWT để tiếp tục sử dụng cho các yêu
+cầu kế tiếp trên miền của máy chủ.
+     - Máy chủ sẽ không cần phải kiểm tra lại thông tin người dùng mà
+chỉ cần kiểm tra đúng JWT đã được cấp từ đó tăng tốc độ sử dụng trên
+miền, giảm thời gian truy vấn.
+     - Máy chủ trả phản hồi phù hợp cho người dùng.
+     2.3. Đồng bộ thời gian
+     Các thiết bị, phần mềm và máy chủ tham gia quá trình sát hạch phải
+thực hiện đồng bộ thời gian theo giao thức đồng bộ thời gian (Network
+Time Protocol – NTP). Nguồn thời gian đồng bộ được lấy từ máy chủ
+thời gian được chỉ định của nhà cung cấp hoặc từ máy chủ giám sát sát
+hạch tại TTSH theo hướng dẫn của Cục Cảnh sát giao thông nhằm bảo
+đảm tính thống nhất, chính xác của dữ liệu và nhật ký hệ thống.
+
+     3. Cấu trúc phản hồi, mã lỗi và nguyên tắc xử lý lỗi
+
+     3.1. Bảng mã lỗi nghiệp vụ
+
+Mã             Ý nghĩa                   Hành động khuyến nghị
+
+ 1   Thành công                   Ghi nhận kết quả và tiếp tục quy trình
+                                  xử lý.
+                                    4
+                                                      QCVN 15:2026/BCA
+
+Mã            Ý nghĩa                   Hành động khuyến nghị
+
+ 0   Lỗi chung không xác định    Ghi log, kiểm tra lại yêu cầu và liên hệ
+                                 hỗ trợ kỹ thuật nếu lỗi kéo dài.
+
+-1   Lỗi xác thực – Token không Thực hiện đăng nhập lại để lấy token
+     hợp lệ hoặc đã hết hạn     mới.
+
+-2   Lỗi xác thực - tài khoản Liên hệ Cục Cảnh sát giao thông để
+     bị khóa                  kiểm tra và mở khóa tài khoản theo
+                              quy định.
+
+-3   Lỗi xác thực - sai tên đăng Kiểm tra lại thông tin đăng nhập.
+     nhập hoặc mật khẩu
+
+-4   Dữ liệu đầu vào không Kiểm tra cấu trúc dữ liệu và các
+     hợp lệ - thiếu dữ liệu bắt trường nghiệp vụ bắt buộc theo phụ
+     buộc hoặc sai định dạng    lục và tài liệu API chi tiết.
+
+-5   Dữ liệu trùng lặp - bản ghi Không truyền lặp; đối soát trạng thái
+     hoặc giao dịch đã tồn tại   tiếp nhận và ghi nhận là đã truyền
+                                 thành công nếu hệ thống đã tiếp nhận
+                                 trước đó.
+
+-6   Không tìm thấy dữ liệu Kiểm tra dữ liệu gốc và thực hiện đối
+     tham chiếu - mã kỳ sát soát với Cục Cảnh sát giao thông.
+     hạch, mã TTSH hoặc mã
+     học viên không tồn tại
+
+-7   IP không được phép kết Đăng ký hoặc cập nhật IP với Cục
+     nối - IP nguồn chưa được Cảnh sát giao thông theo quy định.
+     đăng ký
+
+-8   Hệ thống đang bận - chưa Kiểm tra trạng thái hệ thống, tạm dừng
+     thể tiếp nhận dữ liệu tại truyền và thực hiện lại ở chu kỳ tiếp
+     thời điểm hiện tại        theo.
+
+-9   Vượt quá giới hạn kích Kiểm tra kích thước ảnh, chia nhỏ lô
+     thước dữ liệu - ảnh hoặc dữ liệu hoặc giảm dung lượng theo
+     dữ liệu (Payload) vượt quy định.
+     mức cho phép
+
+
+                                   5
+QCVN 15:2026/BCA
+
+Mã             Ý nghĩa                     Hành động khuyến nghị
+
+-10 Lỗi đồng bộ thời gian - thời Đồng bộ lại thời gian theo chuẩn NTP
+    gian máy chủ TTSH lệch trước khi tiếp tục truyền dữ liệu.
+    quá ngưỡng cho phép
+
+-99 Lỗi nội bộ hệ thống phía Ghi log đầy đủ, thử lại sau và liên hệ
+    Cục Cảnh sát giao thông  hỗ trợ nếu lỗi kéo dài.
+
+      3.2. Nguyên tắc xử lý lỗi và truyền lại dữ liệu
+      - Hệ thống gửi phải ghi nhận đầy đủ mã lỗi, thông điệp lỗi, thời
+điểm lỗi, mã giao dịch, nội dung dữ liệu liên quan và trạng thái xử lý sau lỗi.
+      - Việc truyền lại chỉ thực hiện đối với các lỗi có khả năng phục hồi,
+như timeout, mất kết nối, hệ thống đang bận hoặc lỗi tạm thời phía hệ
+thống tiếp nhận.
+      - Khi truyền lại phải giữ nguyên mã giao dịch hoặc định danh
+giao dịch tương đương để bảo đảm truy vết và tránh phát sinh dữ liệu
+trùng lặp.
+      - Cơ chế truyền lại phải áp dụng khoảng thời gian chờ tăng dần,
+giới hạn số lần thử và không gây quá tải hệ thống tiếp nhận.
+      - Trường hợp hệ thống đã tiếp nhận một phần lô dữ liệu, hệ thống
+gửi chỉ được truyền lại các bản ghi lỗi hoặc chưa được tiếp nhận.
+      - Đối với lỗi dữ liệu không hợp lệ, lỗi thiếu dữ liệu bắt buộc hoặc lỗi
+tham chiếu, hệ thống gửi phải kiểm tra, hiệu chỉnh dữ liệu gốc theo đúng
+quy định trước khi truyền lại.
+
+     4. Quy trình trao đổi giám sát dữ liệu giữa phần mềm giám sát
+tại TTSH và hệ thống của Cục Cảnh sát giao thông
+
+     Bước 1. Đăng ký và cấp quyền truy cập
+     TTSH thực hiện đăng ký tài khoản truy cập với Cục Cảnh sát giao
+thông. Sau khi hoàn tất đăng ký và được phê duyệt, TTSH được cấp tài
+khoản (user) và mật khẩu (password) để thực hiện kết nối và truyền dữ
+liệu vào hệ thống.
+     Bước 2. Xác thực và cấp mã truy cập
+     Trước khi truyền dữ liệu, TTSH thực hiện kiểm tra thời gian máy
+chủ, trạng thái hiệu lực của Token và trạng thái sẵn sàng của hệ thống
+tiếp nhận. Trường hợp Token hết hạn thì đăng nhập lại; trường hợp thời
+gian sai lệch hoặc hệ thống đang bận thì phải khắc phục hoặc chờ đến
+chu kỳ tiếp theo.
+
+                                      6
+                                                       QCVN 15:2026/BCA
+    Bước 3. Khởi tạo và thực hiện truyền dữ liệu
+    TTSH khởi tạo quá trình truyền dữ liệu thông qua các tập lệnh API
+được mô tả kèm theo tài liệu này. Sau khi gửi dữ liệu, TTSH thực hiện
+kiểm tra mã phản hồi từ hệ thống tiếp nhận:
+    - Trường hợp mã trả về là thành công: dữ liệu đã được hệ thống
+Cục Cảnh sát giao thông tiếp nhận thành công.
+    - Trường hợp phát sinh lỗi: TTSH căn cứ thông báo lỗi kèm theo để
+xác định nguyên nhân và thực hiện khắc phục.
+    Bước 4. Kiểm tra trạng thái tiếp nhận dữ liệu
+     Trong quá trình truyền dữ liệu, TTSH thực hiện kiểm tra định kỳ
+trạng thái của hệ thống tiếp nhận:
+    - Trường hợp hệ thống trả về trạng thái bận: TTSH tạm dừng truyền
+và chờ đến chu kỳ kiểm tra tiếp theo.
+    - Chỉ khi hệ thống trả về trạng thái sẵn sàng tiếp nhận dữ liệu, TTSH
+mới được phép tiếp tục truyền dữ liệu.
+    Bước 5. Lặp lại truyền dữ liệu và giám sát lỗi
+     - TTSH thực hiện lặp lại bước 3 và bước 4 cho đến khi hoàn tất quá
+trình truyền dữ liệu. Đồng thời, TTSH phải có cơ chế cảnh báo những dữ
+liệu truyền lỗi và thực hiện kiểm tra toàn bộ các dữ liệu lỗi hàng ngày.
+Khắc phục kịp thời các lỗi phát sinh, tránh tình trạng lỗi kéo dài ảnh
+hưởng đến thí sinh và công tác tổng hợp, báo cáo của Cục Cảnh sát giao
+thông. Cục Cảnh sát giao thông thực hiện ghi nhận các lỗi này để đánh
+giá chất lượng kết nối, truyền dẫn và việc tuân thủ quy định của TTSH.
+     - Việc truyền lại chỉ thực hiện đối với lỗi có khả năng phục hồi như
+timeout, mất kết nối hoặc hệ thống bận. Khi truyền lại phải giữ nguyên
+mã giao dịch (TransactionCode), áp dụng khoảng thời gian chờ tăng dần
+và giới hạn số lần thử. Trường hợp hệ thống đã tiếp nhận một phần lô
+dữ liệu thì chỉ truyền lại các bản ghi lỗi hoặc chưa được tiếp nhận.
+    Bước 6. Đối soát dữ liệu
+     Hằng ngày, TTSH phải có trách nhiệm đối soát lượng dữ liệu truyền
+đi, bao gồm: dữ liệu truyền thành công, dữ liệu truyền lỗi, dữ liệu chưa
+truyền nhằm phát hiện và xử lý kịp thời các sự cố phát sinh, bảo đảm
+tính đầy đủ, chính xác của dữ liệu kỳ sát hạch; các bản ghi dữ liệu
+truyền lỗi phải được thông báo, lập danh sách, xác định nguyên nhân,
+xử lý và lưu nhật ký kết quả xử lý.
+    ● Lưu ý:
+    - Bảo đảm đồng bộ thời gian giữa máy chủ tại TTSH và máy chủ
+của Cục Cảnh sát giao thông, tránh sai lệch mốc thời gian dữ liệu.
+
+                                   7
+QCVN 15:2026/BCA
+    - Thực hiện kiểm tra định kỳ trạng thái truyền nhận (bận/sẵn sàng)
+của hệ thống tiếp nhận nhằm tránh gây quá tải đường truyền và máy chủ.
+     - Có cơ chế giám sát và kiểm soát việc truyền dữ liệu, tránh truyền
+lặp dữ liệu với số lượng lớn.
+     - Máy chủ của Cục Cảnh sát giao thông có quyền tạm thời khóa tài
+khoản truy cập trong trường hợp TTSH: truyền dữ liệu sai quy định,
+truyền dữ liệu không hợp lệ (dữ liệu ảo), truyền dữ liệu với khối lượng
+bất thường trong thời gian dài gây ảnh hưởng đến hệ thống.
+
+     5. Quy trình trao đổi giám sát dữ liệu giữa phần mềm giám sát
+tại TTSH và các phần mềm sát hạch (sát hạch lý thuyết/sát hạch
+trong hình/sát hạch trên đường)
+
+    Bước 1. Thiết lập kết nối và xác thực
+    TTSH thực hiện cấu hình kết nối giữa phần mềm giám sát sát hạch
+và các phần mềm sát hạch. Các hệ thống thực hiện xác thực bằng tài
+khoản hoặc mã truy cập (Token) theo quy định.
+    Bước 2. Truyền và kiểm tra dữ liệu
+    - Trước khi truyền, phần mềm sát hạch phải kiểm tra Token còn
+hiệu lực, thời gian đã đồng bộ, dữ liệu hợp lệ và mã giao dịch
+(TransactionCode) chưa được sử dụng cho một giao dịch khác.
+      - Hai hệ thống thực hiện trao đổi dữ liệu hai chiều thông qua cơ chế
+yêu cầu (Request) và phản hồi (Response). Tùy theo từng nghiệp vụ,
+phần mềm sát hạch hoặc phần mềm giám sát sát hạch có thể đóng vai
+trò là bên gửi hoặc bên tiếp nhận dữ liệu.
+    - Sau khi nhận được dữ liệu từ hệ thống gửi, hệ thống tiếp nhận
+thực hiện kiểm tra tính hợp lệ của dữ liệu và gửi phản hồi kết quả xử lý
+cho hệ thống gửi.
+    - Trường hợp xử lý thành công: hệ thống tiếp nhận gửi thông báo
+xác nhận dữ liệu đã được tiếp nhận và ghi nhận thành công.
+    - Trường hợp xử lý không thành công: hệ thống tiếp nhận gửi mã lỗi
+và nội dung mô tả nguyên nhân để hệ thống gửi thực hiện kiểm tra, khắc
+phục và gửi lại dữ liệu theo quy định.
+      - Trường hợp phát sinh yêu cầu đồng bộ hoặc cập nhật dữ liệu: hệ
+thống tiếp nhận có thể gửi yêu cầu bổ sung, điều chỉnh hoặc đồng bộ dữ
+liệu; hệ thống còn lại có trách nhiệm tiếp nhận, xử lý và phản hồi kết quả
+thực hiện.
+    Bước 3. Kiểm tra trạng thái tiếp nhận dữ liệu
+     Trong quá trình truyền dữ liệu, phần mềm sát hạch thực hiện kiểm
+tra định kỳ trạng thái của hệ thống tiếp nhận:
+                                    8
+                                                        QCVN 15:2026/BCA
+    - Trường hợp hệ thống trả về trạng thái bận: phần mềm sát hạch
+tạm dừng truyền và chờ đến chu kỳ kiểm tra tiếp theo.
+   - Chỉ khi hệ thống trả về trạng thái sẵn sàng tiếp nhận dữ liệu, phần
+mềm sát hạch mới được phép tiếp tục truyền dữ liệu.
+     Bước 4. Lặp lại truyền dữ liệu và giám sát lỗi
+     - Phần mềm sát hạch thực hiện lặp lại bước 2 và bước 3 cho đến
+khi hoàn tất quá trình truyền dữ liệu. Đồng thời, phần mềm sát hạch phải
+có cơ chế cảnh báo những dữ liệu truyền lỗi và thực hiện kiểm tra toàn
+bộ các dữ liệu lỗi hàng giờ. Khắc phục kịp thời các lỗi phát sinh, tránh
+tình trạng lỗi kéo dài ảnh hưởng đến thí sinh và công tác tổng hợp, báo
+cáo của Cục Cảnh sát giao thông. Cục Cảnh sát giao thông thực hiện
+ghi nhận các lỗi này để đánh giá chất lượng kết nối, truyền dẫn và việc
+tuân thủ quy định của TTSH.
+     - Việc truyền lại chỉ thực hiện đối với lỗi có khả năng phục hồi như
+timeout, mất kết nối hoặc hệ thống bận. Khi truyền lại phải giữ nguyên
+mã giao dịch (TransactionCode), áp dụng khoảng thời gian chờ tăng dần
+và giới hạn số lần thử. Trường hợp hệ thống đã tiếp nhận một phần lô
+dữ liệu thì chỉ truyền lại các bản ghi lỗi hoặc chưa được tiếp nhận.
+     Bước 5. Đối soát dữ liệu
+    Cuối mỗi kỳ sát hạch hoặc cuối ngày, TTSH đối soát số bản ghi đã
+nhận, lỗi, đang chờ và chưa nhận từ từng phần mềm sát hạch; lập danh
+sách chênh lệch và xử lý đến khi hoàn tất.
+
+     6. Danh mục nhóm dữ liệu và API trao đổi
+
+      Các nhóm API dưới đây được mô tả theo nghiệp vụ cần thực hiện
+và nhóm dữ liệu bắt buộc cần trao đổi. Tên điểm cuối (Endpoint), tên
+trường kỹ thuật, kiểu dữ liệu chi tiết, ràng buộc kỹ thuật, ví dụ
+request/response và mã lỗi kỹ thuật chi tiết được quy định tại tài liệu API
+chi tiết khi triển khai tích hợp.
+     6.1. Nhóm API xác thực và duy trì phiên truyền dữ liệu
+
+                                                               Dữ liệu
+                                        Dữ liệu nghiệp
+STT Nhóm API            Mục đích                           nghiệp vụ đầu
+                                         vụ đầu vào
+                                                             ra/Kết quả
+                Cấp mã truy cập         Tên đăng nhập,     Mã truy cập,
+                cho hệ thống/tài        mật khẩu hoặc      loại token, thời
+                khoản       được        thông tin xác      hạn hiệu lực,
+ 1    Đăng nhập
+                phép truyền nhận        thực     tương     thời điểm hết
+                dữ liệu.                đương.             hạn, trạng thái
+                                                           xử lý.
+
+                                    9
+QCVN 15:2026/BCA
+                                                               Dữ liệu
+                                         Dữ liệu nghiệp
+STT Nhóm API            Mục đích                           nghiệp vụ đầu
+                                          vụ đầu vào
+                                                             ra/Kết quả
+                    Kết thúc phiên       Tên đăng nhập Kết quả đăng
+                    làm việc của tài     hoặc thông tin xuất, trạng thái
+ 2     Đăng xuất
+                    khoản/hệ thống       định danh phiên phiên làm việc.
+                    đang kết nối.        làm việc.
+
+                    Cho phép tài         Tên đăng nhập, Kết quả xử lý
+                    khoản truyền dữ      mật khẩu hiện yêu cầu đổi
+        Đổi mật
+ 3                  liệu thay đổi mật    tại, mật khẩu mật khẩu.
+         khẩu
+                    khẩu theo quy        mới.
+                    định bảo mật.
+
+                    Cho phép hệ          Thông tin định    Thời gian hiện
+                    thống gửi kiểm       danh        tài   tại của máy
+       Kiểm tra     tra thời gian hiện   khoản/hệ thống    chủ tiếp nhận
+ 4     thời gian    tại của máy chủ      gửi.              và trạng thái
+       máy chủ      tiếp nhận để bảo                       xử lý.
+                    đảm đồng bộ thời
+                    gian.
+
+     ● Lưu ý:
+    - Trong trường hợp đăng nhập thành công thì hệ thống sẽ trả về
+trường Token là giá trị mã bảo mật phiên hiện tại. Trong token sẽ chứa
+một vài thông tin liên quan đến thời hạn của token, TTSH trích xuất lấy
+thông tin này và đăng nhập lại tạo token trong trường hợp cần thiết
+    - Trong trường hợp đăng nhập không thành công thì hệ thống trả về
+mã lỗi.
+     - Tham khảo thêm bảng mã trạng thái lỗi thực hiện lệnh.
+     - Hệ thống chỉ nhận thao tác sau khi đã đăng nhập thành công
+     6.2. Nhóm API kiểm tra trạng thái và đối soát truyền nhận
+
+                                             Dữ liệu        Dữ liệu
+STT Nhóm API            Mục đích          nghiệp vụ đầu nghiệp vụ đầu
+                                               vào        ra/Kết quả
+
+        Kiểm tra    Kiểm tra hệ thống      Thông tin định Trạng thái hệ
+ 1     trạng thái    tiếp nhận có sẵn        danh tài     thống:    sẵn
+        hệ thống    sàng nhận dữ liệu     khoản/hệ thống sàng      hoặc
+
+                                    10
+                                                      QCVN 15:2026/BCA
+
+                                           Dữ liệu        Dữ liệu
+STT Nhóm API           Mục đích         nghiệp vụ đầu nghiệp vụ đầu
+                                             vào        ra/Kết quả
+                    hay không trước     gửi, mã TTSH     đang bận; mô
+                       khi truyền           nếu có       tả trạng thái;
+                                                         thời điểm cập
+                                                         nhật trạng thái
+                                                         tiếp theo, tên
+                                                         lỗi kỹ thuật
+                                                         (nếu có), mô tả
+                                                         chi tiết lỗi và
+                                                         hướng      khắc
+                                                         phục.
+
+                                                        Thời gian bắt
+                                                        đầu, Thời gian
+                                                        kết thúc, mã kỳ
+                                                        sát hạch (nếu
+                                                        có lọc theo kỳ),
+                                        Mã kỳ sát hạch
+                                                        tổng số phiên
+                                          nếu cần lọc
+                                                        truyền     thành
+                   Đối soát số lượng     theo kỳ, thời
+                                                        công, tổng số
+       Thống kê    phiên truyền thành    gian bắt đầu,
+                                                        phiên     truyền
+          phiên      công, thất bại,     thời gian kết
+ 2                                                      thất bại, tổng
+       truyền dữ   đang chờ và tổng     thúc (thời gian
+                                                        số phiên đang
+           liệu      số phiên trong      không được
+                                                        chờ xử lý, tổng
+                    khoảng thời gian    quá 30 ngày từ
+                                                        số phiên trong
+                                         thời gian bắt
+                                                        khoảng       thời
+                                             đầu)
+                                                        gian, tên lỗi kỹ
+                                                        thuật (nếu có),
+                                                        mô tả chi tiết
+                                                        lỗi và hướng
+                                                        khắc phục.
+
+     6.3. Nhóm API truyền dữ liệu từ Cục Cảnh sát giao thông
+    Mục này quy định các hàm API phục vụ việc cung cấp dữ liệu đầu
+vào cho kỳ sát hạch. Đơn vị thực hiện là Phòng Cảnh sát giao thông sử
+dụng tài khoản được phân quyền để đăng nhập vào phần mềm (do Cục
+                                  11
+QCVN 15:2026/BCA
+Cảnh sát giao thông phát triển và quản lý) để thực hiện gửi (POST) dữ
+liệu sang hệ thống của TTSH.
+
+
+Hệ thống       Hệ       Nhóm dữ liệu trao đổi          Thời         Mục đích
+ nguồn       thống                                     điểm
+              đích                                    truyền
+
+Hệ thống TTSH          - Dữ liệu thông tin sát       Sau khi kỳ   Mục đích
+thông   tin lái xe     hạch lái xe (mã kỳ sát        sát hạch     tổ     chức,
+về     sát             hạch, tên kỳ sát hạch, mã     lái     xe   giám sát
+hạch, cấp                                            được phê     kỳ       sát
+                       TTSH, thời gian sát hạch,
+giấy phép                                            duyệt        hạch, cấp
+lái xe                 quyết định sát hạch …)                     giấy phép
+                       - Dữ liệu Hội đồng sát                     lái xe
+                       hạch lái xe (họ tên sát
+                       hạch viên, chức vụ ….)
+                       - Dữ liệu học viên dự sát
+                       hạch lái xe (mã đăng ký,
+                       họ tên học viên, thẻ căn
+                       cước, ngày sinh, giới
+                       tính, số báo danh, nội
+                       dung sát hạch lái xe,
+                       hạng sát hạch lái xe, ảnh
+                       học viên base64 …)
+
+
+      6.4. Nhóm API truyền dữ liệu giữa máy chủ giám sát sát hạch
+tại TTSH và Cục Cảnh sát giao thông
+
+STT       Hệ         Hệ        Nhóm dữ liệu trao      Thời điểm        Mục
+       thống       thống             đổi               truyền          đích
+       nguồn        đích
+      Hệ         Hệ thống     Dữ liệu truyền thông     Ngay sau      Giám
+      thống      giám sát     tin điểm danh từng      khi có kết     sát kết
+      giám sát   sát hạch     bài sát hạch từ hệ      quả điểm       quả
+      sát hạch   lái xe tại   thống giám sát sát      danh của       điểm
+ 1
+      tại        Cục          hạch tại TTSH tới       học viên kỳ    danh
+      TTSH       Cảnh sát     phần mềm giám sát       sát hạch       của học
+                 giao         sát hạch tại Cục                       viên
+                 thông        Cảnh sát giao thông                    tham gia
+
+                                     12
+                                                          QCVN 15:2026/BCA
+STT     Hệ          Hệ         Nhóm dữ liệu trao      Thời điểm        Mục
+      thống       thống              đổi               truyền          đích
+      nguồn        đích
+                              (mã đăng ký, họ tên                    kỳ   sát
+                              học viên, ngày sinh,                   hạch
+                              thẻ căn cước, số báo
+                              danh, hạng sát hạch,
+                              mã kỳ sát hạch, nội
+                              dung sát hạch, trạng
+                              thái điểm danh các
+                              nội dung sát hạch, dữ
+                              liệu xác thực điện
+                              tử…)
+      Hệ         Hệ thống     Truyền dữ liệu quá      Dữ      liệu   Giám
+      thống      giám sát     trình sát hạch từng     được           sát quá
+      giám sát   sát hạch     nội dung từ TTSH tới    truyền liên    trình học
+      sát hạch   lái xe tại                           tục khi bắt    viên
+                              phần mềm giám sát
+      tại        Cục                                  đầu bài sát    thực
+      TTSH       Cảnh sát     sát hạch tại Cục        hạch đến       hiện các
+                 giao         Cảnh sát giao thông     thời điểm      nội dung
+                 thông        (mã đăng ký, họ tên     kết    thúc    sát hạch
+                              học viên, ngày sinh,    bài      sát   lái xe
+                              thẻ căn cước, số báo    hạch
+
+ 2                            danh, hạng sát hạch,
+                              mã kỳ sát hạch, nội
+                              dung sát hạch, thời
+                              gian bắt đầu, thời
+                              gian kết thúc, điểm
+                              sát hạch, số lần sát
+                              hạch, lý do sát hạch
+                              lại, ảnh học viên
+                              base64, dữ liệu GPS
+                              …)
+       Hệ        Hệ thống     Dữ liệu truyền thông    Sát hạch        Giám
+      thống      giám sát     tin hủy kết quả sát     viên   hủy     sát kết
+ 3    giám sát   sát hạch     hạch (mã đăng ký, họ    kết quả sát    quả sát
+      sát hạch   lái xe tại   tên học viên, ngày      hạch của       hạch
+      tại        Cục          sinh, thẻ căn cước,     học    viên    của học
+
+                                     13
+QCVN 15:2026/BCA
+STT      Hệ          Hệ    Nhóm dữ liệu trao Thời điểm      Mục
+       thống       thống           đổi          truyền      đích
+       nguồn        đích
+      TTSH       Cảnh sát số báo danh, hạng tham      gia viên
+                 giao     sát hạch, mã kỳ sát sát hạch
+                 thông    hạch, nội dung sát
+                          hạch, lý do hủy kết
+                          quả sát hạch, …. )
+
+       Hệ        Hệ thống     Truyền dữ liệu tổng Sau khi kết Tổng
+      thống      giám sát     hợp quá trình sát thúc kỳ sát hợp kết
+      giám sát   sát hạch     hạch từ TTSH tới hạch           quả sát
+      sát hạch   lái xe tại   phần mềm giám sát               hạch
+      tại TTSH   Cục          sát hạch tại Cục
+                 Cảnh sát     Cảnh sát giao thông
+ 4               giao         (mã đăng ký, họ tên
+                 thông        học viên, ngày sinh,
+                              thẻ căn cước, số báo
+                              danh, hạng sát hạch,
+                              mã kỳ sát hạch, kết
+                              quả sát hạch, điểm
+                              sát hạch …)
+
+    6.5. Nhóm API truyền và nhận dữ liệu giữa máy chủ giám sát
+TTSH và máy chủ sát hạch
+STT Hệ thống        Hệ thống      Nhóm dữ liệu trao      Thời điểm     Mục
+     nguồn            đích              đổi               truyền       đích
+1     Hệ thống     Phần                              Liên tục
+                                 - Dữ liệu sát hạch lý               Giám
+      giám sát     mềm sát                          khi bắt đầu
+                                 thuyết (danh sách sát               sát quá
+      sát hạch     hạch (lý                         bài thi sát
+                                 hạch lý thuyết, danh                trình thi
+      lái xe tại   thuyết,                          hạch đến         và ghi
+                                 sách hội đồng sát
+      TTSH         trong                            thời điểm        nhận
+                   hình, trên    hạch, danh sách họckết    thúc      kết quả
+                   đường)        viên dự sát hạch …)bài thi sát      thi sát
+                                 - Dữ liệu sát hạch hạch             hạch
+                                 trong hình (danh
+                                 sách sát hạch thi
+                                    14
+                                                        QCVN 15:2026/BCA
+
+STT Hệ thống     Hệ thống       Nhóm dữ liệu trao Thời điểm          Mục
+     nguồn         đích                đổi         truyền            đích
+                              trong hình, danh
+                              sách hội đồng sát
+                              hạch, danh sách học
+                              viên dự sát hạch …)
+                              - Dữ liệu sát hạch
+                              trên đường (danh
+                              sách sát hạch thi trên
+                              đường, danh sách
+                              hội đồng sát hạch,
+                              danh sách học viên
+                              dự sát hạch, dữ liệu
+                              GPS …)
+2   Phần         Hệ thống     - Dữ liệu thông tin kết
+    mềm sát      giám sát     quả sát hạch lý thuyết
+    hạch (lý     sát hạch     (mã TTSH, mã đăng
+    thuyết,      lái xe tại
+                              ký, họ và tên học
+    trong        TTSH
+    hình, trên                viên, ngày sinh, thẻ
+    đường)                    căn cước, số báo
+                              danh, hạng sát hạch,
+                              nội dung sát hạch,
+                              thời gian bắt đầu,
+                              điểm sát hạch, ảnh
+                              học viên base64 …)
+                              - Dữ liệu thông tin kết
+                              quả sát hạch trong
+                              hình (mã TTSH, mã
+                              đăng ký, họ và tên
+                              học viên, ngày sinh,
+                              thẻ căn cước, số báo
+                              danh, hạng sát hạch,
+                              nội dung sát hạch,
+                              thời gian bắt đầu,
+                              điểm sát hạch, ảnh
+                              học viên base64 …)
+                              - Dữ liệu thông tin kết
+                                  15
+QCVN 15:2026/BCA
+
+STT Hệ thống       Hệ thống     Nhóm dữ liệu trao Thời điểm   Mục
+     nguồn           đích              đổi           truyền   đích
+                              quả sát hạch trên
+                              đường (mã TTSH, mã
+                              đăng ký, họ và tên học
+                              viên, ngày sinh, thẻ
+                              căn cước, số báo
+                              danh, hạng sát hạch,
+                              nội dung sát hạch,
+                              thời gian bắt đầu,
+                              điểm sát hạch, ảnh
+                              học viên base64, dữ
+                              liệu GPS …)
+
+
+
+
+                                 16
+
