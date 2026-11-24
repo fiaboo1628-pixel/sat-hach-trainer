@@ -382,8 +382,10 @@ export function initRoad({ ruleSets, showView, play, stop, storage }) {
       const b = el('button', 'sb-key');
       b.type = 'button';
       b.disabled = locked;
-      b.append(el('span', 'rd-err-label', errorLabel(e, session.gearbox)), el('span', 'rd-pts', pointsText(e)));
-      if (e.detectedBy === 'device') b.append(el('small', 'rd-tag', DETECT_TEXT.device));
+      // Ít chữ trên bàn chấm (chủ app, 2026-11-24): chỉ tên lỗi. Mức trừ và nguồn bắt lỗi xem ở nút i;
+      // lỗi đình chỉ vẫn tách riêng bằng màu đỏ đậm.
+      b.append(el('span', 'rd-err-label', errorLabel(e, session.gearbox)));
+      b.setAttribute('aria-label', `${errorLabel(e, session.gearbox)}, ${e.suspend ? 'đình chỉ' : `trừ ${e.points} điểm`}`);
       b.addEventListener('click', () => dispatch({ type: 'error', errorId: e.id }));
       const info = el('button', 'rd-info', 'i');
       info.type = 'button';
