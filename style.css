@@ -1238,3 +1238,10 @@ h2 {
 .rd-about-links { justify-content: flex-start; }
 /* Trên bàn chấm điểm, kéo xuống không được tải lại trang (mất buổi thi đang chấm). */
 html:has(#view-duong-truong:not([hidden])) { overscroll-behavior-y: contain; }
+/* Dòng lỗi gọn: chỉ tên lỗi, chạm để mở nguyên văn và trích dẫn. */
+.rd-more summary { cursor: pointer; list-style: none; }
+.rd-more summary::-webkit-details-marker { display: none; }
+.rd-more summary::after { content: " ›"; color: var(--muted); }
+.rd-more[open] summary::after { content: " ⌄"; }
+.rd-more .rd-cite { margin-top: 0.3rem; line-height: 1.4; }
+.rd-sheet-table td.rd-muted { color: var(--muted); text-align: left; font-weight: 400; }

@@ -22,6 +22,8 @@ export const DISCLAIMER = 'Ứng dụng là công cụ tập luyện, không ph�
 export const NO_GUIDE = 'Chưa có hướng dẫn chính thức';
 export const pointsText = (e) => (e.suspend ? 'Đình chỉ' : `−${e.points}`);
 const GEARBOX_TEXT = { manual: 'Số sàn', auto: 'Số tự động' };
+// "Thông tư 12/2025/TT-BCA" -> "TT 12/2025": đủ để nhận ra, gọn trên màn hình nhỏ.
+export const shortDoc = (doc) => doc.replace('Thông tư ', 'TT ').replace('/TT-BCA', '');
 
 const $ = (id) => document.getElementById(id);
 const pad = (n) => String(n).padStart(2, '0');
@@ -45,6 +47,14 @@ function el(tag, className, text) {
   if (className) n.className = className;
   if (text !== undefined) n.textContent = text;
   return n;
+}
+
+// Một dòng gọn: chỉ tên lỗi; chạm vào mới mở nguyên văn, trích dẫn, ghi chú.
+function details(summary, lines) {
+  const d = el('details', 'rd-more');
+  d.append(el('summary', null, summary));
+  lines.filter(Boolean).forEach((line) => d.append(el('small', 'rd-cite', line)));
+  return d;
 }
 
 // Hộp thoại dùng chung. Trả về value của nút được bấm.
@@ -78,7 +88,7 @@ export function renderSheet(container, result, rules) {
   const verdict = result.status === 'suspended' ? 'ĐÌNH CHỈ SÁT HẠCH' : result.passed ? 'ĐẠT' : 'KHÔNG ĐẠT';
   container.append(
     el('h2', null, 'Phiếu kết quả sát hạch lái xe trên đường'),
-    el('p', 'rd-muted', `${result.document} · Hạng ${result.hang} · ${GEARBOX_TEXT[result.gearbox]} · ${dateTime(result.createdAt)}`),
+    el('p', 'rd-muted', `${shortDoc(result.document)} · Hạng ${result.hang} · ${GEARBOX_TEXT[result.gearbox]} · ${dateTime(result.createdAt)}`),
   );
   const head = el('div', `rd-verdict rd-verdict-${result.passed ? 'pass' : 'fail'}`);
   head.append(el('strong', null, `${result.score} điểm`), el('span', null, verdict));
@@ -101,13 +111,13 @@ export function renderSheet(container, result, rules) {
     t.errors.forEach((e) => {
       const r = el('tr');
       const what = el('td');
-      what.append(el('span', null, e.official), el('small', 'rd-cite', e.citation));
+      what.append(details(e.label, [e.official, e.citation]));
       r.append(el('td', 'rd-time', dateTime(e.at).slice(0, 5)), what, el('td', e.suspend ? 'guide-out' : null, pointsText(e)));
       body.append(r);
     });
   });
   table.append(body);
-  container.append(table, el('p', 'rd-muted', `Căn cứ: ${rules.citationBase}.`), el('p', 'rd-muted', DISCLAIMER));
+  container.append(table, el('p', 'rd-muted', `Căn cứ: ${shortDoc(rules.document)}, ${rules.scope.split(':')[0]}.`), el('p', 'rd-muted', DISCLAIMER));
 }
 
 // Trang "Quy định thi đường trường": hai thẻ, mỗi thẻ một bộ luật, sinh từ chính dữ liệu chấm điểm.
@@ -118,15 +128,14 @@ export function renderRulesGuide(container, ruleSets, today) {
   const panels = [];
   const current = pickRuleSet(ruleSets, today, today);
   ruleSets.forEach((r) => {
-    const tab = el('button', 'btn-secondary', r.document.replace('Thông tư ', 'TT ').replace('/TT-BCA', ''));
+    const tab = el('button', 'btn-secondary', shortDoc(r.document));
     tab.type = 'button';
     tab.setAttribute('role', 'tab');
     const panel = el('div', 'rd-guide-panel');
     panel.setAttribute('role', 'tabpanel');
     panel.append(
-      el('p', 'rd-applied', `${r.document}, ${r.scope} (${validity(r)}).`),
-      el('p', 'guide-lead', `Thang điểm ${r.startScore}, đạt từ ${r.passMark} điểm. Quãng đường tối thiểu ${r.minDistanceKm} km. Bài đầu và bài cuối cố định; các bài còn lại làm theo thứ tự bất kỳ và có thể lặp lại.`),
-      el('p', 'rd-muted', r.turnRuleNote),
+      el('p', 'rd-applied', `${shortDoc(r.document)} · ${validity(r)}`),
+      el('p', 'guide-lead', `Đạt từ ${r.passMark}/${r.startScore} điểm · tối thiểu ${r.minDistanceKm} km · ${r.exercises.length} bài. Chạm vào một lỗi để xem nguyên văn quy định.`),
     );
     const section = (title, errors, watch) => {
       panel.append(el('h3', null, title));
@@ -136,8 +145,7 @@ export function renderRulesGuide(container, ruleSets, today) {
       errors.forEach((e) => {
         const row = el('tr');
         const what = el('td');
-        what.append(el('span', null, e.official), el('small', 'rd-cite', `${DETECT_TEXT[e.detectedBy]} · ${e.citation}`));
-        if (e.note) what.append(el('small', 'rd-cite rd-tag-note', e.note));
+        what.append(details(e.label, [e.official, `${DETECT_TEXT[e.detectedBy]} · ${e.citation}`, e.note, e.perOccurrence ? null : r.turnRuleNote]));
         row.append(what, el('td', e.suspend ? 'guide-out' : null, e.suspend ? 'Đình chỉ sát hạch' : `−${e.points}`));
         body.append(row);
       });
@@ -342,7 +350,7 @@ export function initRoad({ ruleSets, showView, play, stop, storage }) {
   function render() {
     const st = status(rules, session);
     const ex = currentExercise(rules, session);
-    $('rd-title').textContent = `${rules.document.replace('Thông tư ', 'TT ')} · Hạng ${session.hang}`;
+    $('rd-title').textContent = `${shortDoc(rules.document)} · Hạng ${session.hang}`;
     $('rd-score').textContent = score(rules, session);
     $('rd-state').textContent = STATUS_TEXT[st];
     $('rd-state').dataset.state = st;
@@ -476,7 +484,7 @@ export function initRoad({ ruleSets, showView, play, stop, storage }) {
     if (!items.length) list.append(el('li', 'rd-muted', 'Chưa có buổi thi nào.'));
     items.forEach((r) => {
       const li = el('li', 'rd-history-item');
-      const open = el('button', 'btn-secondary', `${dateTime(r.createdAt)} · ${r.document.replace('Thông tư ', 'TT ')} · ${r.score} điểm · ${r.status === 'suspended' ? 'Đình chỉ' : r.passed ? 'Đạt' : 'Không đạt'}`);
+      const open = el('button', 'btn-secondary', `${dateTime(r.createdAt)} · ${shortDoc(r.document)} · ${r.score} điểm · ${r.status === 'suspended' ? 'Đình chỉ' : r.passed ? 'Đạt' : 'Không đạt'}`);
       open.type = 'button';
       open.addEventListener('click', () => {
         renderSheet($('rd-sheet'), r, ruleSets.find((x) => x.id === r.rulesId) ?? ruleSets[0]);
