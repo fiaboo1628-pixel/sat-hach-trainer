@@ -1230,3 +1230,9 @@ h2 {
 .rd-cmds-many .rd-cmd { min-height: 2.75rem; padding: 0.3rem 0.45rem; font-size: 0.84rem; line-height: 1.15; }
 .rd-cmds-many .rd-cmd small { font-size: 0.68rem; }
 .rd-watch { font-size: 0.9rem; }
+.rd-tabs { display: flex; gap: 0.4rem; margin: 0.4rem 0 0.8rem; }
+.rd-tabs button { margin: 0; flex: 1; }
+.rd-tabs button[aria-selected="true"] { background: var(--blue); color: #fff; --edge: var(--blue-edge); }
+.rd-guide-panel h3 { margin: 1.1rem 0 0.4rem; }
+.brand-about { display: block; margin: 0.4rem auto 0; font-size: 0.85rem; }
+.rd-about-links { justify-content: flex-start; }

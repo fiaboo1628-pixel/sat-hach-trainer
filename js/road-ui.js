@@ -108,7 +108,86 @@ export function renderSheet(container, result, rules) {
   container.append(table, el('p', 'rd-muted', `Căn cứ: ${rules.citationBase}.`), el('p', 'rd-muted', DISCLAIMER));
 }
 
+// Trang "Quy định thi đường trường": hai thẻ, mỗi thẻ một bộ luật, sinh từ chính dữ liệu chấm điểm.
+export function renderRulesGuide(container, ruleSets, today) {
+  container.replaceChildren();
+  const tabs = el('div', 'rd-tabs');
+  tabs.setAttribute('role', 'tablist');
+  const panels = [];
+  const current = pickRuleSet(ruleSets, today, today);
+  ruleSets.forEach((r) => {
+    const tab = el('button', 'btn-secondary', r.document.replace('Thông tư ', 'TT ').replace('/TT-BCA', ''));
+    tab.type = 'button';
+    tab.setAttribute('role', 'tab');
+    const panel = el('div', 'rd-guide-panel');
+    panel.setAttribute('role', 'tabpanel');
+    panel.append(
+      el('p', 'rd-applied', `${r.document}, ${r.scope} (${validity(r)}).`),
+      el('p', 'guide-lead', `Thang điểm ${r.startScore}, đạt từ ${r.passMark} điểm. Quãng đường tối thiểu ${r.minDistanceKm} km. Bài đầu và bài cuối cố định; các bài còn lại làm theo thứ tự bất kỳ và có thể lặp lại.`),
+      el('p', 'rd-muted', r.turnRuleNote),
+    );
+    const section = (title, errors, watch) => {
+      panel.append(el('h3', null, title));
+      if (watch) panel.append(el('p', 'rd-watch', `Cần để ý: ${watch}`));
+      const table = el('table', 'guide-table');
+      const body = el('tbody');
+      errors.forEach((e) => {
+        const row = el('tr');
+        const what = el('td');
+        what.append(el('span', null, e.official), el('small', 'rd-cite', `${DETECT_TEXT[e.detectedBy]} · ${e.citation}`));
+        if (e.note) what.append(el('small', 'rd-cite rd-tag-note', e.note));
+        row.append(what, el('td', e.suspend ? 'guide-out' : null, e.suspend ? 'Đình chỉ sát hạch' : `−${e.points}`));
+        body.append(row);
+      });
+      table.append(body);
+      panel.append(table);
+    };
+    const byId = (id) => r.errors.find((e) => e.id === id);
+    r.exercises.forEach((ex, i) => section(`${i + 1}. ${ex.name}${ex.conditional ? ' (có điều kiện)' : ''}`, ex.errors.map(byId), ex.watch));
+    if (r.commonErrors.length) section('Lỗi tính ở mọi bài', r.commonErrors.map(byId));
+    panels.push(panel);
+    tab.addEventListener('click', () => select(panels.indexOf(panel)));
+    tabs.append(tab);
+  });
+  const select = (index) => {
+    panels.forEach((p, i) => (p.hidden = i !== index));
+    [...tabs.children].forEach((t, i) => t.setAttribute('aria-selected', String(i === index)));
+  };
+  container.append(tabs, ...panels);
+  select(ruleSets.indexOf(current));
+}
+
+export function renderAbout(container, ruleSets) {
+  container.replaceChildren();
+  container.append(
+    el('p', 'guide-lead', 'Sát Hạch Trainer giúp học viên tập sa hình, đường trường và lý thuyết như thi thật. Ứng dụng dùng miễn phí.'),
+    el('h3', null, 'Quy định đang dùng cho đường trường'),
+  );
+  const list = el('ul', 'guide-steps');
+  ruleSets.forEach((r) => list.append(el('li', null, `${r.citationBase}.`)));
+  list.append(el('li', null, 'QCVN 15:2026/BCA §2.3.5: lỗi nào thiết bị trên xe tự bắt, lỗi nào sát hạch viên bấm.'));
+  container.append(
+    list,
+    el('p', 'rd-muted', 'Cập nhật theo văn bản ngày 2026-11-24. Chỗ văn bản chưa rõ được ghi "Chưa có hướng dẫn chính thức" và giải thích cách app đang chấm.'),
+    el('h3', null, 'Lưu ý'),
+    el('p', null, DISCLAIMER),
+    el('p', null, 'Ứng dụng không thu thập dữ liệu; mọi thứ lưu trên máy của bạn.'),
+    el('h3', null, 'Góp ý, báo lỗi'),
+  );
+  const links = el('p', 'brand-links rd-about-links');
+  const zalo = el('a', null, 'Zalo');
+  zalo.href = 'https://zalo.me/0963281291';
+  zalo.target = '_blank';
+  zalo.rel = 'noopener';
+  const mail = el('a', null, 'Gmail');
+  mail.href = 'mailto:dinhvuong090997@gmail.com';
+  links.append(zalo, mail);
+  container.append(links);
+}
+
 export function initRoad({ ruleSets, showView, play, stop, storage }) {
+  renderRulesGuide($('rd-guide'), ruleSets, localDate());
+  renderAbout($('rd-about'), ruleSets);
   const history = createHistoryStore(storage);
   let rules = null;
   let session = null;
