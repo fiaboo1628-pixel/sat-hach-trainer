@@ -60,9 +60,27 @@ test('chưa xuất phát chỉ nhận lệnh bài đầu', () => {
   assert.equal(r.effects[0].type, 'rejected');
   assert.equal(r.session.events.length, 0);
   assert.equal(reduce(R, s, err('c-2'), 2000).effects[0].type, 'rejected');
+  assert.equal(reduce(R, s, err('b-10'), 2000).effects[0].type, 'rejected');
   const ok = reduce(R, s, cmd('a'), 2000);
   assert.equal(status(R, ok.session), 'running');
   assert.deepEqual(ok.effects, [{ type: 'play', audio: undefined }]);
+});
+
+test('chưa xuất phát vẫn ghi được lỗi của bài đầu (kiểm tra trước khi lên xe), lỗi khác thì không', () => {
+  const s = createSession(R, opts);
+  assert.deepEqual(availableErrors(R, s).map((e) => e.id), ['a-5', 'a-dc']);
+  const r = reduce(R, s, err('a-5'), 1500);
+  assert.equal(score(R, r.session), 95);
+  assert.equal(status(R, r.session), 'idle');
+  const started = reduce(R, r.session, cmd('a'), 2000).session;
+  assert.deepEqual(buildResult(R, started).turns[0].errors.map((e) => e.id), ['a-5']);
+  assert.equal(reduce(R, started, err('a-5'), 2500).effects[0].type, 'already-recorded');
+});
+
+test('đình chỉ trước khi xuất phát vẫn có phiếu', () => {
+  const s = run(R, [err('a-dc')]).s;
+  assert.equal(status(R, s), 'suspended');
+  assert.deepEqual(buildResult(R, s).turns.map((t) => [t.exerciseId, t.errors.length]), [['a', 1]]);
 });
 
 test('bài đầu không ra lệnh lại', () => {

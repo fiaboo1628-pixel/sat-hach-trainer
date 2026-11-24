@@ -27,8 +27,8 @@ const isSuspended = (rules, session) => errorEvents(session).some((ev) => errorB
 
 export function status(rules, session) {
   if (session.events.some((e) => e.type === 'finish')) return 'finished';
-  if (!commands(session).length) return 'idle';
   if (isSuspended(rules, session)) return 'suspended';
+  if (!commands(session).length) return 'idle';
   return score(rules, session) < rules.passMark ? 'failed' : 'running';
 }
 
@@ -37,11 +37,13 @@ export function currentExercise(rules, session) {
   return last ? exerciseById(rules, last.exerciseId) : null;
 }
 
-const currentTurn = (session) => commands(session).at(-1)?.turn ?? 0;
+// Trước lệnh xuất phát, lỗi kiểm tra trước khi lên xe thuộc về lượt 1 (lượt của bài đầu sắp ra).
+const currentTurn = (session) => commands(session).at(-1)?.turn ?? 1;
+const firstExercise = (rules) => rules.exercises.find((e) => e.position === 'first');
 
 export function availableErrors(rules, session) {
   const ex = currentExercise(rules, session);
-  const ids = [...(ex ? ex.errors : []), ...rules.commonErrors];
+  const ids = ex ? [...ex.errors, ...rules.commonErrors] : [...firstExercise(rules).errors];
   const all = ids.map((id) => errorById(rules, id));
   const rank = (e) => (e.suspend ? 2 : e.detectedBy === 'device' ? 0 : 1);
   return [0, 1, 2].flatMap((r) => all.filter((e) => rank(e) === r));
@@ -74,7 +76,8 @@ export function reduce(rules, session, action, now) {
     if (st === 'idle' && ex.position !== 'first') return rejected(session, 'Chưa ra lệnh xuất phát');
     if (st !== 'idle' && ex.position === 'first') return rejected(session, 'Đã xuất phát rồi');
     if (last?.position === 'last') return rejected(session, 'Đã ra lệnh kết thúc');
-    const next = withEvent(session, { type: 'command', exerciseId: ex.id, turn: currentTurn(session) + 1, at: now });
+    const turn = st === 'idle' ? 1 : currentTurn(session) + 1;
+    const next = withEvent(session, { type: 'command', exerciseId: ex.id, turn, at: now });
     return { session: next, effects: [{ type: 'play', audio: ex.commandAudio }] };
   }
 
@@ -84,9 +87,9 @@ export function reduce(rules, session, action, now) {
   }
 
   if (action.type === 'error') {
-    if (st === 'idle') return rejected(session, 'Chưa ra lệnh xuất phát');
     const error = errorById(rules, action.errorId);
     if (!error) return rejected(session, 'Không có lỗi này');
+    if (st === 'idle' && !firstExercise(rules).errors.includes(error.id)) return rejected(session, 'Chưa ra lệnh xuất phát');
     const turn = currentTurn(session);
     if (!error.perOccurrence && errorEvents(session).some((ev) => ev.errorId === error.id && ev.turn === turn)) {
       return { session, effects: [{ type: 'already-recorded', errorId: error.id }] };
@@ -110,7 +113,10 @@ export function reduce(rules, session, action, now) {
 export function buildResult(rules, session) {
   const s = score(rules, session);
   const suspended = isSuspended(rules, session);
-  const turns = commands(session).map((c) => ({
+  const cmds = commands(session);
+  // Bị đình chỉ ngay ở bước kiểm tra trước khi lên xe: vẫn ghi lượt 1 cho bài đầu.
+  if (!cmds.length && errorEvents(session).length) cmds.push({ exerciseId: firstExercise(rules).id, turn: 1, at: session.createdAt });
+  const turns = cmds.map((c) => ({
     exerciseId: c.exerciseId,
     name: exerciseById(rules, c.exerciseId).name,
     turn: c.turn,

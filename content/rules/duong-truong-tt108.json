@@ -2,6 +2,7 @@
   "id": "tt108-2026",
   "document": "Thông tư 108/2026/TT-BCA",
   "scope": "Phụ lục III, mục B.4: sát hạch thực hành lái xe trên đường",
+  "turnRuleNote": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài.",
   "citationBase": "Thông tư 108/2026/TT-BCA, Phụ lục III, mục B.4 (áp dụng từ 01/3/2027 theo Điều 41 khoản 2); QCVN 15:2026/BCA §2.3.5 về thiết bị chấm điểm",
   "validFrom": "2027-03-01",
   "validTo": null,
@@ -303,8 +304,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 1",
       "audio": "road/khong-kiem-tra-xung-quanh.mp3",
-      "say": "Không kiểm tra xung quanh xe.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không kiểm tra xung quanh xe."
     },
     {
       "id": "b1-kiem-tra-thiet-bi",
@@ -316,8 +316,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 1",
       "audio": "road/khong-kiem-tra-thiet-bi.mp3",
-      "say": "Không kiểm tra đèn, còi, phanh, lái, gạt mưa và gương chiếu hậu.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không kiểm tra đèn, còi, phanh, lái, gạt mưa và gương chiếu hậu."
     },
     {
       "id": "b1-tu-the-ngoi",
@@ -329,8 +328,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 1",
       "audio": "road/tu-the-ngoi-khong-phu-hop.mp3",
-      "say": "Điều chỉnh tư thế ngồi không phù hợp.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Điều chỉnh tư thế ngồi không phù hợp."
     },
     {
       "id": "b1-day-an-toan",
@@ -342,8 +340,7 @@
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 1",
       "audio": "road/khong-that-day-an-toan.mp3",
-      "say": "Không thắt dây an toàn.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không thắt dây an toàn."
     },
     {
       "id": "b1-xi-nhan-trai",
@@ -355,8 +352,7 @@
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 1",
       "audio": "road/khong-bat-xi-nhan-trai-xuat-phat.mp3",
-      "say": "Không bật đèn xi nhan trái khi xuất phát.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không bật đèn xi nhan trái khi xuất phát."
     },
     {
       "id": "b1-phanh-do",
@@ -368,8 +364,7 @@
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 1",
       "audio": "road/khong-nha-phanh-do.mp3",
-      "say": "Không nhả hoặc nhả không hết phanh đỗ khi khởi hành.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không nhả hoặc nhả không hết phanh đỗ khi khởi hành."
     },
     {
       "id": "b1-15m-tang-so",
@@ -382,7 +377,8 @@
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 1",
       "audio": "road/khong-tang-so-15m.mp3",
       "say": "Trong khoảng mười lăm mét không tăng số.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản viết cho xe số sàn, chưa nói cách chấm xe số tự động và xe điện."
+      "note": "Chưa có hướng dẫn chính thức: văn bản viết cho xe số sàn, chưa nói cách chấm xe số tự động và xe điện.",
+      "noteFor": "auto"
     },
     {
       "id": "b1-rung-giat",
@@ -394,8 +390,7 @@
       "detectedBy": "examiner",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 1",
       "audio": "road/xe-rung-giat-manh.mp3",
-      "say": "Xe bị rung giật mạnh.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Xe bị rung giật mạnh."
     },
     {
       "id": "b1-khong-kiem-tra",
@@ -432,8 +427,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 2",
       "audio": "road/khong-bao-hieu-vuot.mp3",
-      "say": "Không báo hiệu nhấp nháy bằng đèn chiếu sáng phía trước hoặc còi.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không báo hiệu nhấp nháy bằng đèn chiếu sáng phía trước hoặc còi."
     },
     {
       "id": "b2-khoang-cach",
@@ -445,8 +439,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 2",
       "audio": "road/khong-giu-khoang-cach.mp3",
-      "say": "Không bảo đảm khoảng cách an toàn.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không bảo đảm khoảng cách an toàn."
     },
     {
       "id": "b2-chua-cho-phep",
@@ -458,8 +451,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 2",
       "audio": "road/vuot-khi-chua-cho-phep.mp3",
-      "say": "Vượt xe khi chưa nhận được tín hiệu cho phép của xe phía trước.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Vượt xe khi chưa nhận được tín hiệu cho phép của xe phía trước."
     },
     {
       "id": "b2-quan-sat",
@@ -471,8 +463,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 2",
       "audio": "road/khong-quan-sat-guong.mp3",
-      "say": "Không quan sát an toàn qua gương chiếu hậu.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không quan sát an toàn qua gương chiếu hậu."
     },
     {
       "id": "b2-rung-giat",
@@ -484,8 +475,7 @@
       "detectedBy": "examiner",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 2",
       "audio": "road/xe-rung-giat-manh.mp3",
-      "say": "Xe bị rung giật mạnh.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Xe bị rung giật mạnh."
     },
     {
       "id": "b2-chet-may",
@@ -535,8 +525,7 @@
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 2",
       "audio": "road/khong-xi-nhan-trai-khi-vuot.mp3",
-      "say": "Không bật đèn xi nhan trái khi vượt.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không bật đèn xi nhan trái khi vượt."
     },
     {
       "id": "b2-hieu-lenh",
@@ -584,8 +573,7 @@
       "detectedBy": "examiner",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 3",
       "audio": "road/xe-rung-giat-manh.mp3",
-      "say": "Xe bị rung giật mạnh.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Xe bị rung giật mạnh."
     },
     {
       "id": "b3-chet-may",
@@ -635,8 +623,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 3",
       "audio": "road/khong-quan-sat-an-toan.mp3",
-      "say": "Không quan sát đảm bảo an toàn.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không quan sát đảm bảo an toàn."
     },
     {
       "id": "b3-tin-hieu",
@@ -648,8 +635,7 @@
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 3",
       "audio": "road/khong-tin-hieu-chuyen-lan.mp3",
-      "say": "Không có tín hiệu trước khi chuyển làn.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không có tín hiệu trước khi chuyển làn."
     },
     {
       "id": "b3-hai-lan",
@@ -661,8 +647,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 3",
       "audio": "road/chuyen-hai-lan.mp3",
-      "say": "Chuyển hai làn cùng một lúc.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Chuyển hai làn cùng một lúc."
     },
     {
       "id": "b3-noi-cam",
@@ -674,8 +659,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 3",
       "audio": "road/chuyen-lan-noi-cam.mp3",
-      "say": "Chuyển làn tại nơi không cho phép.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Chuyển làn tại nơi không cho phép."
     },
     {
       "id": "b3-hieu-lenh",
@@ -723,8 +707,7 @@
       "detectedBy": "examiner",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 4",
       "audio": "road/xe-rung-giat-manh.mp3",
-      "say": "Xe bị rung giật mạnh.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Xe bị rung giật mạnh."
     },
     {
       "id": "b4-chet-may",
@@ -736,8 +719,7 @@
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 4",
       "audio": "road/xe-chet-may.mp3",
-      "say": "Xe bị chết máy.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Xe bị chết máy."
     },
     {
       "id": "b4-tay-so",
@@ -775,8 +757,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 4",
       "audio": "road/khong-chuyen-dan-lan.mp3",
-      "say": "Không chuyển dần làn đường sang hướng cần chuyển.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không chuyển dần làn đường sang hướng cần chuyển."
     },
     {
       "id": "b4-xi-nhan-trái",
@@ -788,8 +769,7 @@
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 4",
       "audio": "road/khong-bat-xi-nhan-trái-khi-re.mp3",
-      "say": "Không bật xi nhan trái.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không bật xi nhan trái."
     },
     {
       "id": "b4-dot-ngot",
@@ -801,8 +781,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 4",
       "audio": "road/chuyen-huong-dot-ngot.mp3",
-      "say": "Chuyển hướng đột ngột.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Chuyển hướng đột ngột."
     },
     {
       "id": "b4-quan-sat",
@@ -814,8 +793,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 4",
       "audio": "road/khong-quan-sat-khi-re.mp3",
-      "say": "Không quan sát hai bên và gương chiếu hậu khi chuyển hướng.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không quan sát hai bên và gương chiếu hậu khi chuyển hướng."
     },
     {
       "id": "b4-nhuong-di-bo",
@@ -827,8 +805,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 4",
       "audio": "road/khong-nhuong-nguoi-di-bo.mp3",
-      "say": "Không nhường đường cho người đi bộ, xe lăn của người khuyết tật.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không nhường đường cho người đi bộ, xe lăn của người khuyết tật."
     },
     {
       "id": "b4-nhuong-nguoc-chieu",
@@ -840,8 +817,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 4",
       "audio": "road/khong-nhuong-xe-nguoc-chieu.mp3",
-      "say": "Không nhường đường cho xe đi chiều ngược lại.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không nhường đường cho xe đi chiều ngược lại."
     },
     {
       "id": "b4-lan-nguoc-chieu",
@@ -853,8 +829,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 4",
       "audio": "road/lan-lan-nguoc-chieu.mp3",
-      "say": "Chuyển hướng xe lấn sang làn xe ngược chiều.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Chuyển hướng xe lấn sang làn xe ngược chiều."
     },
     {
       "id": "b4-khoang-cach",
@@ -866,8 +841,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 4",
       "audio": "road/khong-giu-khoang-cach.mp3",
-      "say": "Không bảo đảm khoảng cách an toàn.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không bảo đảm khoảng cách an toàn."
     },
     {
       "id": "b4-tra-lai",
@@ -879,8 +853,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 4",
       "audio": "road/khong-tra-lai.mp3",
-      "say": "Sau khi chuyển hướng không trả lái, đưa xe về làn đường quy định.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Sau khi chuyển hướng không trả lái, đưa xe về làn đường quy định."
     },
     {
       "id": "b4-tai-nan",
@@ -916,8 +889,7 @@
       "detectedBy": "examiner",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 5",
       "audio": "road/xe-rung-giat-manh.mp3",
-      "say": "Xe bị rung giật mạnh.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Xe bị rung giật mạnh."
     },
     {
       "id": "b5-chet-may",
@@ -980,8 +952,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 5",
       "audio": "road/khong-chuyen-dan-lan.mp3",
-      "say": "Không chuyển dần làn đường sang hướng cần chuyển.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không chuyển dần làn đường sang hướng cần chuyển."
     },
     {
       "id": "b5-xi-nhan-phải",
@@ -993,8 +964,7 @@
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 5",
       "audio": "road/khong-bat-xi-nhan-phải-khi-re.mp3",
-      "say": "Không bật xi nhan phải.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không bật xi nhan phải."
     },
     {
       "id": "b5-dot-ngot",
@@ -1006,8 +976,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 5",
       "audio": "road/chuyen-huong-dot-ngot.mp3",
-      "say": "Chuyển hướng đột ngột.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Chuyển hướng đột ngột."
     },
     {
       "id": "b5-quan-sat",
@@ -1019,8 +988,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 5",
       "audio": "road/khong-quan-sat-khi-re.mp3",
-      "say": "Không quan sát hai bên và gương chiếu hậu khi chuyển hướng.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không quan sát hai bên và gương chiếu hậu khi chuyển hướng."
     },
     {
       "id": "b5-nhuong-di-bo",
@@ -1032,8 +1000,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 5",
       "audio": "road/khong-nhuong-nguoi-di-bo.mp3",
-      "say": "Không nhường đường cho người đi bộ, xe lăn của người khuyết tật.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không nhường đường cho người đi bộ, xe lăn của người khuyết tật."
     },
     {
       "id": "b5-nhuong-nguoc-chieu",
@@ -1045,8 +1012,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 5",
       "audio": "road/khong-nhuong-xe-nguoc-chieu.mp3",
-      "say": "Không nhường đường cho xe đi chiều ngược lại.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không nhường đường cho xe đi chiều ngược lại."
     },
     {
       "id": "b5-lan-nguoc-chieu",
@@ -1058,8 +1024,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 5",
       "audio": "road/lan-lan-nguoc-chieu.mp3",
-      "say": "Chuyển hướng xe lấn sang làn xe ngược chiều.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Chuyển hướng xe lấn sang làn xe ngược chiều."
     },
     {
       "id": "b5-khoang-cach",
@@ -1071,8 +1036,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 5",
       "audio": "road/khong-giu-khoang-cach.mp3",
-      "say": "Không bảo đảm khoảng cách an toàn.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không bảo đảm khoảng cách an toàn."
     },
     {
       "id": "b5-tra-lai",
@@ -1084,8 +1048,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 5",
       "audio": "road/khong-tra-lai.mp3",
-      "say": "Sau khi chuyển hướng không trả lái, đưa xe về làn đường quy định.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Sau khi chuyển hướng không trả lái, đưa xe về làn đường quy định."
     },
     {
       "id": "b5-tai-nan",
@@ -1121,8 +1084,7 @@
       "detectedBy": "examiner",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 6",
       "audio": "road/xe-rung-giat-manh.mp3",
-      "say": "Xe bị rung giật mạnh.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Xe bị rung giật mạnh."
     },
     {
       "id": "b6-chet-may",
@@ -1185,8 +1147,7 @@
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 6",
       "audio": "road/khong-xi-nhan-quay-dau.mp3",
-      "say": "Không bật xi nhan về hướng quay đầu.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không bật xi nhan về hướng quay đầu."
     },
     {
       "id": "b6-quan-sat",
@@ -1198,8 +1159,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 6",
       "audio": "road/khong-quan-sat-quay-dau.mp3",
-      "say": "Không quan sát hai bên và gương chiếu hậu khi quay đầu.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không quan sát hai bên và gương chiếu hậu khi quay đầu."
     },
     {
       "id": "b6-nhuong-di-bo",
@@ -1211,8 +1171,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 6",
       "audio": "road/khong-nhuong-di-bo.mp3",
-      "say": "Không nhường đường cho người đi bộ.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không nhường đường cho người đi bộ."
     },
     {
       "id": "b6-nhuong-nguoc-chieu",
@@ -1224,8 +1183,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 6",
       "audio": "road/khong-nhuong-xe-nguoc-chieu.mp3",
-      "say": "Không nhường đường cho xe đi chiều ngược lại.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không nhường đường cho xe đi chiều ngược lại."
     },
     {
       "id": "b6-khoang-cach",
@@ -1237,8 +1195,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 6",
       "audio": "road/khong-giu-khoang-cach.mp3",
-      "say": "Không bảo đảm khoảng cách an toàn.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không bảo đảm khoảng cách an toàn."
     },
     {
       "id": "b6-gay-tro-ngai",
@@ -1250,8 +1207,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 6",
       "audio": "road/gay-tro-ngai.mp3",
-      "say": "Gây trở ngại và nguy hiểm cho người và các phương tiện khác.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Gây trở ngại và nguy hiểm cho người và các phương tiện khác."
     },
     {
       "id": "b6-tra-lai",
@@ -1263,8 +1219,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 6",
       "audio": "road/khong-tra-lai-quay-dau.mp3",
-      "say": "Sau khi quay xe không trả lái, đưa xe về làn đường quy định.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Sau khi quay xe không trả lái, đưa xe về làn đường quy định."
     },
     {
       "id": "b6-tai-nan",
@@ -1338,8 +1293,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 7",
       "audio": "road/khong-quan-sat-an-toan.mp3",
-      "say": "Không quan sát đảm bảo an toàn.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không quan sát đảm bảo an toàn."
     },
     {
       "id": "b7-giam-toc",
@@ -1351,8 +1305,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 7",
       "audio": "road/khong-giam-toc-chan-phanh.mp3",
-      "say": "Không giảm tốc độ hoặc không chuyển từ chân ga sang chân phanh.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không giảm tốc độ hoặc không chuyển từ chân ga sang chân phanh."
     },
     {
       "id": "b7-tai-nan",
@@ -1426,8 +1379,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 8",
       "audio": "road/khong-nhuong-den-xanh.mp3",
-      "say": "Không nhường đường cho người đi bộ đang ở lòng đường khi đèn xanh.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không nhường đường cho người đi bộ đang ở lòng đường khi đèn xanh."
     },
     {
       "id": "b8-vang-nhap-nhay",
@@ -1439,8 +1391,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 8",
       "audio": "road/khong-nhuong-den-vang.mp3",
-      "say": "Không nhường đường cho người đi bộ khi đèn vàng nhấp nháy.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không nhường đường cho người đi bộ khi đèn vàng nhấp nháy."
     },
     {
       "id": "b8-khi-re",
@@ -1452,8 +1403,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 8",
       "audio": "road/khong-nhuong-khi-re.mp3",
-      "say": "Không nhường đường cho người đi bộ khi chuyển hướng.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không nhường đường cho người đi bộ khi chuyển hướng."
     },
     {
       "id": "b8-vach-di-bo",
@@ -1465,8 +1415,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 8",
       "audio": "road/khong-nhuong-vach-di-bo.mp3",
-      "say": "Không nhường đường tại nơi dành cho người đi bộ qua đường.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không nhường đường tại nơi dành cho người đi bộ qua đường."
     },
     {
       "id": "b8-tai-nan",
@@ -1502,8 +1451,7 @@
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 9",
       "audio": "road/khong-xi-nhan-phai-truoc-khi-dung.mp3",
-      "say": "Không bật đèn xi nhan phải trước khi dừng xe.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không bật đèn xi nhan phải trước khi dừng xe."
     },
     {
       "id": "b9-giam-het-so",
@@ -1515,8 +1463,7 @@
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 9",
       "audio": "road/dung-xe-chua-giam-het-so.mp3",
-      "say": "Dừng xe nhưng không giảm hết số.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Dừng xe nhưng không giảm hết số."
     },
     {
       "id": "b9-rung-giat",
@@ -1528,8 +1475,7 @@
       "detectedBy": "examiner",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 9",
       "audio": "road/phanh-rung-giat.mp3",
-      "say": "Thao tác phanh dừng xe bị rung giật mạnh.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Thao tác phanh dừng xe bị rung giật mạnh."
     },
     {
       "id": "b9-phanh-do",
@@ -1541,8 +1487,7 @@
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 9",
       "audio": "road/khong-dung-phanh-do.mp3",
-      "say": "Khi dừng xe, không sử dụng phanh đỗ.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Khi dừng xe, không sử dụng phanh đỗ."
     },
     {
       "id": "b9-choang-lai",
@@ -1554,8 +1499,7 @@
       "detectedBy": "examiner",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 9",
       "audio": "road/vao-le-choang-lai.mp3",
-      "say": "Chuyển hướng vào lề nhưng xe bị choạng lái.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Chuyển hướng vào lề nhưng xe bị choạng lái."
     },
     {
       "id": "b9-khong-dung",
@@ -1616,8 +1560,7 @@
       "detectedBy": "examiner",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 10",
       "audio": "road/xe-rung-giat-manh.mp3",
-      "say": "Xe bị rung giật mạnh.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Xe bị rung giật mạnh."
     },
     {
       "id": "b10-tay-so",
@@ -1642,8 +1585,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 10",
       "audio": "road/khong-quan-sat-an-toan.mp3",
-      "say": "Không quan sát đảm bảo an toàn.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không quan sát đảm bảo an toàn."
     },
     {
       "id": "b10-xi-nhan",
@@ -1655,8 +1597,7 @@
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 10",
       "audio": "road/khong-xi-nhan-nhap-duong.mp3",
-      "say": "Không bật xi nhan khi nhập từ đường nhánh ra đường chính.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không bật xi nhan khi nhập từ đường nhánh ra đường chính."
     },
     {
       "id": "b10-giam-toc",
@@ -1668,8 +1609,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 10",
       "audio": "road/khong-giam-toc-do.mp3",
-      "say": "Không giảm tốc độ.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không giảm tốc độ."
     },
     {
       "id": "b10-nhuong",
@@ -1756,8 +1696,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 11",
       "audio": "road/dung-qua-vach.mp3",
-      "say": "Dừng xe quá vạch dừng quy định.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Dừng xe quá vạch dừng quy định."
     },
     {
       "id": "b11-xi-nhan",
@@ -1769,8 +1708,7 @@
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 11",
       "audio": "road/khong-xi-nhan-khi-re.mp3",
-      "say": "Không bật đèn xi nhan khi rẽ trái hoặc rẽ phải.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không bật đèn xi nhan khi rẽ trái hoặc rẽ phải."
     },
     {
       "id": "b11-vuot-den-do",
@@ -1819,7 +1757,8 @@
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 12",
       "audio": "road/khong-giam-so-giam-toc-ket-thuc.mp3",
       "say": "Không giảm số, giảm tốc độ.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản viết cho xe số sàn, chưa nói cách chấm xe số tự động và xe điện."
+      "note": "Chưa có hướng dẫn chính thức: văn bản viết cho xe số sàn, chưa nói cách chấm xe số tự động và xe điện.",
+      "noteFor": "auto"
     },
     {
       "id": "b12-chet-may",
@@ -1843,8 +1782,7 @@
       "detectedBy": "examiner-inferred",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 12",
       "audio": "road/dung-cach-le-xa.mp3",
-      "say": "Dừng xe cách lề đường quá không phẩy hai lăm mét.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Dừng xe cách lề đường quá không phẩy hai lăm mét."
     },
     {
       "id": "b12-xi-nhan",
@@ -1856,8 +1794,7 @@
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 12",
       "audio": "road/khong-bat-xi-nhan.mp3",
-      "say": "Không bật xi nhan.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không bật xi nhan."
     },
     {
       "id": "b12-tai-nan",

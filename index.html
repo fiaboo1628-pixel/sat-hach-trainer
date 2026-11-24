@@ -153,17 +153,95 @@
       </details>
     </section>
 
+    <!-- Đường trường: chuẩn bị buổi thi -> bàn chấm điểm -> phiếu kết quả. Luật lấy từ
+         content/rules/*.json, chấm bằng js/road-scoring.js, giao diện ở js/road-ui.js. -->
+    <section id="view-duong-truong-setup" hidden>
+      <h2>Đường trường</h2>
+      <p class="guide-lead">Người ngồi ghế phụ ra hiệu lệnh và bấm lỗi; app đọc lỗi, trừ điểm theo quy định và in phiếu kết quả.</p>
+      <div class="rd-form">
+        <label class="rd-field">Ngày thi dự kiến
+          <input id="rd-date" type="date" />
+        </label>
+        <p id="rd-rules-applied" class="rd-applied" role="status"></p>
+        <label class="rd-field">Bộ quy định
+          <select id="rd-rules-override">
+            <option value="auto">Theo ngày thi</option>
+          </select>
+        </label>
+        <fieldset class="rd-choice">
+          <legend>Hạng</legend>
+          <label><input type="radio" name="rd-hang" value="B" checked /> B</label>
+          <label><input type="radio" name="rd-hang" value="C1" /> C1</label>
+        </fieldset>
+        <fieldset class="rd-choice">
+          <legend>Hộp số</legend>
+          <label><input type="radio" name="rd-gearbox" value="manual" checked /> Số sàn</label>
+          <label><input type="radio" name="rd-gearbox" value="auto" /> Số tự động (gồm xe điện)</label>
+        </fieldset>
+        <button id="rd-start" class="btn-primary rd-wide" type="button">Bắt đầu buổi thi</button>
+      </div>
+      <div class="action-row rd-links">
+        <button id="rd-open-guide" class="btn-secondary" type="button">Quy định thi đường trường</button>
+        <button id="rd-open-history" class="btn-secondary" type="button">Lịch sử buổi thi</button>
+      </div>
+      <button class="btn-back" type="button">← Quay lại</button>
+    </section>
+
     <section id="view-duong-truong" class="operator-view" hidden>
       <div class="operator-top">
-        <h2>Đường trường</h2>
-        <button class="btn-back btn-back-boxed" type="button">← Quay lại</button>
+        <h2 id="rd-title">Chấm thi đường trường</h2>
+        <button id="rd-leave" class="btn-back btn-back-boxed" type="button" data-back="duong-truong-setup">← Thoát</button>
       </div>
-      <div class="road-monitor">
-        <p id="road-audio-state" role="status">Sẵn sàng phát</p>
-        <button id="stop-duong-truong" class="btn-secondary operator-stop" type="button">Dừng phát</button>
+      <div class="rd-status" role="status">
+        <p class="rd-score"><span id="rd-score">100</span><small>điểm</small></p>
+        <div class="rd-status-text">
+          <p id="rd-state">Chưa xuất phát</p>
+          <p id="rd-exercise" class="rd-muted"></p>
+        </div>
+        <p id="rd-clock" class="rd-clock">0:00</p>
       </div>
-      <div id="soundboard"></div>
+      <div id="rd-countdown" class="rd-countdown" hidden>
+        <p>Còn <strong id="rd-countdown-sec">30</strong> giây để qua vạch xuất phát</p>
+        <button id="rd-crossed" class="btn-primary rd-wide" type="button">Xe đã qua vạch xuất phát</button>
+      </div>
+      <section class="sb-zone sb-zone-blue">
+        <h3>Hiệu lệnh</h3>
+        <div id="rd-commands" class="sb-grid"></div>
+      </section>
+      <p id="rd-watch" class="rd-watch"></p>
+      <section class="sb-zone sb-zone-red rd-errors">
+        <h3>Lỗi của bài đang thi</h3>
+        <div id="rd-errors" class="sb-grid"></div>
+      </section>
+      <div class="rd-bottom">
+        <button id="rd-undo" class="btn-secondary" type="button" disabled>Hoàn tác</button>
+        <button id="rd-finish" class="btn-secondary" type="button">Kết thúc buổi</button>
+      </div>
+      <p id="rd-toast" class="rd-toast" role="alert" hidden></p>
     </section>
+
+    <section id="view-duong-truong-ket-qua" hidden>
+      <div id="rd-sheet" class="rd-sheet"></div>
+      <div class="action-row rd-links">
+        <button id="rd-sheet-undo" class="btn-secondary" type="button" hidden>Hoàn tác lỗi cuối và thi tiếp</button>
+        <button id="rd-new" class="btn-primary" type="button">Buổi mới</button>
+        <button id="rd-sheet-history" class="btn-secondary" type="button">Lịch sử</button>
+      </div>
+      <button class="btn-back" type="button" data-back="duong-truong-setup">← Quay lại</button>
+    </section>
+
+    <section id="view-duong-truong-lich-su" hidden>
+      <h2>Lịch sử buổi thi</h2>
+      <p class="guide-lead">Lưu 30 buổi gần nhất, chỉ trên máy này.</p>
+      <ol id="rd-history" class="rd-history"></ol>
+      <button id="rd-history-clear" class="btn-secondary" type="button">Xoá tất cả</button>
+      <button class="btn-back" type="button" data-back="duong-truong-setup">← Quay lại</button>
+    </section>
+
+    <dialog id="rd-dialog" class="rd-dialog">
+      <p id="rd-dialog-text"></p>
+      <div id="rd-dialog-actions" class="rd-dialog-actions"></div>
+    </dialog>
 
     <!-- Hướng dẫn thi đường trường: để học viên đọc trước, không phải để bấm trong xe. Nội dung
          theo quy trình sát hạch trên đường hạng B (Thông tư 35/2024 Phụ lục XV mục C.2.2.2,

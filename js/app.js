@@ -1,17 +1,16 @@
 import { buildPlaylist } from './playlist.js';
 import { initTheory } from './theory-ui.js';
+import { initRoad } from './road-ui.js';
 
 const STORAGE_KEY = 'bo-tu-ghep';
 
 const els = {
   listStations: document.getElementById('list-stations'),
   listSelected: document.getElementById('list-selected'),
-  soundboard: document.getElementById('soundboard'),
   shTitle: document.getElementById('sh-board-title'),
   shCurrent: document.getElementById('sh-current'),
   shSequence: document.getElementById('sh-sequence'),
   shAudioState: document.getElementById('sh-audio-state'),
-  roadAudioState: document.getElementById('road-audio-state'),
   shNext: document.getElementById('sh-next'),
   shErrors: document.getElementById('sh-errors'),
   shNotices: document.getElementById('sh-notices'),
@@ -21,7 +20,7 @@ const els = {
 
 let stations = [];
 let standardSet = [];
-let soundboard = [];
+let roadRules = [];
 let saHinhErrors = [];
 let saHinhNotices = [];
 let wakeLock = null;
@@ -36,18 +35,19 @@ let lastStationIndex = null;
 let onPlaybackDone = null;
 
 async function loadContent() {
-  const [stationsRes, standardRes, theoryRes, soundboardRes, errorsRes, noticesRes] = await Promise.all([
+  const [stationsRes, standardRes, theoryRes, tt12Res, tt108Res, errorsRes, noticesRes] = await Promise.all([
     fetch('content/stations.json'),
     fetch('content/standard-set.json'),
     fetch('content/theory/questions.json'),
-    fetch('content/soundboard.json'),
+    fetch('content/rules/duong-truong-tt12.json'),
+    fetch('content/rules/duong-truong-tt108.json'),
     fetch('content/sa-hinh-loi.json'),
     fetch('content/sa-hinh-thong-bao.json'),
   ]);
   stations = await stationsRes.json();
   standardSet = await standardRes.json();
   theoryQuestions = await theoryRes.json();
-  soundboard = await soundboardRes.json();
+  roadRules = [await tt12Res.json(), await tt108Res.json()];
   saHinhErrors = await errorsRes.json();
   saHinhNotices = await noticesRes.json();
 }
@@ -79,7 +79,10 @@ const VIEWS = [
   'sa-hinh-menu',
   'bo-chuan',
   'bo-tu-ghep',
+  'duong-truong-setup',
   'duong-truong',
+  'duong-truong-ket-qua',
+  'duong-truong-lich-su',
   'huong-dan-dt',
   'theory-menu',
   'theory-exam',
@@ -184,7 +187,6 @@ function removeSelected(index) {
 // Cắt tiếng đang phát (nếu có) và bỏ dấu "đang phát" trên phím của nó.
 function updateAudioState(message) {
   els.shAudioState.textContent = message;
-  els.roadAudioState.textContent = message;
 }
 
 function stopPlayback(message) {
@@ -193,12 +195,35 @@ function stopPlayback(message) {
   // Phím gắn ontimeupdate để chạy vạch tiến trình; không xoá là nó còn ghi --played lên phím
   // cũ suốt lần phát sau.
   els.player.ontimeupdate = null;
+  els.player.onerror = null;
   els.player.pause();
   document.querySelector('.playing')?.classList.remove('playing');
   const done = onPlaybackDone;
   onPlaybackDone = null;
   done?.();
   updateAudioState(message || 'Sẵn sàng phát');
+}
+
+// Phát một clip, trả về promise xong khi phát hết (hoặc bị phím khác cắt), lỗi khi không phát được.
+// Dùng cho Đường trường, nơi tiếng gắn với sự kiện chấm điểm chứ không với một phím cố định.
+function playClip(src, label) {
+  return new Promise((resolve, reject) => {
+    const fail = (error) => {
+      onPlaybackDone = null;
+      stopPlayback(`Lỗi phát: ${label}`);
+      reject(error);
+    };
+    stopPlayback();
+    onPlaybackDone = resolve;
+    updateAudioState(`Đang phát: ${label}`);
+    els.player.onended = () => stopPlayback();
+    els.player.onerror = () => fail(new Error(label));
+    els.player.src = src;
+    els.player.playbackRate = 1;
+    els.player.play().catch((error) => {
+      if (error.name !== 'AbortError') fail(error);
+    });
+  });
 }
 
 const VOICE_PLAYBACK_RATE = 0.85; // giọng đọc tên bài sa hình chậm hơn cho dễ nghe/phản ứng kịp
@@ -226,38 +251,6 @@ function playKey(b, src, label, rate = 1, onDone = null) {
   els.player.playbackRate = rate;
   els.player.play().catch((error) => {
     if (error.name !== 'AbortError') stopPlayback(`Lỗi phát: ${label}`);
-  });
-}
-
-// Các nhóm phím Đường trường. `color` trong soundboard.json đã mã hoá sẵn nhóm — lệnh, tín hiệu,
-// báo lỗi — nên đây là đọc ra thứ có trong data, không phải đặt thêm phân loại mới. Người bấm
-// là người ngồi cạnh, đang tìm một phím dưới áp lực: tách khu để không hô nhầm một lỗi.
-const SOUNDBOARD_ZONES = [
-  { color: 'blue', label: 'Hiệu lệnh sát hạch' },
-  { color: 'red', label: 'Báo lỗi' },
-  { color: 'stop', label: 'Lỗi đình chỉ' },
-  { color: 'yellow', label: 'Âm báo mô phỏng' },
-];
-
-// Đường trường: each key plays its clip right away, cutting off whatever was playing.
-function renderSoundboard() {
-  SOUNDBOARD_ZONES.forEach((zone) => {
-    const keys = soundboard.filter((key) => key.color === zone.color);
-    if (!keys.length) return;
-
-    const auxiliary = zone.color === 'yellow';
-    const section = document.createElement(auxiliary ? 'details' : 'section');
-    section.className = `sb-zone sb-zone-${zone.color}`;
-    const heading = document.createElement(auxiliary ? 'summary' : 'h3');
-    heading.textContent = zone.label;
-    section.append(heading);
-
-    const grid = document.createElement('div');
-    grid.className = 'sb-grid';
-    keys.forEach((key) => grid.appendChild(soundKey(key)));
-
-    section.append(grid);
-    els.soundboard.appendChild(section);
   });
 }
 
@@ -354,7 +347,6 @@ function registerServiceWorker() {
 async function main() {
   await loadContent();
   renderStationsPicker();
-  renderSoundboard();
   renderSaHinhErrors();
   renderList(els.listSelected, selected, { removable: true });
   theoryHandle = initTheory(theoryQuestions, { showView, setStatus });
@@ -364,15 +356,9 @@ async function main() {
   document.getElementById('btn-bo-chuan-c1').addEventListener('click', () =>
     openStandardSet(standardSet.filter((id) => id !== 'ghep-xe-ngang'), 'Hạng C1 · Lộ trình mẫu'),
   );
-  document.getElementById('btn-duong-truong').addEventListener('click', async () => {
-    showView('duong-truong');
-    // Giữ màn hình sáng khi đang dạy trên xe.
-    // shortcut: mất khóa nếu chuyển app rồi quay lại, cần thì bắt visibilitychange để xin lại.
-    wakeLock = await navigator.wakeLock?.request('screen').catch(() => null);
-  });
-  for (const id of ['stop-duong-truong', 'stop-sa-hinh']) {
-    document.getElementById(id).addEventListener('click', () => stopPlayback());
-  }
+  initRoad({ ruleSets: roadRules, showView, play: playClip, stop: () => stopPlayback(), storage: localStorage });
+  document.getElementById('btn-duong-truong').addEventListener('click', () => showView('duong-truong-setup'));
+  document.getElementById('stop-sa-hinh').addEventListener('click', () => stopPlayback());
   document.getElementById('btn-sa-hinh').addEventListener('click', () => showView('sa-hinh-menu'));
   document.getElementById('btn-bo-tu-ghep').addEventListener('click', () => showView('bo-tu-ghep'));
   document.getElementById('btn-huong-dan-dt').addEventListener('click', () => showView('huong-dan-dt'));

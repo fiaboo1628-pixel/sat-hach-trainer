@@ -2,6 +2,7 @@
   "id": "tt12-2025",
   "document": "Thông tư 12/2025/TT-BCA",
   "scope": "Phụ lục IV, mục C.II: sát hạch thực hành lái xe trên đường",
+  "turnRuleNote": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài.",
   "citationBase": "Thông tư 12/2025/TT-BCA, Phụ lục IV, mục C.II (giữ hiệu lực đến hết 28/02/2027 theo Điều 41 khoản 6 Thông tư 108/2026/TT-BCA)",
   "validFrom": null,
   "validTo": "2027-02-28",
@@ -93,8 +94,7 @@
       "detectedBy": "device",
       "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.a, lỗi 1",
       "audio": "road/khong-that-day-an-toan.mp3",
-      "say": "Không thắt dây an toàn.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không thắt dây an toàn."
     },
     {
       "id": "xp-xi-nhan-trai",
@@ -106,8 +106,7 @@
       "detectedBy": "device",
       "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.a, lỗi 2",
       "audio": "road/khong-bat-xi-nhan-trai-xuat-phat.mp3",
-      "say": "Không bật đèn xi nhan trái khi xuất phát.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không bật đèn xi nhan trái khi xuất phát."
     },
     {
       "id": "xp-phanh-tay",
@@ -119,8 +118,7 @@
       "detectedBy": "device",
       "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.a, lỗi 3",
       "audio": "road/khong-nha-het-phanh-tay.mp3",
-      "say": "Không nhả hết phanh tay khi khởi hành.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không nhả hết phanh tay khi khởi hành."
     },
     {
       "id": "xp-15m-so-3",
@@ -134,6 +132,7 @@
       "audio": "road/khong-tang-len-so-3.mp3",
       "say": "Trong khoảng mười lăm mét không tăng từ số một lên số ba.",
       "note": "Chưa có hướng dẫn chính thức: văn bản viết cho xe số sàn, chưa nói cách chấm xe số tự động và xe điện.",
+      "noteFor": "auto",
       "manualGearboxOnly": true
     },
     {
@@ -160,6 +159,7 @@
       "audio": "road/khong-tang-so-tang-toc.mp3",
       "say": "Trong khoảng một trăm mét không tăng được số, tốc độ.",
       "note": "Chưa có hướng dẫn chính thức: văn bản viết cho xe số sàn, chưa nói cách chấm xe số tự động và xe điện.",
+      "noteFor": "auto",
       "manualGearboxOnly": true
     },
     {
@@ -174,6 +174,7 @@
       "audio": "road/khong-giam-so-giam-toc.mp3",
       "say": "Trong khoảng một trăm mét không giảm được số, tốc độ.",
       "note": "Chưa có hướng dẫn chính thức: văn bản viết cho xe số sàn, chưa nói cách chấm xe số tự động và xe điện.",
+      "noteFor": "auto",
       "manualGearboxOnly": true
     },
     {
@@ -186,8 +187,7 @@
       "detectedBy": "device",
       "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.d, lỗi 1",
       "audio": "road/khong-bat-xi-nhan-phai.mp3",
-      "say": "Không bật đèn xi nhan phải.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không bật đèn xi nhan phải."
     },
     {
       "id": "kt-ve-so",
@@ -199,8 +199,7 @@
       "detectedBy": "device",
       "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.d, lỗi 2",
       "audio": "road/chua-ve-so-khong.mp3",
-      "say": "Khi xe dừng hẳn, không về được số không hoặc số P.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Khi xe dừng hẳn, không về được số không hoặc số P."
     },
     {
       "id": "kt-phanh-tay",
@@ -212,8 +211,7 @@
       "detectedBy": "device",
       "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2.d, lỗi 3",
       "audio": "road/khong-keo-phanh-tay.mp3",
-      "say": "Không kéo phanh tay khi xe dừng hẳn.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Không kéo phanh tay khi xe dừng hẳn."
     },
     {
       "id": "rung-giat",
@@ -225,8 +223,7 @@
       "detectedBy": "examiner",
       "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2, mọi bài",
       "audio": "road/xe-rung-giat-manh.mp3",
-      "say": "Xe bị rung giật mạnh.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Xe bị rung giật mạnh."
     },
     {
       "id": "chet-may",
@@ -264,6 +261,7 @@
       "audio": "road/so-cao-toc-do-thap.mp3",
       "say": "Sử dụng từ tay số ba trở lên khi tốc độ dưới hai mươi ki lô mét một giờ.",
       "note": "Bấm một lần cho mỗi 3 giây vi phạm. Chưa có hướng dẫn chính thức: văn bản viết cho xe số sàn, chưa nói cách chấm xe số tự động và xe điện.",
+      "noteFor": "auto",
       "manualGearboxOnly": true
     },
     {
@@ -276,8 +274,7 @@
       "detectedBy": "examiner",
       "citation": "TT 12/2025/TT-BCA, Phụ lục IV, mục C.II.2.2.2, mọi bài",
       "audio": "road/vi-pham-quy-tac-giao-thong.mp3",
-      "say": "Vi phạm quy tắc giao thông đường bộ.",
-      "note": "Chưa có hướng dẫn chính thức: văn bản không nói lỗi không ghi \"mỗi lần\" được trừ mấy lần; app trừ một lần trong mỗi lượt bài."
+      "say": "Vi phạm quy tắc giao thông đường bộ."
     },
     {
       "id": "hieu-lenh",
