@@ -94,7 +94,7 @@ test('TT 12 có 4 bài, TT 108 có 12 bài; bài 3 và 11 có điều kiện', (
   assert.equal(tt108.exercises.filter((e) => e.conditional).length, 2);
 });
 
-test('mọi file âm thanh tồn tại', { todo: 'audio rendered in Task 6' }, () => {
+test('mọi file âm thanh tồn tại', () => {
   for (const r of SETS) {
     const files = [
       ...r.exercises.map((e) => e.commandAudio),
@@ -103,6 +103,7 @@ test('mọi file âm thanh tồn tại', { todo: 'audio rendered in Task 6' }, (
     ];
     for (const f of files) assert.ok(existsSync(new URL(`content/audio/${f}`, root)), f);
   }
+  for (let n = 0; n <= 100; n++) assert.ok(existsSync(new URL(`content/audio/road/diem-${n}.mp3`, root)), `diem-${n}`);
 });
 
 test('TT 12: các mức trừ chốt theo văn bản', () => {
@@ -125,4 +126,12 @@ test('TT 108: các mức trừ chốt theo văn bản', () => {
   assert.equal(stall4.perOccurrence, false);
   assert.equal(stall5.perOccurrence, true);
   assert.equal(exerciseErrors(tt108, 0).find((e) => e.official.startsWith('Quá 30 giây')).suspend, true);
+});
+
+test('id và tên file âm thanh chỉ dùng chữ không dấu', () => {
+  const ascii = /^[a-z0-9/._-]+$/;
+  for (const r of SETS) {
+    for (const e of [...r.exercises, ...r.errors]) assert.match(e.id, ascii, e.id);
+    for (const a of [...r.exercises.map((e) => e.commandAudio), ...r.errors.map((e) => e.audio), ...Object.values(r.notices)]) assert.match(a, ascii, a);
+  }
 });

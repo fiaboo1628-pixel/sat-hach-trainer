@@ -97,7 +97,7 @@
         "b4-tay-so",
         "b4-giam-toc",
         "b4-chuyen-dan",
-        "b4-xi-nhan-trái",
+        "b4-xi-nhan-trai",
         "b4-dot-ngot",
         "b4-quan-sat",
         "b4-nhuong-di-bo",
@@ -126,7 +126,7 @@
         "b5-tay-so",
         "b5-giam-toc",
         "b5-chuyen-dan",
-        "b5-xi-nhan-phải",
+        "b5-xi-nhan-phai",
         "b5-dot-ngot",
         "b5-quan-sat",
         "b5-nhuong-di-bo",
@@ -760,7 +760,7 @@
       "say": "Không chuyển dần làn đường sang hướng cần chuyển."
     },
     {
-      "id": "b4-xi-nhan-trái",
+      "id": "b4-xi-nhan-trai",
       "label": "Không bật xi nhan trái",
       "official": "Không bật xi nhan trái, trừ 10 điểm",
       "points": 10,
@@ -768,7 +768,7 @@
       "perOccurrence": false,
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 4",
-      "audio": "road/khong-bat-xi-nhan-trái-khi-re.mp3",
+      "audio": "road/khong-bat-xi-nhan-trai-khi-re.mp3",
       "say": "Không bật xi nhan trái."
     },
     {
@@ -955,7 +955,7 @@
       "say": "Không chuyển dần làn đường sang hướng cần chuyển."
     },
     {
-      "id": "b5-xi-nhan-phải",
+      "id": "b5-xi-nhan-phai",
       "label": "Không bật xi nhan phải",
       "official": "Không bật xi nhan phải, trừ 10 điểm",
       "points": 10,
@@ -963,7 +963,7 @@
       "perOccurrence": false,
       "detectedBy": "device",
       "citation": "TT 108/2026/TT-BCA, Phụ lục III, mục B.4.5, Bài 5",
-      "audio": "road/khong-bat-xi-nhan-phải-khi-re.mp3",
+      "audio": "road/khong-bat-xi-nhan-phai-khi-re.mp3",
       "say": "Không bật xi nhan phải."
     },
     {
