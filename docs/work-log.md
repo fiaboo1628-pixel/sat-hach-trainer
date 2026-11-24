@@ -24,3 +24,11 @@ Người dùng yêu cầu ngày 2026-11-05: ghi lại để làm lúc rảnh; ch
 - Đối chiếu tự động: cả 143 câu `official` và mọi tên bài xuất hiện nguyên văn trong `docs/research/nguon/tt12-2025.txt` / `tt108-2026.txt` (so khớp sau khi gộp khoảng trắng, không phân biệt hoa thường).
 - Đối chiếu mức trừ: `points`, `suspend`, `perOccurrence` của cả 143 lỗi khớp với mức trừ ghi trong chính câu nguyên văn ("trừ NN điểm", "bị đình chỉ sát hạch", "mỗi lần", "cứ 03 giây"). 0 lệch.
 - `detectedBy`: TT 12 theo C.II.1.3.d (5 lỗi sát hạch viên bấm, còn lại máy); TT 108 theo QCVN 15:2026 §2.3.5.2.3–4, lỗi không có trong danh sách nào là "examiner-inferred".
+
+## 2026-11-24 — Đường trường: bàn chấm điểm, âm thanh, kiểm tra phát hành
+
+- Nhánh `feat/duong-truong-cham-diem`: bàn chấm điểm thay bảng 12 phím (xem `CLAUDE.md`, spec và plan ngày 2026-11-24).
+- Âm thanh: 191 clip trong `content/audio/road/` (90 câu hiệu lệnh/lỗi/thông báo + 101 câu đọc điểm), giọng VieNeu Mai Anh, tempo 0.85, −19 LUFS; render bằng `tools/render-road-voice.sh`, kiểm bằng `tools/check-voice.py` (faster-whisper large-v3-turbo): 191/191 đạt sau khi tạo lại 3 câu. Bản nghe thử gộp: `../sat-hach-audio-preview/nghe-thu-*.mp3` — **chờ chủ app duyệt trước khi deploy**.
+- Môi trường TTS dựng lại ở `~/Projects/airi-voice/.venv` (Python 3.14, torch 2.15 CPU, vieneu 3.8.5, faster-whisper 1.2.1).
+- Kiểm tra phát hành: 70/70 test; service worker v54 cài được, cache 576 file gồm 191 clip đường trường; tắt server rồi tải lại: app chạy và phát clip từ cache.
+- Chưa deploy, chưa build lại Android.
