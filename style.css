@@ -1288,3 +1288,7 @@ html:has(#view-duong-truong:not([hidden])) { overscroll-behavior-y: contain; }
   .operator-view .rd-err .sb-key { min-height: 3rem; }
 }
 #status:empty { display: none; }
+/* iPhone (Safari): ô ngày có bề rộng tối thiểu riêng và bỏ qua width, nên tràn ra ngoài khung.
+   Bỏ giao diện gốc để nó co theo cột như các ô khác. */
+.rd-field input[type="date"] { -webkit-appearance: none; appearance: none; display: block; min-height: 44px; text-align: left; }
+.rd-field input[type="date"]::-webkit-date-and-time-value { text-align: left; }

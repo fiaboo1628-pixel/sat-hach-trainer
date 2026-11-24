@@ -101,6 +101,7 @@ function showView(view) {
     document.getElementById(elId).hidden = v !== view;
   });
   syncHistory(view);
+  if (view === 'menu') reloadIfIdle();
 }
 
 // Nút Back của Android (và của trình duyệt) lùi một màn như nút "← Quay lại", thay vì thoát app.
@@ -362,14 +363,36 @@ async function openStandardSet(ids, label) {
   wakeLock = await navigator.wakeLock?.request('screen').catch(() => null);
 }
 
+// Có bản mới (service worker mới đã nhận quyền): tải lại ngay nếu đang ở trang chủ, còn không thì
+// đợi lần về trang chủ kế tiếp, để không cắt ngang buổi thi hay bài thi lý thuyết đang làm.
+let updateReady = false;
+function reloadIfIdle() {
+  if (updateReady && !document.getElementById('menu').hidden) location.reload();
+}
+
 function registerServiceWorker() {
   // Bản Android (Capacitor) đã mang sẵn mọi file trong APK: không cần service worker.
   if (window.Capacitor) return;
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker
-      .register('service-worker.js')
-      .catch(() => setStatus('Không bật được chế độ offline — app vẫn chạy khi có mạng.'));
-  }
+  if (!('serviceWorker' in navigator)) return;
+  // Lần đầu service worker nhận quyền (app chưa có bản cũ): không cần tải lại. Các lần sau là bản mới.
+  let controlled = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!controlled) {
+      controlled = true;
+      return;
+    }
+    updateReady = true;
+    reloadIfIdle();
+  });
+  navigator.serviceWorker
+    .register('service-worker.js')
+    .then((registration) => {
+      // iPhone giữ app mở rất lâu: mỗi lần quay lại app thì hỏi xem có bản mới không.
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') registration.update().catch(() => {});
+      });
+    })
+    .catch(() => setStatus('Không bật được chế độ offline — app vẫn chạy khi có mạng.'));
 }
 
 async function main() {
